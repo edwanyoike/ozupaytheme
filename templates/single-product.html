@@ -1,0 +1,103 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"align":"full","tagName":"main","style":{"color":{"background":"#F7F5EF"},"spacing":{"padding":{"top":"0","bottom":"64px"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group alignfull" style="background-color:#F7F5EF;padding-bottom:64px">
+
+    <!-- White breadcrumb bar -->
+    <!-- wp:group {"align":"full","style":{"color":{"background":"#ffffff"},"border":{"bottom":{"color":"#D6CFBE","width":"1px"}},"spacing":{"padding":{"top":"14px","bottom":"14px"}}},"layout":{"type":"constrained"}} -->
+    <div class="wp-block-group alignfull" style="background-color:#ffffff;border-bottom:1px solid #D6CFBE;padding-top:14px;padding-bottom:14px">
+        <!-- wp:woocommerce/breadcrumbs /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- Store notices -->
+    <!-- wp:group {"style":{"spacing":{"padding":{"top":"0","bottom":"0"}}},"layout":{"type":"constrained"}} -->
+    <div class="wp-block-group">
+        <!-- wp:woocommerce/store-notices /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- Product content -->
+    <!-- wp:group {"style":{"spacing":{"padding":{"top":"36px","bottom":"0"}}},"layout":{"type":"constrained"}} -->
+    <div class="wp-block-group" style="padding-top:36px">
+
+        <!-- Two-column product layout -->
+        <!-- wp:columns {"style":{"spacing":{"blockGap":{"top":"0","left":"48px"},"padding":{"bottom":"48px"}}}} -->
+        <div class="wp-block-columns ozp-single-product" style="padding-bottom:48px;gap:48px">
+
+            <!-- Left: Product gallery -->
+            <!-- wp:column {"width":"50%","style":{"position":{"type":"sticky"}}} -->
+            <div class="wp-block-column" style="flex-basis:50%">
+                <!-- wp:woocommerce/product-image-gallery /-->
+
+                <!-- Trust pills -->
+                <!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap"},"style":{"spacing":{"margin":{"top":"16px"},"blockGap":"10px"}}} -->
+                <div class="wp-block-group" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
+                    <!-- wp:html -->
+                    <span class="ozp-trust-pill">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5z"/></svg>
+                        30-day money-back
+                    </span>
+                    <span class="ozp-trust-pill">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+                        Instant download
+                    </span>
+                    <span class="ozp-trust-pill">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                        Secure checkout
+                    </span>
+                    <!-- /wp:html -->
+                </div>
+                <!-- /wp:group -->
+            </div>
+            <!-- /wp:column -->
+
+            <!-- Right: Product details -->
+            <!-- wp:column {"width":"50%"} -->
+            <div class="wp-block-column" style="flex-basis:50%">
+
+                <!-- Category label -->
+                <!-- wp:woocommerce/product-categories-field /-->
+
+                <!-- Title -->
+                <!-- wp:post-title {"level":1,"style":{"color":{"text":"#0F172A"},"typography":{"fontSize":"clamp(22px,2.5vw,30px)","fontWeight":"800","letterSpacing":"-0.03em","lineHeight":"1.15"},"spacing":{"margin":{"top":"8px","bottom":"8px"}}}} /-->
+
+                <!-- Price -->
+                <!-- wp:woocommerce/product-price {"style":{"typography":{"fontWeight":"800","fontSize":"28px"},"color":{"text":"#0F172A"},"spacing":{"margin":{"top":"0","bottom":"16px"}}}} /-->
+
+                <!-- Short description -->
+                <!-- wp:woocommerce/product-summary /-->
+
+                <!-- Variations / add to cart -->
+                <!-- wp:woocommerce/add-to-cart-form /-->
+
+                <!-- Meta (SKU, categories) -->
+                <!-- wp:woocommerce/product-meta /-->
+
+            </div>
+            <!-- /wp:column -->
+
+        </div>
+        <!-- /wp:columns -->
+
+        <!-- Product tabs: Description & Reviews -->
+        <!-- wp:group {"style":{"border":{"top":{"color":"#E4DECF","width":"1px"}},"spacing":{"padding":{"top":"48px","bottom":"64px"}}},"layout":{"type":"constrained"}} -->
+        <div class="wp-block-group" style="border-top:1px solid #D6CFBE;padding-top:48px;padding-bottom:64px">
+            <!-- wp:woocommerce/product-details /-->
+        </div>
+        <!-- /wp:group -->
+
+        <!-- Related products -->
+        <!-- wp:group {"style":{"border":{"top":{"color":"#E4DECF","width":"1px"}},"spacing":{"padding":{"top":"48px","bottom":"0"}}},"layout":{"type":"constrained"}} -->
+        <div class="wp-block-group" style="border-top:1px solid #D6CFBE;padding-top:48px">
+            <!-- wp:woocommerce/related-products {"columns":3,"rows":1} /-->
+        </div>
+        <!-- /wp:group -->
+
+    </div>
+    <!-- /wp:group -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

@@ -1,0 +1,58 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"align":"full","style":{"color":{"background":"#ffffff"},"spacing":{"padding":{"top":"64px","bottom":"96px"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull" style="background-color:#ffffff;padding-top:64px;padding-bottom:96px">
+
+    <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"28px"}}},"layout":{"type":"constrained"}} -->
+    <div class="wp-block-group" style="margin-bottom:28px">
+        <!-- wp:query-title {"type":"archive","level":1,"showPrefix":false,"style":{"color":{"text":"#0F172A"},"typography":{"fontSize":"clamp(28px,3.5vw,42px)","fontWeight":"700"}}} /-->
+        <!-- wp:paragraph {"style":{"color":{"text":"#64748B"},"typography":{"fontSize":"15px"}}} -->
+        <p class="has-text-color" style="color:#64748B;font-size:15px">Articles filed under this topic.</p>
+        <!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:search {"label":"Search articles","showLabel":false,"placeholder":"Search articles…","buttonText":"Search","buttonPosition":"button-inside","className":"ozl-blog-search","style":{"spacing":{"margin":{"bottom":"20px"}}}} /-->
+
+    <!-- wp:group {"className":"ozl-cat-filter-wrap","style":{"spacing":{"margin":{"bottom":"40px"}}},"layout":{"type":"flow"}} -->
+    <div class="wp-block-group ozl-cat-filter-wrap" style="margin-bottom:40px">
+        <!-- wp:categories {"className":"ozl-cat-pills","displayAsDropdown":false,"showHierarchy":false,"showPostCounts":false,"showEmpty":false} /-->
+    </div>
+    <!-- /wp:group -->
+
+    <!-- wp:query {"queryId":1,"query":{"inherit":true,"postType":"post","order":"desc","orderBy":"date"},"className":"ozl-blog-grid"} -->
+    <div class="wp-block-query ozl-blog-grid">
+        <!-- wp:post-template {"className":"ozl-post-grid"} -->
+            <!-- wp:group {"className":"ozl-post-card","style":{"color":{"background":"#F7F5EF"},"border":{"radius":"12px","color":"#E4DECF","width":"1px"},"spacing":{"padding":{"top":"0","bottom":"24px","left":"0","right":"0"}}},"layout":{"type":"constrained"}} -->
+            <div class="wp-block-group ozl-post-card" style="background-color:#F7F5EF;border:1px solid #E4DECF;border-radius:12px;padding-bottom:24px">
+                <!-- wp:post-featured-image {"isLink":true,"style":{"border":{"radius":"12px 12px 0 0"}},"height":"180px"} /-->
+                <!-- wp:group {"style":{"spacing":{"padding":{"top":"18px","bottom":"0","left":"22px","right":"22px"}}},"layout":{"type":"constrained"}} -->
+                <div class="wp-block-group" style="padding:18px 22px 0">
+                    <!-- wp:post-terms {"term":"category","className":"ozl-post-card-cat"} /-->
+                    <!-- wp:post-title {"isLink":true,"level":3,"style":{"color":{"text":"#0F172A"},"typography":{"fontSize":"18px","fontWeight":"700"},"spacing":{"margin":{"top":"10px","bottom":"8px"}}}} /-->
+                    <!-- wp:post-excerpt {"excerptLength":20,"moreText":"Read more →","style":{"color":{"text":"#64748B"},"typography":{"fontSize":"13px"}}} /-->
+                    <!-- wp:post-date {"className":"ozl-post-card-date","style":{"color":{"text":"#94A3B8"},"typography":{"fontSize":"12px"},"spacing":{"margin":{"top":"14px"}}}} /-->
+                </div>
+                <!-- /wp:group -->
+            </div>
+            <!-- /wp:group -->
+        <!-- /wp:post-template -->
+
+        <!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"48px"}}}} -->
+            <!-- wp:query-pagination-previous /-->
+            <!-- wp:query-pagination-numbers /-->
+            <!-- wp:query-pagination-next /-->
+        <!-- /wp:query-pagination -->
+
+        <!-- wp:query-no-results -->
+            <!-- wp:paragraph {"style":{"color":{"text":"#64748B"}}} -->
+            <p class="has-text-color" style="color:#9ca3af">No posts found.</p>
+            <!-- /wp:paragraph -->
+        <!-- /wp:query-no-results -->
+    </div>
+    <!-- /wp:query -->
+
+</div>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

@@ -1,0 +1,425 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:html -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
+
+:root{
+  --og:#00A651;--og-dk:#00924A;--og-lt:#00C45F;
+  --og-bg:#ECFDF3;--og-border:#BBF7D0;
+  --navy:#0F172A;--slate-800:#1E293B;--slate-700:#334155;
+  --slate-600:#475569;--slate-500:#64748B;--slate-400:#94A3B8;
+  --slate-200:#E4DECF;--slate-100:#EFEBE0;--slate-50:#F7F5EF;
+}
+
+.ofp{font-family:'Public Sans',system-ui,-apple-system,sans-serif;color:var(--navy);-webkit-font-smoothing:antialiased;}
+.ofp *{box-sizing:border-box;}
+.ofp h1,.ofp h2,.ofp h3{font-family:'Space Grotesk',system-ui,sans-serif;}
+.ofp-mono{font-family:'JetBrains Mono','Fira Code',monospace;}
+
+/* Hero — mobile-first: narrow padding base, wider on tablet+ */
+.ofp-hero{background:#fff;border-bottom:1px solid var(--slate-200);padding:40px 20px 36px;}
+@media(min-width:640px){.ofp-hero{padding:64px 32px 56px;}}
+.ofp-hero-inner{max-width:1200px;margin:0 auto;}
+.ofp-hero h1{margin:16px 0 12px;font-size:clamp(30px,4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.08;color:var(--navy);}
+.ofp-hero p{margin:0;font-size:17px;line-height:1.65;color:var(--slate-600);max-width:520px;}
+.ofp-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--slate-500);text-decoration:none;margin-bottom:8px;}
+.ofp-back:hover{color:var(--og);}
+.ofp-back svg{transition:transform .15s;}
+.ofp-back:hover svg{transform:translateX(-2px);}
+
+/* Section headers — mobile-first: narrow padding base, wider on tablet+ */
+.ofp-section{padding:40px 20px;}
+@media(min-width:640px){.ofp-section{padding:64px 32px;}}
+.ofp-section-inner{max-width:1200px;margin:0 auto;}
+.ofp-section--free{background:var(--slate-50);border-bottom:1px solid var(--slate-200);}
+.ofp-section--pro{background:#fff;border-bottom:1px solid var(--slate-200);}
+.ofp-section-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.ofp-section--free .ofp-section-label{color:var(--slate-500);}
+.ofp-section--pro .ofp-section-label{color:var(--og);}
+.ofp-section h2{margin:0 0 36px;font-size:clamp(22px,2.5vw,30px);font-weight:700;letter-spacing:-.025em;color:var(--navy);}
+
+/* Grid — mobile-first: 1 column base, expand on wider screens */
+.ofp-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+@media(min-width:560px){.ofp-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:900px){.ofp-grid{grid-template-columns:repeat(3,1fr);}}
+
+/* Cards */
+.ofp-card{background:#fff;border:1px solid var(--slate-200);border-radius:14px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px;transition:border-color .15s,box-shadow .15s;}
+.ofp-card:hover{border-color:var(--og);box-shadow:0 8px 24px -10px rgba(0,166,81,.18);}
+.ofp-section--free .ofp-card{background:var(--slate-50);}
+.ofp-section--free .ofp-card:hover{background:#fff;}
+.ofp-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.ofp-card-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none;}
+.ofp-section--free .ofp-card-icon{background:var(--slate-100);}
+.ofp-section--pro .ofp-card-icon{background:var(--navy);}
+.ofp-section--free .ofp-card-icon svg{stroke:var(--slate-500);}
+.ofp-section--pro .ofp-card-icon svg{stroke:#4ADE80;}
+.ofp-badge{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:5px;flex:none;white-space:nowrap;}
+.ofp-badge--free{background:var(--slate-100);color:var(--slate-500);}
+.ofp-badge--pro{background:var(--og);color:#fff;}
+.ofp-card h3{margin:0;font-size:15px;font-weight:700;color:var(--navy);line-height:1.25;font-family:'Space Grotesk',system-ui,sans-serif;}
+.ofp-card p{margin:0;font-size:13.5px;line-height:1.55;color:var(--slate-500);flex:1;}
+.ofp-readmore{background:none;border:none;padding:8px 0;cursor:pointer;font-size:13px;font-weight:600;color:var(--og);font-family:'Public Sans',system-ui,sans-serif;display:inline-flex;align-items:center;gap:4px;margin-top:0;transition:gap .15s;min-height:44px;}
+.ofp-readmore:hover{gap:7px;}
+
+/* Modal backdrop — mobile-first: bottom sheet base, centered dialog on tablet+ */
+.ofp-modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.68);z-index:9000;display:flex;align-items:flex-end;justify-content:center;padding:0;}
+.ofp-modal-backdrop[hidden]{display:none;}
+@media(min-width:560px){
+  .ofp-modal-backdrop{padding:20px;align-items:center;}
+  .ofp-modal-sheet{border-radius:18px;max-height:90vh;}
+  .ofp-modal-head{padding:24px 24px 0;padding-bottom:16px;}
+  .ofp-modal-body{padding:20px 24px 28px;}
+}
+
+/* Modal sheet */
+.ofp-modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;box-shadow:0 40px 80px -24px rgba(15,23,42,.45);display:flex;flex-direction:column;}
+.ofp-modal-head{padding:20px 20px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:sticky;top:0;background:#fff;padding-bottom:14px;border-bottom:1px solid var(--slate-100);}
+.ofp-modal-head-left{display:flex;flex-direction:column;gap:8px;}
+.ofp-modal-head-left h2{margin:0;font-size:20px;font-weight:700;color:var(--navy);font-family:'Space Grotesk',system-ui,sans-serif;}
+.ofp-modal-close{background:none;border:none;cursor:pointer;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--slate-400);transition:background .15s,color .15s;flex:none;margin-top:-6px;margin-right:-6px;}
+.ofp-modal-close:hover{background:var(--slate-100);color:var(--navy);}
+.ofp-modal-body{padding:16px 20px 32px;font-size:15px;line-height:1.7;color:var(--slate-700);}
+.ofp-modal-body p{margin:0 0 14px;}
+.ofp-modal-body p:last-child{margin-bottom:0;}
+.ofp-modal-body ul{margin:0 0 14px;padding-left:20px;display:flex;flex-direction:column;gap:6px;}
+.ofp-modal-body li{line-height:1.55;}
+</style>
+
+<div class="ofp">
+
+<!-- Hero -->
+<section class="ofp-hero">
+<div class="ofp-hero-inner">
+  <a href="/" class="ofp-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to overview
+  </a>
+  <div class="ofp-mono" style="color:var(--og);margin-bottom:0;">OzuPay for WooCommerce</div>
+  <h1>All features</h1>
+  <p>Everything OzuPay does — from the basics available in the free plugin to the full Pro feature set.</p>
+</div>
+</section>
+
+<!-- Free features -->
+<section class="ofp-section ofp-section--free">
+<div class="ofp-section-inner">
+  <div class="ofp-section-label">Free</div>
+  <h2>Available in the free plugin</h2>
+  <div class="ofp-grid" id="ofp-grid-free"></div>
+</div>
+</section>
+
+<!-- Pro features -->
+<section class="ofp-section ofp-section--pro">
+<div class="ofp-section-inner">
+  <div class="ofp-section-label">Pro</div>
+  <h2>Available in Pro</h2>
+  <div class="ofp-grid" id="ofp-grid-pro"></div>
+</div>
+</section>
+
+</div><!-- /ofp -->
+
+<!-- Modal -->
+<div class="ofp-modal-backdrop" id="ofp-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="ofp-modal-title">
+  <div class="ofp-modal-sheet">
+    <div class="ofp-modal-head">
+      <div class="ofp-modal-head-left">
+        <h2 id="ofp-modal-title"></h2>
+        <span class="ofp-badge" id="ofp-modal-badge"></span>
+      </div>
+      <button class="ofp-modal-close" id="ofp-modal-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="ofp-modal-body" id="ofp-modal-body"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var FREE = 'Free';
+  var PRO  = 'Pro';
+
+  var freeIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+  var proIcon  = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+
+  var icons = {
+    phone:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
+    store:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>',
+    shield:   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5z"/><path d="M9 12l2 2 4-4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    hpos:     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>',
+    sandbox:  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v12"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9c0 6-12 3-12 9"/></svg>',
+    code:     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+    truck:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+    refund:   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>',
+    chart:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="13" y="7" width="3" height="10"/></svg>',
+    webhook:  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49"/></svg>',
+    qr:       '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M14 17v3M17 14v3M17 17h3"/></svg>',
+    link:     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+    pos:      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+    c2b:      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>',
+    bell:     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+    terminal: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>',
+    fee:      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+    report:   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
+    match:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+    devkey:   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>',
+    palette:  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2a10 10 0 1 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.4-.3-.4-.5-.9-.5-1.4 0-1.1.9-2 2-2h2.4c1.7 0 3.1-1.4 3.1-3.1C21 6.9 17 2 12 2z"/></svg>',
+  };
+
+  // `id` is the deep-link anchor used elsewhere (e.g. the Free plugin's admin
+  // "Read more" links point at /features/#<id>). `summary` is the card
+  // one-liner; `detail` is the full HTML shown in the modal. Keep these facts
+  // consistent with the shorter copies in ozupay-free/includes/Admin/class-pro-upsell.php
+  // and ozupay/includes/class-ozupay-features.php when a feature changes.
+  var freeFeatures = [
+    {
+      id: 'stk',
+      icon: icons.phone,
+      name: 'STK Push payments',
+      summary: 'Customers pay directly from their Safaricom phone — no card, no redirect, no leaving your store.',
+      detail: '<p>When a customer places an order and selects M-Pesa, OzuPay sends an STK Push prompt to their phone via the Safaricom Daraja 2.0 API. The customer enters their M-Pesa PIN and the payment clears. WooCommerce marks the order paid automatically when the Daraja callback arrives — no manual checking or reconciliation.</p><p>The STK Push goes to whichever number the customer enters at checkout, not just their registered line. If the prompt does not arrive, customers can retry up to twice from the order page or fall back to paying manually via Paybill.</p>',
+    },
+    {
+      id: 'paybill',
+      icon: icons.store,
+      name: 'Paybill & Till (Buy Goods)',
+      summary: 'Accept payments to your existing Paybill or Buy Goods number with automatic order confirmation.',
+      detail: '<p>OzuPay works with both Paybill and Till (Buy Goods) shortcode types. Configure your shortcode once in the plugin settings and OzuPay handles the rest.</p><p>For Paybill, an account reference is displayed at checkout so customers can pay manually and submit their transaction code if needed. For Till, customers use the Buy Goods flow. Both shortcode types support STK Push, the Daraja callback, and the manual transaction code fallback.</p>',
+    },
+    {
+      id: 'hpos',
+      icon: icons.hpos,
+      name: 'WooCommerce HPOS compatible',
+      summary: 'Built for the high-performance order storage system — all order queries use the WC_Order API.',
+      detail: '<p>OzuPay declares full compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout Blocks. All order access goes through <code>wc_get_orders()</code> and the <code>WC_Order</code> API — never direct post table access.</p><p>HPOS and Blocks compatibility flags are declared via <code>FeaturesUtil::declare_compatibility()</code> so the WooCommerce compatibility warning does not appear on your site.</p>',
+    },
+    {
+      id: 'ip-security',
+      icon: icons.shield,
+      name: 'Callback IP security',
+      summary: 'Only Safaricom\'s published Daraja IP ranges are accepted on your callback endpoint.',
+      detail: '<p>Every inbound callback from Daraja is validated against Safaricom\'s published IP range before any order status change is applied. Requests from unknown IPs are rejected and logged — no order is falsely marked paid from a spoofed request.</p><p>The IP allowlist is applied on both the STK callback and the C2B confirmation endpoints. No configuration is required — the check is on by default.</p>',
+    },
+    {
+      id: 'sandbox',
+      icon: icons.sandbox,
+      name: 'Sandbox & production environments',
+      summary: 'Test against the Daraja sandbox before going live — switch with a single dropdown.',
+      detail: '<p>Switch between the Safaricom Daraja sandbox and production environments from a single dropdown in the plugin settings. Sandbox and production credentials are stored separately so you can configure and test a Daraja app before switching your store to production.</p><p>The Daraja sandbox still sends a real STK Push to the phone number you test with, and can briefly deduct and then auto-reverse a small amount. Test with a phone number you control, not a customer\'s. The admin panel shows which environment is active so there is no ambiguity about which Daraja app is in use.</p>',
+    },
+    {
+      id: 'manual-code',
+      icon: icons.code,
+      name: 'Manual transaction code entry',
+      summary: 'Customers who cannot receive an STK Push can pay manually and submit their M-Pesa code.',
+      detail: '<p>If the STK Push does not arrive — poor signal, wrong number, Daraja delay — customers can pay manually via Paybill or Till and enter their M-Pesa confirmation SMS code directly on the order page. The code is stored on the order and the order moves to on-hold for admin review.</p><p>Duplicate code detection runs across all orders so the same M-Pesa reference cannot be used to pay two orders. Retries are rate-limited to prevent abuse.</p>',
+    },
+  ];
+
+  var proFeatures = [
+    {
+      id: 'cod-deposit',
+      icon: icons.truck,
+      name: 'M-Pesa on Delivery',
+      summary: 'Collect a deposit at checkout via STK Push. Balance is charged when the customer confirms delivery.',
+      detail: '<p>A configurable deposit — flat amount or percentage of the order total — is collected via STK Push when the order is placed. The remaining balance is charged when the customer or your delivery agent confirms delivery.</p><p>Collecting a deposit upfront lowers exposure to no-show cash-on-delivery orders without requiring full payment before dispatch. The order moves to a custom "Awaiting COD" status after the deposit is confirmed. A full transaction log of deposit and balance payments is recorded on every order. Deposit amount and percentage are configurable per product category or globally.</p>',
+    },
+    {
+      id: 'refunds',
+      icon: icons.refund,
+      name: 'B2C Refunds',
+      summary: 'Refund directly to the customer\'s M-Pesa wallet from the WooCommerce order screen.',
+      detail: '<p>Initiate a B2C (Business to Customer) M-Pesa transfer from the WooCommerce order screen. The refund goes directly to the customer\'s phone — no Safaricom portal access required. Partial refunds are supported.</p><p>All refund transactions are logged on the order with M-Pesa reference codes. The B2C result callback updates the order note automatically so you have a full audit trail. Requires B2C credentials on your Daraja app.</p>',
+    },
+    {
+      id: 'analytics',
+      icon: icons.chart,
+      name: 'Analytics dashboard',
+      summary: 'Revenue charts, STK success rates, and a searchable transaction log — all inside wp-admin.',
+      detail: '<p>A dedicated analytics page inside wp-admin shows M-Pesa revenue over time, STK Push success and failure rates, and a full searchable transaction log. Data is sourced directly from your WooCommerce orders — no third-party analytics service or external data sharing.</p><p>The dashboard includes KPIs for the current period, trend charts, and a per-order transaction breakdown. The transaction log can be exported to CSV for reconciliation with your M-Pesa statements.</p>',
+    },
+    {
+      id: 'webhooks',
+      icon: icons.webhook,
+      name: 'Webhooks',
+      summary: 'Fire WooCommerce webhooks on M-Pesa payment events — payment confirmed, failed, refund issued.',
+      detail: '<p>OzuPay registers custom webhook topics in WooCommerce: payment confirmed, payment failed, manual code submitted, and refund issued. Configure webhook deliveries from WooCommerce → Settings → Advanced → Webhooks.</p><p>Payloads include full order data and M-Pesa transaction details. Compatible with Zapier, Make, and any HTTP endpoint that accepts WooCommerce webhook payloads. Webhooks are created and managed from the OzuPay → Webhooks admin page.</p>',
+    },
+    {
+      id: 'qr',
+      icon: icons.qr,
+      name: 'QR codes',
+      summary: 'A scannable M-Pesa QR code appears automatically on the customer\'s payment-waiting page — no STK Push needed.',
+      detail: '<p>When a customer checks out with M-Pesa, a Safaricom Daraja QR code appears automatically on their payment-waiting page as an alternative to STK Push. The QR encodes the payment details — amount, business number, account reference — so they can scan and pay from the Safaricom My One App without typing anything or waiting for a push prompt.</p><p>The same QR code can also be generated or regenerated from the order screen in wp-admin, downloaded, and printed or shared digitally. Useful for in-person sales, market stalls, and situations where the customer is physically present but not using your WooCommerce checkout.</p>',
+    },
+    {
+      id: 'payment-links',
+      icon: icons.link,
+      name: 'Payment links',
+      summary: 'Create shareable payment links for any amount — useful for invoicing and WhatsApp sales.',
+      detail: '<p>Generate a unique payment link for any amount directly from wp-admin. The link opens a hosted payment page where the customer enters their M-Pesa number, receives an STK Push, and completes the payment without going through WooCommerce checkout.</p><p>Useful for collecting payments outside the normal order flow: invoices, service fees, event registrations, or WhatsApp-based sales. Each link is single-use and expires after payment.</p>',
+    },
+    {
+      id: 'pos',
+      icon: icons.pos,
+      name: 'POS REST API',
+      summary: 'REST endpoints for Android cashier and point-of-sale applications.',
+      detail: '<p>A set of authenticated REST API endpoints that let external Android apps or POS systems initiate M-Pesa STK Push payments, query payment status, and receive confirmations — without a browser or the WooCommerce checkout flow.</p><p>Built for cashier apps and retail counter use cases where the order is created in a separate system. Authentication uses application passwords or a dedicated API key. The API is versioned and documented in the OzuPay developer reference.</p>',
+    },
+    {
+      id: 'c2b',
+      icon: icons.c2b,
+      name: 'C2B Paybill fallback',
+      summary: 'Automatically match manual Paybill payments to orders when STK Push is unavailable.',
+      detail: '<p>When a customer pays manually via Paybill (C2B) instead of using the STK Push, OzuPay listens to the Daraja C2B confirmation endpoint and automatically matches the payment to the corresponding WooCommerce order by account reference. The order is confirmed without admin intervention.</p><p>Requires C2B registration on your Daraja shortcode. Unmatched C2B payments are queued for manual review from the OzuPay admin panel. Useful as a fallback for customers in low-signal areas or on older phones.</p>',
+    },
+    {
+      id: 'notifications',
+      icon: icons.bell,
+      name: 'Admin alerts',
+      summary: 'Configurable email alerts when an STK Push fails, a callback encounters an error, or a C2B payment can\'t be matched or is auto-matched — pick exactly which ones you want.',
+      detail: '<p>OzuPay sends an email to configured recipients when an STK Push request fails at the Daraja level, when a callback arrives but cannot be processed, or when a payment is left unconfirmed beyond the expected timeout.</p><p>It also alerts you when a C2B (Paybill/Till) payment arrives that can\'t be automatically matched to an order, and when one is matched and confirmed automatically with no cashier or admin action needed.</p><p>An Alert Types checklist lets you choose exactly which of these events send an email, so you\'re not stuck with an all-or-nothing toggle. Alerts include the order number, error details from the Daraja response, and a direct link to the WooCommerce order screen so you can act immediately. Recipient addresses are configurable, helping you spot payment issues before a customer reports one.</p>',
+    },
+    {
+      id: 'admin-tools',
+      icon: icons.terminal,
+      name: 'Daraja testing panel',
+      summary: 'Trigger STK Pushes and query payment status for any order directly from wp-admin.',
+      detail: '<p>A testing and support interface inside wp-admin that lets you send STK Push requests and query Daraja payment status for any order — without logging in to the Safaricom portal. Useful for diagnosing payment issues and for testing new Daraja credentials.</p><p>Both sandbox and production environments are supported. The panel records the Daraja request and response on the order note so you have a full trace of what was sent and received. Access is restricted to administrators.</p>',
+    },
+    {
+      id: 'tx-fee',
+      icon: icons.fee,
+      name: 'Transaction fee pass-through',
+      summary: 'Add an optional surcharge to M-Pesa orders to cover Safaricom\'s transaction fees.',
+      detail: '<p>Configure a flat or percentage fee that is added to the order total when the customer selects M-Pesa as the payment method. The fee appears as a line item at checkout so customers see the full amount before confirming.</p><p>The surcharge is configurable per payment gateway (STK and COD deposit separately). It appears in WooCommerce order totals and is included in order emails. Use this to recover Safaricom\'s withdrawal or B2C fees without absorbing them into your margins.</p>',
+    },
+    {
+      id: 'reports',
+      icon: icons.report,
+      name: 'Scheduled reports',
+      summary: 'Automated M-Pesa payment summaries delivered to your inbox on a schedule.',
+      detail: '<p>Configure daily or weekly M-Pesa payment reports that are generated and emailed automatically to specified addresses. Reports include total revenue, successful and failed STK Pushes, pending orders, and a transaction list for the period.</p><p>Scheduling uses WP-Cron. Report frequency and recipient addresses are configurable from the OzuPay settings page. Useful for bookkeeping and keeping stakeholders informed without manual exports.</p>',
+    },
+    {
+      id: 'manual-fallback',
+      icon: icons.match,
+      name: 'Manual C2B matching',
+      summary: 'Assign an unmatched C2B payment to a WooCommerce order when automatic matching fails.',
+      detail: '<p>When an automatic C2B match fails — wrong account reference entered by the customer, Daraja delay, or a reference format mismatch — an admin can manually assign the Daraja C2B transaction to the correct order from the OzuPay admin panel.</p><p>The payment is applied to the order and its status updated to reflect the confirmed payment. The manual assignment is recorded on the order note with the M-Pesa transaction reference for audit purposes.</p>',
+    },
+    {
+      id: 'dev-licences',
+      icon: icons.devkey,
+      name: 'Development licences',
+      summary: 'Activate OzuPay on a staging or development site at no extra cost, tied to your production licence.',
+      detail: '<p>Each Pro licence can have development licences generated for it. A development licence activates only on a subdomain of the production domain already registered on the parent licence — for example, <code>staging.yourdomain.com</code> if production is activated on <code>yourdomain.com</code>.</p><p>Development licences are single-seat and do not count against your production seat limit. Expiry matches the parent licence by default and can be set to any date when issuing. Contact support to have development licences added to your licence.</p>',
+    },
+    {
+      id: 'email-design',
+      icon: icons.palette,
+      name: 'Email design',
+      summary: 'Transactional emails pick up your store\'s brand color instead of the default OzuPay green.',
+      detail: '<p>OzuPay\'s transactional emails — payment confirmation, manual verification instructions, refund notices, and more — adopt the accent color already set at WooCommerce → Settings → Emails, instead of the default green, so they match the rest of your store\'s email branding.</p><p>A live preview renders every template with sample order data before you save, so you can check how each email looks with your color before it goes out to customers.</p>',
+    },
+  ];
+
+  function buildCard( f, tier ) {
+    var el = document.createElement( 'div' );
+    el.className = 'ofp-card';
+    el.dataset.id = f.id;
+    el.innerHTML =
+      '<div class="ofp-card-top">' +
+        '<div class="ofp-card-icon">' + f.icon + '</div>' +
+        '<span class="ofp-badge ofp-badge--' + tier.toLowerCase() + '">' + tier + '</span>' +
+      '</div>' +
+      '<h3>' + f.name + '</h3>' +
+      '<p>' + f.summary + '</p>' +
+      '<button class="ofp-readmore" type="button">' +
+        'Read more' +
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+      '</button>';
+    return el;
+  }
+
+  document.addEventListener( 'DOMContentLoaded', function () {
+    var freeGrid = document.getElementById( 'ofp-grid-free' );
+    var proGrid  = document.getElementById( 'ofp-grid-pro' );
+
+    freeFeatures.forEach( function (f) { freeGrid.appendChild( buildCard( f, FREE ) ); } );
+    proFeatures.forEach(  function (f) { proGrid.appendChild(  buildCard( f, PRO  ) ); } );
+
+    // Modal
+    var backdrop  = document.getElementById( 'ofp-backdrop' );
+    var modalTitle = document.getElementById( 'ofp-modal-title' );
+    var modalBadge = document.getElementById( 'ofp-modal-badge' );
+    var modalBody  = document.getElementById( 'ofp-modal-body' );
+    var closeBtn   = document.getElementById( 'ofp-modal-close' );
+
+    function allFeatures() { return freeFeatures.concat( proFeatures ); }
+
+    function openModal( id, updateHash ) {
+      var f    = allFeatures().find( function (x) { return x.id === id; } );
+      var tier = freeFeatures.find( function (x) { return x.id === id; } ) ? FREE : PRO;
+      if ( ! f ) return;
+      modalTitle.textContent = f.name;
+      modalBadge.textContent = tier;
+      modalBadge.className   = 'ofp-badge ofp-badge--' + tier.toLowerCase();
+      modalBody.innerHTML    = f.detail;
+      backdrop.removeAttribute( 'hidden' );
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+      if ( updateHash !== false && window.location.hash !== '#' + id ) {
+        history.replaceState( null, '', '#' + id );
+      }
+    }
+
+    function closeModal() {
+      backdrop.setAttribute( 'hidden', '' );
+      document.body.style.overflow = '';
+      if ( window.location.hash ) {
+        history.replaceState( null, '', window.location.pathname + window.location.search );
+      }
+    }
+
+    document.addEventListener( 'click', function (e) {
+      var btn = e.target.closest( '.ofp-readmore' );
+      if ( btn ) {
+        openModal( btn.closest( '.ofp-card' ).dataset.id );
+        return;
+      }
+      if ( e.target === backdrop ) {
+        closeModal();
+      }
+    } );
+
+    closeBtn.addEventListener( 'click', closeModal );
+
+    document.addEventListener( 'keydown', function (e) {
+      if ( e.key === 'Escape' && ! backdrop.hasAttribute( 'hidden' ) ) {
+        closeModal();
+      }
+    } );
+
+    // Deep-link support: /features/#qr opens that feature's modal directly,
+    // e.g. from the plugin's admin "Read more" links.
+    if ( window.location.hash ) {
+      openModal( window.location.hash.slice( 1 ), false );
+    }
+    window.addEventListener( 'hashchange', function () {
+      if ( window.location.hash ) {
+        openModal( window.location.hash.slice( 1 ), false );
+      }
+    } );
+  } );
+}());
+</script>
+<!-- /wp:html -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

@@ -1,0 +1,141 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 3,
+    "settings": {
+        "appearanceTools": true,
+        "layout": {
+            "contentSize": "1200px",
+            "wideSize": "1400px"
+        },
+        "color": {
+            "defaultPalette": false,
+            "palette": [
+                { "slug": "base",        "color": "#F7F5EF",  "name": "Base" },
+                { "slug": "surface",     "color": "#ffffff",  "name": "Surface" },
+                { "slug": "surface-alt", "color": "#EFEBE0",  "name": "Surface Alt" },
+                { "slug": "accent",      "color": "#059669",  "name": "Accent" },
+                { "slug": "accent-dark", "color": "#047857",  "name": "Accent Dark" },
+                { "slug": "foreground",  "color": "#0F172A",  "name": "Foreground" },
+                { "slug": "muted",       "color": "#475569",  "name": "Muted" },
+                { "slug": "subtle",      "color": "#64748B",  "name": "Subtle" },
+                { "slug": "border",      "color": "#E4DECF",  "name": "Border" },
+                { "slug": "footer",      "color": "#0F172A",  "name": "Footer" }
+            ]
+        },
+        "typography": {
+            "defaultFontSizes": false,
+            "fontFamilies": [
+                {
+                    "slug": "system",
+                    "name": "System",
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                },
+                {
+                    "slug": "body",
+                    "name": "Inter",
+                    "fontFamily": "'Inter', system-ui, sans-serif"
+                },
+                {
+                    "slug": "heading",
+                    "name": "Inter",
+                    "fontFamily": "'Inter', system-ui, sans-serif"
+                },
+                {
+                    "slug": "mono",
+                    "name": "JetBrains Mono",
+                    "fontFamily": "'JetBrains Mono', 'Fira Code', monospace"
+                }
+            ],
+            "fontSizes": [
+                { "slug": "xs",   "size": "12px",                                    "name": "XS" },
+                { "slug": "sm",   "size": "14px",                                    "name": "Small" },
+                { "slug": "md",   "size": "clamp(14px, 0.875rem + ((1vw - 3.2px) * 0.185), 16px)", "name": "Medium" },
+                { "slug": "lg",   "size": "clamp(14px, 0.875rem + ((1vw - 3.2px) * 0.37), 18px)",  "name": "Large" },
+                { "slug": "xl",   "size": "clamp(15.747px, 0.984rem + ((1vw - 3.2px) * 0.764), 24px)", "name": "XL" },
+                { "slug": "2xl",  "size": "clamp(20px, 1.25rem + ((1vw - 3.2px) * 1.111), 32px)",  "name": "2XL" },
+                { "slug": "3xl",  "size": "clamp(25.014px, 1.563rem + ((1vw - 3.2px) * 1.573), 42px)", "name": "3XL" },
+                { "slug": "hero", "size": "clamp(36px, 5vw, 60px)",                  "name": "Hero" }
+            ]
+        },
+        "spacing": {
+            "spacingScale": { "steps": 0 },
+            "spacingSizes": [
+                { "slug": "20", "size": "20px", "name": "20" },
+                { "slug": "30", "size": "0.67rem", "name": "30" },
+                { "slug": "40", "size": "40px", "name": "40" },
+                { "slug": "50", "size": "1.5rem", "name": "50" },
+                { "slug": "60", "size": "60px", "name": "60" },
+                { "slug": "70", "size": "3.38rem", "name": "70" },
+                { "slug": "80", "size": "5.06rem", "name": "80" },
+                { "slug": "96", "size": "96px", "name": "96" }
+            ]
+        }
+    },
+    "styles": {
+        "color": {
+            "background": "#F7F5EF",
+            "text": "#0F172A"
+        },
+        "typography": {
+            "fontFamily": "'Inter', system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "1.6",
+            "letterSpacing": "-0.1px"
+        },
+        "elements": {
+            "link": {
+                "color": { "text": "#059669" },
+                ":hover": { "color": { "text": "#047857" }, "typography": { "textDecoration": "none" } }
+            },
+            "h1": {
+                "typography": {
+                    "fontFamily": "'Inter', system-ui, sans-serif",
+                    "fontSize": "var:preset|font-size|3xl",
+                    "fontWeight": "700",
+                    "lineHeight": "1.1",
+                    "letterSpacing": "-0.02em"
+                }
+            },
+            "h2": {
+                "typography": {
+                    "fontFamily": "'Inter', system-ui, sans-serif",
+                    "fontSize": "var:preset|font-size|2xl",
+                    "fontWeight": "700",
+                    "lineHeight": "1.25",
+                    "letterSpacing": "-0.01em"
+                }
+            },
+            "h3": {
+                "typography": {
+                    "fontFamily": "'Inter', system-ui, sans-serif",
+                    "fontSize": "var:preset|font-size|xl",
+                    "fontWeight": "600",
+                    "lineHeight": "1.35"
+                }
+            },
+            "h4": { "typography": { "fontFamily": "'Inter', system-ui, sans-serif", "fontSize": "var:preset|font-size|lg", "fontWeight": "600" } },
+            "h5": { "typography": { "fontWeight": "500", "letterSpacing": "0.5px" } },
+            "h6": { "typography": { "fontWeight": "600", "letterSpacing": "1.4px" } },
+            "button": {
+                "color": {
+                    "background": "#059669",
+                    "text": "#ffffff"
+                },
+                "typography": {
+                    "fontWeight": "600",
+                    "fontSize": "15px"
+                },
+                "border": {
+                    "radius": "8px"
+                },
+                ":hover": {
+                    "color": {
+                        "background": "#047857",
+                        "text": "#ffffff"
+                    }
+                }
+            }
+        }
+    }
+}

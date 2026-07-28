@@ -1,0 +1,172 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<style>
+/* ═══ OzuPay Shop / Pricing Page ══════════════════════════════════════════ */
+.ozp-shop{font-family:'Public Sans',system-ui,-apple-system,sans-serif;color:#0d1526;background:#faf8f3;-webkit-font-smoothing:antialiased;}
+.ozp-shop *{box-sizing:border-box;}
+.ozp-shop a{text-decoration:none;}
+
+/* Hero -------------------------------------------------------------------- */
+/* Subhead lives inside the hero now, not a separately bordered strip below
+   it — a bordered "guarantee chip row" competed visually with the cards
+   right underneath; folding it into the hero as one quiet pipe-separated
+   line reads calmer and matches the reference redesign. No background here
+   — it shares the page's #faf8f3, only the card section below gets the
+   slightly darker #f2ede2. */
+.ozp-shop-hero{max-width:640px;margin:0 auto;text-align:center;padding:36px 24px 28px;}
+.ozp-shop-hero__eye{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#12a877;margin:0 0 10px;}
+.ozp-shop-hero__h1{font-size:32px;font-weight:800;color:#0d1526;margin:0 0 12px;line-height:1.15;letter-spacing:-.02em;}
+.ozp-shop-hero__h1 span{color:#12a877;}
+.ozp-shop-hero__sub{font-size:15.5px;line-height:1.8;color:#3a404d;margin:0;}
+.ozp-shop-hero__sub strong{color:#0d1526;font-weight:700;}
+
+/* Catalog grid -------------------------------------------------------------- */
+.ozp-shop-bg{background:#f2ede2;padding:36px 0 60px;}
+
+/* Wraps the WooCommerce "products" shortcode loop and the static
+   Custom-pricing card as equal siblings in one centered, wrapping flex
+   row — not a fixed 3-column grid — so a single real product (the common
+   case: OzuPay currently sells one site-licence SKU) centers instead of
+   hugging the left edge, and the layout still holds up if more products
+   are added later.
+
+   Do not write the shortcode tag with its literal square brackets in this
+   comment: do_shortcode() scans the raw template string with no regard for
+   HTML/CSS context, so the bracketed tag here would get expanded too —
+   with none of the real invocation's limit/columns/order args — silently
+   duplicating an unbounded product query into this style comment on every
+   page load. */
+.ozp-shop-catalog{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;justify-content:center;align-items:start;gap:18px;}
+
+/* The "products" shortcode wraps its own markup in <div class="woocommerce
+   columns-3"><ul class="products">...</ul></div>. Both the wrapper div and
+   the ul need `display:contents` — without it, the outer div stays a normal
+   block box and traps every <li> in block flow (stacked, and narrowed by
+   WooCommerce's default `columns-3` percentage width) instead of letting
+   each <li> escape to become a direct flex child of .ozp-shop-catalog,
+   sitting alongside the static Custom card. */
+.ozp-shop-catalog > .woocommerce{display:contents;}
+.ozp-shop-catalog ul.products{display:contents;list-style:none;margin:0;padding:0;}
+.ozp-shop-catalog ul.products::before,
+.ozp-shop-catalog ul.products::after{content:none!important;display:none!important;}
+
+.ozp-shop-catalog li.product,
+.ozp-custom-card{display:flex!important;flex-direction:column;align-items:stretch!important;flex:1 1 260px;width:auto!important;max-width:300px;border:1px solid #ece7db;border-radius:14px;padding:22px 20px!important;background:#fff;transition:box-shadow .2s,transform .2s;margin:0!important;text-align:left!important;float:none!important;clear:none!important;box-shadow:0 1px 3px rgba(13,21,38,.06);}
+
+/* The real Pro licence is the one purchase that matters — give it the
+   elevated "featured plan" treatment (colored border, deeper shadow, slight
+   lift) while Custom and any other SKU stay in the plain card style.
+   Targeted by product category rather than post ID so it survives the
+   product being recreated, as long as it keeps the "payments" category. */
+.ozp-shop-catalog li.product.product_cat-payments{border:1.5px solid #14b17d;box-shadow:0 20px 40px -12px rgba(13,21,38,.18);transform:translateY(-6px);}
+.ozp-shop-catalog li.product:hover,
+.ozp-custom-card:hover{box-shadow:0 6px 28px rgba(13,21,38,.1);}
+.ozp-shop-catalog li.product img{display:none!important;}
+
+.ozp-plan-tag{order:0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#12a877;margin:0 0 10px;}
+.ozp-shop-catalog li.product .woocommerce-loop-product__title{order:1;font-size:16px!important;font-weight:700;color:#0d1526;margin:0 0 2px;letter-spacing:-.01em;line-height:1.25;}
+.ozp-shop-catalog li.product .woocommerce-loop-product__title a,
+.ozp-shop-catalog li.product .woocommerce-loop-product__title{color:#0d1526!important;}
+
+.ozp-shop-catalog li.product .price{order:2;font-size:26px!important;font-weight:800;color:#0d1526!important;margin:10px 0 2px;letter-spacing:-.02em;display:block;}
+.ozp-shop-catalog li.product .price .woocommerce-Price-currencySymbol{font-size:12px;font-weight:600;color:#8a92a3;}
+.ozp-shop-catalog li.product .ozp-plan-tenure,
+.ozp-custom-card .ozp-plan-tenure{font-size:12px;font-weight:400;color:#8a92a3;margin:0 0 14px;}
+.ozp-custom-card .ozp-plan-tier{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a92a3;margin:0 0 10px;}
+.ozp-custom-card .ozp-plan-price{font-size:19px;font-weight:800;color:#0d1526;margin:0 0 14px;letter-spacing:-.01em;}
+
+.ozp-shop-catalog li.product .ozp-plan-features,
+.ozp-custom-card .ozp-plan-features{margin-bottom:0;padding-top:14px;border-top:1px solid #e7e2d6;}
+.ozp-shop-catalog li.product .ozp-plan-features ul,
+.ozp-custom-card .ozp-plan-features ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+.ozp-shop-catalog li.product .ozp-plan-features li,
+.ozp-custom-card .ozp-plan-features li{position:relative;padding-left:22px;font-size:12.5px;color:#3a404d;line-height:1.4;}
+.ozp-shop-catalog li.product .ozp-plan-features li::before,
+.ozp-custom-card .ozp-plan-features li::before{content:'';position:absolute;left:0;top:1px;width:14px;height:14px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3 8L6.5 11.5L13 4' stroke='%2312a877' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:14px;}
+
+/* WooCommerce's own product-link + add-to-cart markup is well-formed, but
+   `wpautop()` runs over this block template's final HTML and reflows the
+   bare inline Add to Cart link after the product </a> into a synthetic
+   wrapper <p> — sometimes with a stray empty duplicate link inside it from
+   force_balance_tags(). That wrapper is the only reliable flex child left
+   after the product <a>, so anchor it to the card bottom rather than
+   fighting wpautop. */
+.ozp-shop-catalog li.product > p{order:5;margin:0!important;margin-top:18px!important;display:flex!important;flex-direction:column;gap:8px;}
+.ozp-shop-catalog li.product > p > a.woocommerce-LoopProduct-link:empty{display:none!important;}
+
+.ozp-more-link{font-size:12.5px;font-weight:600;color:#12a877;}
+.ozp-more-link:hover{color:#0d8a62;}
+
+/* line-height needs !important even though this selector already outguns
+   style.css's `.woocommerce a.button{line-height:52px!important}` on
+   specificity — the important flag wins ties independent of specificity, so
+   a non-!important line-height here still lost to that rule and inflated
+   the shop-grid button to ~76px tall. */
+.ozp-shop-catalog li.product a.add_to_cart_button,
+.ozp-shop-catalog li.product a.button{display:flex!important;align-items:center;justify-content:center;width:100%;height:auto!important;text-align:center!important;line-height:1.2!important;background:#14b17d!important;color:#052014!important;border-radius:8px!important;font-weight:700!important;font-size:13px!important;padding:10px!important;border:none!important;margin-top:0!important;}
+.ozp-shop-catalog li.product a.add_to_cart_button:hover,
+.ozp-shop-catalog li.product a.button:hover{background:#109a68!important;}
+.ozp-custom-card{color:#0d1526;}
+/* Custom card has no wrapping <p> around its button (unlike the real
+   products' wpautop-generated wrapper above) so it needs its own top
+   margin to separate from the features list. */
+.ozp-custom-card .ozp-plan-btn{display:flex!important;align-items:center;justify-content:center;width:100%;height:auto!important;text-align:center!important;line-height:1.2!important;border-radius:8px!important;font-weight:700!important;font-size:13px!important;padding:10px!important;border:none!important;background:#0d1526!important;color:#fff!important;margin-top:18px!important;}
+.ozp-custom-card .ozp-plan-btn:hover{background:#1e293b!important;}
+
+/* Free banner ------------------------------------------------------------- */
+.ozp-free-wrap{padding:24px 24px 0;background:#f2ede2;}
+.ozp-free-banner{max-width:640px;margin:0 auto;padding:16px 24px;background:#fff;border:1px solid #ece7db;border-radius:12px;text-align:center;font-size:13px;color:#475569;line-height:1.5;}
+.ozp-free-banner a{color:#12a877;font-weight:600;}
+</style>
+
+<div class="ozp-shop">
+
+  <!-- Hero -->
+  <section class="ozp-shop-hero">
+    <p class="ozp-shop-hero__eye">OzuPay Pro</p>
+    <h1 class="ozp-shop-hero__h1">One licence. Every feature. <span>KES 5,000.</span></h1>
+    <p class="ozp-shop-hero__sub"><strong>Annual&nbsp;licence</strong> | <strong>Instant&nbsp;delivery</strong> by email | <strong>Auto-updates</strong> | <strong>Easy&nbsp;setup</strong></p>
+  </section>
+
+  <!-- Product catalog: real WooCommerce query, not hardcoded cards.
+       Classic "products" shortcode rather than the block-based product
+       collection — the woocommerce/product-summary block doesn't render
+       in this WooCommerce version, and the classic loop lets the short
+       description (feature checklist) render via a plain PHP hook
+       (woocommerce_after_shop_loop_item_title in functions.php) instead.
+       The static Custom-pricing card below is not a real product — it
+       mirrors the "Custom" tier on ozupay.com/#pricing (volume licensing,
+       contact us) and sits alongside the shortcode's <li> as a sibling
+       flex item via .ozp-shop-catalog / display:contents (see <style>). -->
+  <div class="ozp-shop-bg">
+    <div class="ozp-shop-catalog">
+      <!-- wp:shortcode -->
+      [products limit="9" columns="3" orderby="title" order="ASC"]
+      <!-- /wp:shortcode -->
+
+      <!-- Custom (not a real product — matches the #pricing "Custom" tier) -->
+      <div class="ozp-custom-card">
+        <p class="ozp-plan-tier">Custom</p>
+        <div class="ozp-plan-price">Custom pricing</div>
+        <div class="ozp-plan-features">
+          <ul>
+            <li>Volume site licences</li>
+            <li>All Pro features on every site</li>
+            <li>One licence key, one renewal</li>
+          </ul>
+        </div>
+        <a href="/contact/" class="ozp-plan-btn">Contact Us</a>
+      </div>
+    </div>
+
+    <!-- Support note -->
+    <div class="ozp-free-wrap">
+      <div class="ozp-free-banner">
+        Every licence includes support tickets and a year of updates. Running more than one store? <a href="/contact/">Talk to us about volume pricing</a>.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

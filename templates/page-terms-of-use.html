@@ -1,0 +1,282 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<style>
+.ozp-legal-hero{background:#0F172A;padding:56px 40px 48px;text-align:center;}
+.ozp-legal-hero-label{font-size:11.5px;font-weight:600;color:#059669;letter-spacing:.08em;text-transform:uppercase;font-family:'JetBrains Mono','Fira Code',monospace;display:block;margin-bottom:14px;}
+.ozp-legal-hero h1{font-size:clamp(28px,3.5vw,40px);font-weight:800;color:#fff;margin:0 0 12px;letter-spacing:-.02em;font-family:'Public Sans',system-ui,sans-serif;}
+.ozp-legal-hero-meta{font-size:13px;color:#64748B;font-family:'Public Sans',system-ui,sans-serif;}
+
+.ozp-legal-wrap{max-width:820px;margin:0 auto;padding:64px 40px 96px;font-family:'Public Sans',system-ui,-apple-system,sans-serif;color:#0F172A;}
+
+.ozp-legal-toc{background:#F7F5EF;border:1px solid #D6CFBE;border-radius:14px;padding:24px 28px;margin-bottom:56px;}
+.ozp-legal-toc-title{font-size:12px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;}
+.ozp-legal-toc ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;}
+.ozp-legal-toc li{font-size:14px;color:#334155;}
+.ozp-legal-toc a{color:#059669;text-decoration:none;}
+.ozp-legal-toc a:hover{text-decoration:underline;}
+
+.ozp-legal-section{margin-bottom:48px;scroll-margin-top:80px;}
+.ozp-legal-section h2{font-size:20px;font-weight:700;color:#0F172A;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid #E4DECF;letter-spacing:-.01em;}
+.ozp-legal-section h3{font-size:16px;font-weight:600;color:#0F172A;margin:24px 0 10px;}
+.ozp-legal-section p{font-size:15px;line-height:1.75;color:#334155;margin:0 0 14px;}
+.ozp-legal-section p:last-child{margin-bottom:0;}
+.ozp-legal-section ul,.ozp-legal-section ol{font-size:15px;line-height:1.75;color:#334155;padding-left:22px;margin:0 0 14px;display:flex;flex-direction:column;gap:6px;}
+.ozp-legal-section a{color:#059669;}
+.ozp-legal-section strong{color:#0F172A;}
+
+.ozp-legal-highlight{background:#F0FDF4;border-left:3px solid #059669;border-radius:0 8px 8px 0;padding:14px 18px;margin:20px 0;}
+.ozp-legal-highlight p{margin:0;font-size:14px;color:#064E3B;}
+
+.ozp-legal-table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0 20px;}
+.ozp-legal-table th{background:#EFEBE0;font-weight:600;color:#0F172A;text-align:left;padding:10px 14px;border:1px solid #D6CFBE;}
+.ozp-legal-table td{padding:10px 14px;border:1px solid #D6CFBE;color:#334155;vertical-align:top;}
+.ozp-legal-table tr:nth-child(even) td{background:#F7F5EF;}
+
+@media(max-width:620px){
+  .ozp-legal-wrap{padding:40px 20px 72px;}
+  .ozp-legal-hero{padding:40px 20px 36px;}
+}
+</style>
+
+<main id="ozp-main">
+
+<div class="ozp-legal-hero">
+    <span class="ozp-legal-hero-label">Legal</span>
+    <h1>Terms of Use</h1>
+    <p class="ozp-legal-hero-meta">Last updated: 23 June 2026 &nbsp;&middot;&nbsp; Effective date: 23 June 2026</p>
+</div>
+
+<div class="ozp-legal-wrap">
+
+    <div class="ozp-legal-toc">
+        <div class="ozp-legal-toc-title">Contents</div>
+        <ol>
+            <li><a href="#tu-acceptance">Acceptance of Terms</a></li>
+            <li><a href="#tu-definitions">Definitions</a></li>
+            <li><a href="#tu-licence">Licence Grant (incl. Development Licences)</a></li>
+            <li><a href="#tu-restrictions">Licence Restrictions</a></li>
+            <li><a href="#tu-purchasing">Purchasing and Payment</a></li>
+            <li><a href="#tu-updates">Updates and Support</a></li>
+            <li><a href="#tu-ip">Intellectual Property</a></li>
+            <li><a href="#tu-third-party">Third-Party Services</a></li>
+            <li><a href="#tu-prohibited">Prohibited Use</a></li>
+            <li><a href="#tu-disclaimer">Disclaimer of Warranties</a></li>
+            <li><a href="#tu-liability">Limitation of Liability</a></li>
+            <li><a href="#tu-indemnity">Indemnification</a></li>
+            <li><a href="#tu-termination">Termination</a></li>
+            <li><a href="#tu-governing-law">Governing Law and Disputes</a></li>
+            <li><a href="#tu-changes">Changes to These Terms</a></li>
+            <li><a href="#tu-contact">Contact</a></li>
+        </ol>
+    </div>
+
+    <div class="ozp-legal-highlight">
+        <p><strong>Summary:</strong> By purchasing or downloading OzuPay software you agree to these terms. The free edition is governed by the GNU GPL v2 licence. The Pro edition is a proprietary commercial licence — one licence key per the number of sites specified in your plan. Staging and development environments require a separate Development Licence (free on request). Do not redistribute or resell Pro.</p>
+    </div>
+
+    <!-- 1 -->
+    <div class="ozp-legal-section" id="tu-acceptance">
+        <h2>1. Acceptance of Terms</h2>
+        <p>These Terms of Use ("<strong>Terms</strong>") constitute a legally binding agreement between you ("<strong>you</strong>" or "<strong>Customer</strong>") and OzuPay ("<strong>OzuPay</strong>", "<strong>we</strong>", or "<strong>us</strong>") governing your use of the OzuPay website at <a href="https://ozupay.com">ozupay.com</a> (the "<strong>Site</strong>") and the OzuPay M-Pesa Payments Plugin software in both its free and Pro editions (the "<strong>Software</strong>").</p>
+        <p>By downloading, installing, activating, or purchasing the Software, or by using the Site, you confirm that you have read, understood, and agree to be bound by these Terms. If you are accepting on behalf of a company or other legal entity, you represent that you have authority to bind that entity.</p>
+        <p>If you do not agree to these Terms, do not use the Site or Software.</p>
+    </div>
+
+    <!-- 2 -->
+    <div class="ozp-legal-section" id="tu-definitions">
+        <h2>2. Definitions</h2>
+        <ul>
+            <li><strong>"Software"</strong> means the OzuPay M-Pesa Payments Plugin (both free and Pro editions), including all source code, object code, documentation, updates, and associated materials.</li>
+            <li><strong>"Free Edition"</strong> means the version distributed through WordPress.org under the GNU General Public Licence v2 or later.</li>
+            <li><strong>"Pro Edition"</strong> means the commercial version available for purchase on this Site, licensed under a proprietary commercial licence.</li>
+            <li><strong>"Licence Key"</strong> means the unique alphanumeric key issued to you upon purchase that activates Pro Edition features on a permitted number of sites.</li>
+            <li><strong>"Authorised Site"</strong> means a WordPress installation on which you are permitted to activate the Pro Edition under your purchased plan.</li>
+            <li><strong>"Subscription Period"</strong> means the 12-month period beginning on your purchase date during which your Licence Key is valid for updates and support.</li>
+        </ul>
+    </div>
+
+    <!-- 3 -->
+    <div class="ozp-legal-section" id="tu-licence">
+        <h2>3. Licence Grant</h2>
+
+        <h3>3.1 Free Edition</h3>
+        <p>The Free Edition is open-source software distributed under the <strong>GNU General Public Licence v2 or later (GPL-2.0+)</strong>. Your use of the Free Edition is governed by that licence, which permits you to use, copy, modify, and distribute the software in accordance with its terms. A copy of the GPL-2.0 is included with the Free Edition and is available at <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank" rel="noopener">gnu.org/licenses/gpl-2.0.html</a>.</p>
+
+        <h3>3.2 Pro Edition</h3>
+        <p>Subject to your purchase of a licence and ongoing compliance with these Terms, OzuPay grants you a non-exclusive, non-transferable, revocable licence to:</p>
+        <ul>
+            <li>Install and activate the Pro Edition on the number of Authorised Sites permitted by your licence (one site per standard licence, or the number of sites stated in a custom volume licence).</li>
+            <li>Use the Pro Edition for your own commercial or non-commercial WordPress/WooCommerce sites.</li>
+            <li>Receive software updates pushed to your WordPress dashboard during the active Subscription Period.</li>
+            <li>Access support during the active Subscription Period.</li>
+        </ul>
+        <p>This licence is for the duration of the Subscription Period. A lapsed licence does not remove the installed software, but you will no longer receive updates or support until renewal.</p>
+
+        <h3>3.3 Development Licences</h3>
+        <p>Each activation of the Pro Edition — including on staging or development environments — requires a valid Licence Key. Development and staging environments do not receive an automatic exemption from the site limit.</p>
+        <p>Customers with an active Pro licence may request one free <strong>Development Licence</strong> per production Authorised Site. A Development Licence:</p>
+        <ul>
+            <li>Is issued at no additional cost upon request to <a href="mailto:support@ozulabs.com">support@ozulabs.com</a>.</li>
+            <li>Is tied to a specific registered production domain and a specific staging or development URL.</li>
+            <li>May only be activated on the registered staging or development URL.</li>
+            <li>Is non-transferable and is revoked if the associated production licence lapses or is terminated.</li>
+        </ul>
+        <p>To request a Development Licence, email <a href="mailto:support@ozulabs.com">support@ozulabs.com</a> with your Licence Key and the staging URL you wish to register.</p>
+    </div>
+
+    <!-- 4 -->
+    <div class="ozp-legal-section" id="tu-restrictions">
+        <h2>4. Licence Restrictions</h2>
+        <p>With respect to the Pro Edition, you must not:</p>
+        <ul>
+            <li>Share, resell, sublicence, or redistribute your Licence Key or the Pro Edition software to any third party.</li>
+            <li>Activate the Pro Edition on more sites than permitted by your purchased plan.</li>
+            <li>Modify, decompile, reverse-engineer, or disassemble any proprietary components of the Pro Edition that are not already released under an open-source licence.</li>
+            <li>Remove or alter any copyright notices, branding, or licence declarations in the software.</li>
+            <li>Use the Software in any way that violates applicable law, Safaricom's Daraja API Terms of Service, or these Terms.</li>
+            <li>Use the Software to build a competing product or service.</li>
+        </ul>
+    </div>
+
+    <!-- 5 -->
+    <div class="ozp-legal-section" id="tu-purchasing">
+        <h2>5. Purchasing and Payment</h2>
+
+        <h3>5.1 Pricing</h3>
+        <p>Current pricing is displayed on the <a href="/shop/">Shop</a> page. Prices are in Kenyan Shillings (KES) unless otherwise stated and are inclusive of any applicable taxes unless explicitly shown otherwise.</p>
+
+        <h3>5.2 Billing</h3>
+        <p>The Pro Edition is sold as an annual subscription. You will be billed once per Subscription Period. OzuPay does not auto-renew subscriptions without your action; you must manually renew before expiry to continue receiving updates and support.</p>
+
+        <h3>5.3 Licence delivery</h3>
+        <p>Your Licence Key will be delivered to the email address provided at checkout immediately after payment is confirmed. If you do not receive it within 24 hours, check your spam folder or contact <a href="/contact/">support</a>.</p>
+
+        <h3>5.4 Failed payments</h3>
+        <p>If a payment fails, your order will not be fulfilled. OzuPay is not liable for delays in payment processing caused by your bank, mobile money provider, or payment gateway.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="ozp-legal-section" id="tu-updates">
+        <h2>6. Updates and Support</h2>
+        <p>During an active Subscription Period, you are entitled to:</p>
+        <ul>
+            <li>All plugin updates released for the Pro Edition, delivered via your WordPress dashboard.</li>
+            <li>Support ticket access through the <a href="/contact/">Support page</a>.</li>
+        </ul>
+        <p>OzuPay does not guarantee response times for support requests but aims to respond to Pro customer tickets within 2 business days.</p>
+        <p>After the Subscription Period expires, the installed software continues to function. However, you will not receive updates addressing new WordPress, WooCommerce, or Safaricom Daraja API changes until you renew.</p>
+        <p>OzuPay reserves the right to discontinue features, modify functionality, or change support policies at any time, with reasonable notice where practicable.</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="ozp-legal-section" id="tu-ip">
+        <h2>7. Intellectual Property</h2>
+        <p>OzuPay and its licensors retain all intellectual property rights in the Pro Edition software, including copyright, trade secrets, and any patents. These Terms do not transfer any ownership rights to you.</p>
+        <p>All trademarks, service marks, logos, and trade names used on this Site ("<strong>OzuPay</strong>", the OzuPay logo, and related marks) are the property of OzuPay. You may not use these marks without prior written permission.</p>
+        <p>The Free Edition's source code that is subject to the GPL-2.0 licence remains available under those terms and the above paragraph does not restrict GPL rights.</p>
+    </div>
+
+    <!-- 8 -->
+    <div class="ozp-legal-section" id="tu-third-party">
+        <h2>8. Third-Party Services</h2>
+        <p>The Software integrates with third-party services including:</p>
+        <ul>
+            <li><strong>Safaricom Daraja API</strong> — M-Pesa payment processing. Your use is subject to Safaricom's API Terms and Conditions. OzuPay is not responsible for Daraja downtime, rate limits, API changes, or rejections of your STK Push requests.</li>
+            <li><strong>WordPress and WooCommerce</strong> — The Software is a plugin for these platforms. Compatibility is maintained on a best-efforts basis but cannot be guaranteed for all versions.</li>
+        </ul>
+        <p>Links to third-party sites are provided for convenience. OzuPay does not endorse and is not responsible for third-party content or services.</p>
+    </div>
+
+    <!-- 9 -->
+    <div class="ozp-legal-section" id="tu-prohibited">
+        <h2>9. Prohibited Use</h2>
+        <p>You must not use the Site or Software to:</p>
+        <ul>
+            <li>Process fraudulent, unauthorised, or money-laundering transactions.</li>
+            <li>Violate the Central Bank of Kenya's payment systems regulations or any other applicable financial regulation.</li>
+            <li>Conduct activities that are illegal under the laws of Kenya.</li>
+            <li>Circumvent Safaricom's anti-fraud controls or Daraja API rate limits.</li>
+            <li>Scrape, crawl, or harvest data from this Site using automated means.</li>
+            <li>Attempt to gain unauthorised access to OzuPay systems, accounts, or servers.</li>
+            <li>Transmit malware, viruses, or any other harmful code through the Software or Site.</li>
+        </ul>
+    </div>
+
+    <!-- 10 -->
+    <div class="ozp-legal-section" id="tu-disclaimer">
+        <h2>10. Disclaimer of Warranties</h2>
+        <p>To the maximum extent permitted by applicable law, the Software and Site are provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, non-infringement, or that the Software will be error-free or uninterrupted.</p>
+        <p>OzuPay does not warrant that:</p>
+        <ul>
+            <li>The Software will be compatible with every version of WordPress or WooCommerce.</li>
+            <li>Daraja API services will be available at all times.</li>
+            <li>Every M-Pesa transaction initiated through the Software will be completed successfully.</li>
+            <li>The Software will meet your specific business requirements.</li>
+        </ul>
+        <p>Nothing in these Terms limits any warranty rights that cannot be excluded under the Kenya Sale of Goods Act or applicable consumer protection law.</p>
+    </div>
+
+    <!-- 11 -->
+    <div class="ozp-legal-section" id="tu-liability">
+        <h2>11. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by applicable law:</p>
+        <ul>
+            <li>OzuPay's total liability to you for any claim arising out of or related to these Terms or the Software will not exceed the amount you paid for the applicable licence in the 12 months preceding the claim.</li>
+            <li>OzuPay will not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, loss of revenue, loss of data, or loss of customers, even if OzuPay has been advised of the possibility of such damages.</li>
+            <li>OzuPay is not liable for any transaction processed or not processed between you and your end customers through M-Pesa. Any payment disputes between you and your customers are solely your responsibility.</li>
+            <li>OzuPay is not responsible for Safaricom Daraja outages, STK Push failures, or incorrect configuration of your Daraja credentials.</li>
+        </ul>
+    </div>
+
+    <!-- 12 -->
+    <div class="ozp-legal-section" id="tu-indemnity">
+        <h2>12. Indemnification</h2>
+        <p>You agree to indemnify, defend, and hold harmless OzuPay and its officers, employees, and agents from and against any claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising out of or related to:</p>
+        <ul>
+            <li>Your violation of these Terms.</li>
+            <li>Your use of the Software in a manner not permitted by these Terms.</li>
+            <li>Any dispute between you and your end customers regarding payment transactions.</li>
+            <li>Your failure to comply with applicable laws, including financial services regulations.</li>
+        </ul>
+    </div>
+
+    <!-- 13 -->
+    <div class="ozp-legal-section" id="tu-termination">
+        <h2>13. Termination</h2>
+        <p>OzuPay may suspend or terminate your licence immediately and without prior notice if you:</p>
+        <ul>
+            <li>Breach any material term of these Terms and fail to remedy the breach within 14 days of written notice.</li>
+            <li>Use your Licence Key on more Authorised Sites than your plan permits.</li>
+            <li>Redistribute or resell the Pro Edition software or Licence Key.</li>
+            <li>Engage in fraudulent, abusive, or illegal activity in connection with the Software.</li>
+        </ul>
+        <p>Upon termination, your Licence Key will be deactivated. You must delete the Pro Edition from all sites. Provisions that by their nature should survive termination (intellectual property, liability limitations, indemnity, governing law) will survive.</p>
+        <p>You may terminate your subscription at any time by not renewing it. Refunds are subject to the <a href="/refund-policy/">Refund Policy</a>.</p>
+    </div>
+
+    <!-- 14 -->
+    <div class="ozp-legal-section" id="tu-governing-law">
+        <h2>14. Governing Law and Disputes</h2>
+        <p>These Terms are governed by the laws of the <strong>Republic of Kenya</strong>. Any dispute arising out of or in connection with these Terms that cannot be resolved amicably will be submitted to the exclusive jurisdiction of the courts of Kenya.</p>
+        <p>Before initiating formal proceedings, both parties agree to attempt to resolve disputes through good-faith negotiation for at least 30 days. Contact us at <a href="mailto:support@ozulabs.com">support@ozulabs.com</a> to initiate this process.</p>
+    </div>
+
+    <!-- 15 -->
+    <div class="ozp-legal-section" id="tu-changes">
+        <h2>15. Changes to These Terms</h2>
+        <p>OzuPay may update these Terms from time to time. We will post the revised Terms on this page and update the "Last updated" date. If changes are material, we will notify existing customers by email at least 14 days before the changes take effect. Your continued use of the Software or Site after the effective date constitutes acceptance of the updated Terms.</p>
+    </div>
+
+    <!-- 16 -->
+    <div class="ozp-legal-section" id="tu-contact">
+        <h2>16. Contact</h2>
+        <p>For questions about these Terms, contact us:</p>
+        <p><strong>Email:</strong> <a href="mailto:support@ozulabs.com">support@ozulabs.com</a><br>
+        <strong>Support portal:</strong> <a href="/contact/">ozupay.com/contact</a></p>
+    </div>
+
+</div>
+
+</main>
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

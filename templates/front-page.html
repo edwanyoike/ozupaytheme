@@ -1,0 +1,669 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
+
+/* ═══ OzuPay Front-Page v2 ══════════════════════════════════════════════ */
+@keyframes ozuPulse{0%{transform:scale(1);opacity:.6}70%{transform:scale(2.1);opacity:0}100%{opacity:0}}
+
+:root{
+  --og:#00A651;--og-dk:#00924A;--og-lt:#00C45F;
+  --og-bg:#ECFDF3;--og-border:#BBF7D0;
+  --navy:#0F172A;--slate-800:#1E293B;--slate-700:#334155;
+  --slate-600:#475569;--slate-500:#64748B;--slate-400:#94A3B8;
+  --slate-200:#E4DECF;--slate-100:#EFEBE0;--slate-50:#F7F5EF;
+  --text:#0F172A;--text-muted:#475569;--text-subtle:#64748B;
+}
+
+.ozp2{font-family:'Public Sans',system-ui,-apple-system,sans-serif;color:var(--navy);-webkit-font-smoothing:antialiased;background:var(--slate-50);}
+.ozp2 *{box-sizing:border-box;}
+.ozp2 a{text-decoration:none;}
+.ozp2 h1,.ozp2 h2,.ozp2 h3,.ozp2 h4{font-family:'Space Grotesk',system-ui,sans-serif;}
+.ozp-mono{font-family:'JetBrains Mono','Fira Code',monospace;}
+
+/* Buttons */
+.ob{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;border:none;font-family:'Public Sans',system-ui,sans-serif;line-height:1;text-decoration:none!important;}
+.ob-g{background:linear-gradient(145deg,#00C45F,#00924A);color:#fff!important;box-shadow:0 8px 22px -6px rgba(0,166,81,.45);border:1.5px solid rgba(0,0,0,.18);}
+.ob-g:hover{background:linear-gradient(145deg,#00D46A,#00834A);box-shadow:0 10px 28px -6px rgba(0,166,81,.55);}
+.ob-o{background:#fff;color:var(--navy)!important;border:1.5px solid #94A3B8;}
+.ob-o:hover{border-color:var(--og);color:var(--og)!important;}
+.ob-dk{background:rgba(255,255,255,.07);color:#fff!important;border:1.5px solid rgba(255,255,255,.35);}
+.ob-dk:hover{background:rgba(255,255,255,.12);}
+
+/* Check / cross icons */
+.ck::before{content:'';display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--og-bg) url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 13l4 4L19 7' stroke='%2300A651' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat;flex:none;}
+.cx::before{content:'';display:inline-block;width:20px;height:20px;border-radius:50%;background:#EFEBE0 url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M18 6L6 18M6 6l12 12' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center/10px no-repeat;flex:none;}
+
+/* Layout grids — mobile-first: single column base, multi-column on wider screens.
+   grid-template-columns is set here (not inline) so a breakpoint can override it. */
+.ohg,.ostk-g,.ocod-g,.opg,.ofg2,.ocg{display:grid;}
+.ohg,.ostk-g,.ocod-g,.opg,.ofg2,.ocg{grid-template-columns:1fr;}
+.ohg .ohi-right{order:-1;}
+
+/* Section inner — mobile-first: tight padding on phones, roomier on tablet+ */
+.os-inner{max-width:1200px;margin:0 auto;padding:60px 20px;}
+.os-inner--lg{padding:64px 20px;}
+.os-inner--features{padding:60px 20px;}
+.os-cta-outer{padding:0 20px 60px;}
+
+@media(min-width:640px){
+  .ofg2,.ocg{grid-template-columns:repeat(2,1fr);}
+  .os-inner{padding:88px 32px;}
+  .os-inner--lg{padding:96px 32px;}
+  .os-inner--features{padding:80px 32px;}
+  .os-cta-outer{padding:0 32px 88px;}
+}
+
+@media(min-width:640px){
+  .opg{grid-template-columns:repeat(2,1fr);}
+}
+@media(min-width:960px){
+  .ohg,.ostk-g,.ocod-g{grid-template-columns:1fr 1fr;}
+  .ohg .ohi-right{order:0;}
+}
+
+.ofaq-acc details summary{padding:16px 18px;font-size:14.5px;}
+@media(min-width:640px){
+  .ofaq-acc details summary{padding:19px 22px;font-size:15.5px;}
+}
+
+/* Pill row — pill + mobile contact button side by side */
+.ozp-pill-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.ozp-pill-row > div{margin-bottom:0!important;}
+.ozp-pill-contact{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;border:1.5px solid var(--slate-200);color:var(--slate-600);background:#fff;text-decoration:none!important;white-space:nowrap;transition:border-color .15s,color .15s;}
+.ozp-pill-contact:hover{border-color:var(--og);color:var(--og)!important;}
+@media(min-width:640px){.ozp-pill-contact{display:none!important;}}
+
+/* Hero visual — mobile layout */
+@media(max-width:639px){
+  .ohi-right{min-height:280px;}
+  .ozp-glow{display:none!important;}
+  .ozp-ph-wrap{margin-right:0!important;margin-top:20px!important;}
+  .ozp-wc-card{width:170px!important;padding:12px!important;top:8px!important;right:0!important;}
+  .ozp-wc-card .ozp-wc-card-inner{font-size:11px!important;}
+  .ozp-hero-arrow{display:none!important;}
+}
+</style>
+
+<div class="ozp2">
+<main id="ozp-main">
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 1. HERO                                                                -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section style="background:#fff;border-bottom:1px solid var(--slate-200);">
+<div class="os-inner" style="padding-bottom:72px;">
+<div class="ohg" style="gap:64px;align-items:center;">
+
+  <!-- Left -->
+  <div>
+    <div class="ozp-pill-row">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:var(--og-bg);border:1px solid var(--og-border);color:#15803D;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:5px 12px;border-radius:999px;white-space:nowrap;">
+        <span style="position:relative;width:7px;height:7px;flex:none;">
+          <span style="position:absolute;inset:0;border-radius:50%;background:var(--og);"></span>
+          <span style="position:absolute;inset:0;border-radius:50%;background:var(--og);animation:ozuPulse 2.2s infinite;"></span>
+        </span>
+        M-Pesa gateway &middot; Daraja 2.0
+      </div>
+      <a href="/contact/" class="ozp-pill-contact">Contact us</a>
+    </div>
+
+    <h1 style="margin:0 0 20px;font-size:clamp(38px,4.5vw,56px);line-height:1.06;letter-spacing:-.03em;font-weight:700;color:var(--navy);">
+      M-Pesa payments<br>for WordPress &amp; WooCommerce
+    </h1>
+
+    <p style="margin:0 0 32px;font-size:18px;line-height:1.65;color:var(--slate-600);max-width:480px;">
+      Customers pay via STK Push on their Safaricom phone. Your WooCommerce order confirms automatically &mdash; no redirects, no manual reconciliation.
+    </p>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;">
+      <a href="#pricing" class="ob ob-g" style="font-size:15px;padding:14px 26px;">
+        Get Pro
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="https://wordpress.org/plugins/ozupay/" class="ob ob-o" style="font-size:15px;padding:14px 22px;" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+        Get Free Version
+      </a>
+      <a href="https://demo.ozupay.com/shop/" target="_blank" rel="noopener" class="ob ob-o" style="font-size:15px;padding:14px 22px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>
+        Try Live Demo
+      </a>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--slate-600);font-weight:500;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg>
+          Securely via Safaricom Daraja 2.0 API
+        </span>
+        <span style="width:1px;height:14px;background:var(--slate-200);"></span>
+        <span style="font-size:13px;color:var(--slate-600);font-weight:500;">30-day money-back</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="ozp-mono" style="font-size:11px;font-weight:600;color:var(--slate-600);background:var(--slate-100);border:1px solid var(--slate-200);padding:4px 10px;border-radius:6px;">WooCommerce 7+</span>
+        <span class="ozp-mono" style="font-size:11px;font-weight:600;color:var(--slate-600);background:var(--slate-100);border:1px solid var(--slate-200);padding:4px 10px;border-radius:6px;">HPOS compatible</span>
+        <span class="ozp-mono" style="font-size:11px;font-weight:600;color:var(--slate-600);background:var(--slate-100);border:1px solid var(--slate-200);padding:4px 10px;border-radius:6px;">PHP 8.0+</span>
+        <span class="ozp-mono" style="font-size:11px;font-weight:600;color:#15803D;background:var(--og-bg);border:1px solid var(--og-border);padding:4px 10px;border-radius:6px;">WordPress.org</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: phone STK + WP order card -->
+  <div class="ohi-right" style="position:relative;min-height:460px;display:flex;align-items:center;justify-content:center;">
+    <!-- ambient glow -->
+    <div class="ozp-glow" style="position:absolute;top:20%;left:5%;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(0,166,81,.11),transparent 70%);pointer-events:none;"></div>
+
+    <!-- WP order card — top right -->
+    <div class="ozp-wc-card" style="position:absolute;top:12px;right:0;width:230px;background:#fff;border-radius:14px;border:1px solid var(--slate-200);box-shadow:0 16px 40px -16px rgba(15,23,42,.22);padding:16px;z-index:2;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div>
+          <div class="ozp-mono" style="font-size:10px;color:var(--slate-400);font-weight:600;letter-spacing:.06em;">WOOCOMMERCE</div>
+          <div style="font-size:13.5px;font-weight:700;color:var(--navy);margin-top:2px;">Order #1024</div>
+        </div>
+        <div style="background:#DCFCE7;color:#15803D;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;">Processing &#10003;</div>
+      </div>
+      <div style="font-size:12px;color:var(--slate-500);border-top:1px solid var(--slate-100);padding-top:10px;display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;"><span>Total</span><span style="color:var(--navy);font-weight:600;">KES 2,500</span></div>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--og);flex:none;"></span>
+          <span style="font-size:11px;color:#15803D;font-weight:600;">Paid via M-Pesa &middot; just now</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone mockup -->
+    <div class="ozp-ph-wrap" style="position:relative;z-index:3;margin-top:44px;margin-right:72px;">
+      <div style="width:200px;background:#111827;border-radius:36px;padding:10px;box-shadow:0 32px 64px -24px rgba(15,23,42,.5),0 0 0 1px rgba(255,255,255,.06);">
+        <div style="background:#fff;border-radius:27px;overflow:hidden;">
+          <div style="background:var(--navy);padding:8px 16px 4px;display:flex;align-items:center;justify-content:space-between;">
+            <span class="ozp-mono" style="font-size:10px;color:rgba(255,255,255,.7);font-weight:600;">9:41</span>
+            <svg width="12" height="8" viewBox="0 0 12 8" fill="rgba(255,255,255,.6)" aria-hidden="true"><rect x="0" y="2" width="2" height="6" rx="1"/><rect x="3" y="1" width="2" height="7" rx="1"/><rect x="6" y="0" width="2" height="8" rx="1"/><rect x="9" y="0" width="3" height="8" rx="1" fill="white"/></svg>
+          </div>
+          <div style="background:var(--og);padding:14px 16px 16px;">
+            <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.8);">M-PESA</div>
+            <div style="font-size:13.5px;font-weight:600;color:#fff;margin-top:6px;line-height:1.3;">Confirm payment to<br><strong>YOUR STORE</strong></div>
+          </div>
+          <div style="padding:14px 16px;">
+            <div style="font-size:11px;color:var(--slate-400);margin-bottom:3px;">Amount</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:800;color:var(--navy);letter-spacing:-.02em;margin-bottom:12px;">KES 2,500</div>
+            <div style="font-size:11px;color:var(--slate-400);margin-bottom:8px;">Enter M-Pesa PIN</div>
+            <div style="display:flex;gap:8px;margin-bottom:14px;">
+              <span style="width:12px;height:12px;border-radius:50%;background:var(--navy);"></span>
+              <span style="width:12px;height:12px;border-radius:50%;background:var(--navy);"></span>
+              <span style="width:12px;height:12px;border-radius:50%;background:var(--navy);"></span>
+              <span style="width:12px;height:12px;border-radius:50%;background:var(--navy);"></span>
+            </div>
+            <div style="background:linear-gradient(145deg,#00C45F,#00924A);color:#fff;text-align:center;font-size:13px;font-weight:700;padding:11px;border-radius:10px;">Confirm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- arrow -->
+    <svg class="ozp-hero-arrow" style="position:absolute;top:52%;right:178px;transform:translateY(-50%);z-index:1;" width="68" height="28" viewBox="0 0 68 28" fill="none" aria-hidden="true">
+      <path d="M4 14 Q20 4 52 14" stroke="var(--og)" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round" fill="none"/>
+      <path d="M46 8 L52 14 L46 20" stroke="var(--og)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+  </div>
+
+</div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 2. STK PUSH SPOTLIGHT                                                  -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section id="stk" style="background:var(--slate-50);border-bottom:1px solid var(--slate-200);">
+<div class="os-inner os-inner--lg">
+<div class="ostk-g" style="gap:72px;align-items:center;">
+
+  <div>
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--og);text-transform:uppercase;margin-bottom:16px;">STK Push</div>
+    <h2 style="margin:0 0 18px;font-size:clamp(26px,3vw,38px);line-height:1.1;letter-spacing:-.025em;font-weight:700;color:var(--navy);">Your customer pays in seconds &mdash; without leaving your store</h2>
+    <p style="margin:0 0 28px;font-size:16px;line-height:1.7;color:var(--slate-600);">OzuPay sends a payment prompt to the customer&apos;s Safaricom number the moment they place the order. They enter their M-Pesa PIN and the payment clears. WooCommerce marks the order paid automatically via the Daraja callback &mdash; no manual checking, no Paybill instructions to read out.</p>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--og-bg);display:flex;align-items:center;justify-content:center;flex:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="1.5" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18.5a.5.5 0 100-1 .5.5 0 000 1z" fill="var(--og)"/></svg>
+        </div>
+        <div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:3px;">STK Push to any Safaricom number</div>
+          <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">The prompt goes to whichever number the customer enters at checkout &mdash; not just their registered line.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--og-bg);display:flex;align-items:center;justify-content:center;flex:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="1.5" aria-hidden="true"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>
+        </div>
+        <div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:3px;">Paybill and Till (Buy Goods) also supported</div>
+          <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">Accept payments to your existing Paybill or Buy Goods number with automatic order confirmation.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--og-bg);display:flex;align-items:center;justify-content:center;flex:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="1.5" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5z"/><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:3px;">Callback IP security built in</div>
+          <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">Only Safaricom&apos;s Daraja IPs are accepted. Every payload is validated before any order status changes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-step flow -->
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div style="background:#fff;border:1px solid var(--slate-200);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;">1</div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:var(--navy);">Customer places order</div>
+        <div style="font-size:12.5px;color:var(--slate-500);margin-top:2px;">Selects M-Pesa at checkout, enters their phone number</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;"><svg width="2" height="20" viewBox="0 0 2 20" aria-hidden="true"><line x1="1" y1="0" x2="1" y2="20" stroke="var(--slate-200)" stroke-width="2" stroke-dasharray="3 3"/></svg></div>
+    <div style="background:var(--og-bg);border:1.5px solid var(--og-border);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--og);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;">2</div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:#15803D;">STK Push sent to their phone</div>
+        <div style="font-size:12.5px;color:#166534;margin-top:2px;">Safaricom prompt appears &mdash; they enter their PIN</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;"><svg width="2" height="20" viewBox="0 0 2 20" aria-hidden="true"><line x1="1" y1="0" x2="1" y2="20" stroke="var(--slate-200)" stroke-width="2" stroke-dasharray="3 3"/></svg></div>
+    <div style="background:#fff;border:1px solid var(--slate-200);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;">3</div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:var(--navy);">Order confirmed automatically</div>
+        <div style="font-size:12.5px;color:var(--slate-500);margin-top:2px;">Daraja fires the callback &mdash; WooCommerce marks it Processing</div>
+      </div>
+    </div>
+    <div style="margin-top:6px;background:var(--slate-50);border:1px solid var(--slate-200);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v12"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9c0 6-12 3-12 9"/></svg>
+      <span style="font-size:12.5px;color:var(--slate-600);">Test against the Daraja sandbox before going live &mdash; switch with one dropdown. Sandbox still sends a real STK Push, so test with a phone line you control.</span>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 3. M-PESA ON DELIVERY — DARK SECTION                                   -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section style="background:var(--navy);border-bottom:1px solid var(--slate-800);">
+<div class="os-inner">
+<div class="ocod-g" style="gap:72px;align-items:center;">
+
+  <div>
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">Pro feature</div>
+    <h2 style="margin:0 0 18px;font-size:clamp(26px,3vw,38px);line-height:1.1;letter-spacing:-.025em;font-weight:700;color:#fff;">Stop losing money on fake Cash-on-Delivery orders</h2>
+    <p style="margin:0 0 28px;font-size:16px;line-height:1.7;color:var(--slate-400);">With standard COD, customers can place orders and simply not answer the door. M-Pesa on Delivery collects a configurable deposit via STK Push when the order is placed &mdash; then charges the balance when the customer confirms on delivery.</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+        <span style="font-size:14px;color:#CBD5E1;line-height:1.5;">Set the deposit as a flat amount or percentage of the order total</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+        <span style="font-size:14px;color:#CBD5E1;line-height:1.5;">Balance STK Push sent when the customer confirms payment on delivery</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+        <span style="font-size:14px;color:#CBD5E1;line-height:1.5;">Full transaction log in the OzuPay analytics dashboard</span>
+      </div>
+    </div>
+    <a href="#pricing" class="ob ob-g" style="font-size:15px;padding:14px 26px;">
+      Get Pro &mdash; KES 5,000/yr per site
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+  <!-- Delivery flow diagram -->
+  <div style="display:flex;flex-direction:column;gap:0;">
+    <div style="background:var(--slate-800);border:1px solid var(--slate-700);border-radius:14px 14px 0 0;padding:16px 20px;display:flex;align-items:center;gap:12px;">
+      <div style="width:10px;height:10px;border-radius:50%;background:#4ADE80;flex:none;"></div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:#fff;">Order placed</div>
+        <div style="font-size:12px;color:var(--slate-500);">STK Push sent &mdash; KES 500 deposit collected</div>
+      </div>
+      <div class="ozp-mono" style="margin-left:auto;font-size:11px;font-weight:600;color:#4ADE80;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);padding:3px 9px;border-radius:6px;white-space:nowrap;">DEPOSIT PAID</div>
+    </div>
+    <div style="height:2px;background:var(--slate-700);margin:0 20px;"></div>
+    <div style="background:var(--slate-800);border:1px solid var(--slate-700);padding:16px 20px;display:flex;align-items:center;gap:12px;">
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--slate-400);flex:none;"></div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:#E4DECF;">Order dispatched</div>
+        <div style="font-size:12px;color:var(--slate-500);">Customer notified &mdash; rider on the way</div>
+      </div>
+      <div class="ozp-mono" style="margin-left:auto;font-size:11px;font-weight:600;color:var(--slate-400);background:var(--slate-800);border:1px solid var(--slate-700);padding:3px 9px;border-radius:6px;white-space:nowrap;">IN TRANSIT</div>
+    </div>
+    <div style="height:2px;background:var(--slate-700);margin:0 20px;"></div>
+    <div style="background:var(--slate-800);border:1px solid var(--slate-700);border-radius:0 0 14px 14px;padding:16px 20px;display:flex;align-items:center;gap:12px;">
+      <div style="width:10px;height:10px;border-radius:50%;background:#4ADE80;flex:none;"></div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:#fff;">Delivered</div>
+        <div style="font-size:12px;color:var(--slate-500);">Balance STK Push sent &mdash; KES 2,000 collected</div>
+      </div>
+      <div class="ozp-mono" style="margin-left:auto;font-size:11px;font-weight:600;color:#4ADE80;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);padding:3px 9px;border-radius:6px;white-space:nowrap;">PAID IN FULL</div>
+    </div>
+    <div style="margin-top:14px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:13.5px;color:#CBD5E1;font-weight:500;">Total collected</span>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#4ADE80;">KES 2,500 &#10003;</span>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 4. COMPACT FEATURE GRID                                                -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section id="features" style="background:#fff;border-bottom:1px solid var(--slate-200);">
+<div class="os-inner os-inner--features">
+  <div style="max-width:560px;margin-bottom:48px;">
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--og);text-transform:uppercase;margin-bottom:14px;">Everything else</div>
+    <h2 style="margin:0;font-size:clamp(26px,3vw,34px);line-height:1.1;letter-spacing:-.025em;font-weight:700;color:var(--navy);">The full Pro feature set</h2>
+  </div>
+  <div class="ofg2" style="gap:1px;background:var(--slate-200);border:1px solid var(--slate-200);border-radius:16px;overflow:hidden;">
+
+    <div style="background:#fff;padding:22px 24px;display:flex;gap:14px;align-items:flex-start;">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--navy);color:#4ADE80;display:flex;align-items:center;justify-content:center;flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>
+      </div>
+      <div>
+        <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:4px;">B2C Refunds</div>
+        <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">Refund directly to the customer&apos;s M-Pesa from the WooCommerce order screen &mdash; no Safaricom portal needed.</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;padding:22px 24px;display:flex;gap:14px;align-items:flex-start;">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--navy);color:#4ADE80;display:flex;align-items:center;justify-content:center;flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="13" y="7" width="3" height="10"/></svg>
+      </div>
+      <div>
+        <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:4px;">Analytics dashboard</div>
+        <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">Revenue charts, STK success rate and a full transaction log inside wp-admin.</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;padding:22px 24px;display:flex;gap:14px;align-items:flex-start;">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--navy);color:#4ADE80;display:flex;align-items:center;justify-content:center;flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49"/></svg>
+      </div>
+      <div>
+        <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:4px;">Webhooks, QR &amp; payment links</div>
+        <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">Fire WooCommerce webhooks on payment events. Generate M-Pesa QR codes and shareable payment links.</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;padding:22px 24px;display:flex;gap:14px;align-items:flex-start;">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--navy);color:#4ADE80;display:flex;align-items:center;justify-content:center;flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div>
+        <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:4px;">POS REST API</div>
+        <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">REST endpoints for Android cashier and point-of-sale apps &mdash; take M-Pesa payments at the counter without a browser.</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;padding:22px 24px;display:flex;gap:14px;align-items:flex-start;">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--navy);color:#4ADE80;display:flex;align-items:center;justify-content:center;flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>
+      </div>
+      <div>
+        <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:4px;">C2B Paybill fallback</div>
+        <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">Automatically matches manual Paybill payments to orders when STK Push is unavailable &mdash; no missed sales.</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;padding:22px 24px;display:flex;gap:14px;align-items:flex-start;">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--navy);color:#4ADE80;display:flex;align-items:center;justify-content:center;flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <div>
+        <div style="font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:4px;">Admin failure alerts</div>
+        <div style="font-size:13.5px;color:var(--slate-500);line-height:1.5;">Email alerts to site admins when STK Push or callback processing fails &mdash; catch payment issues before customers do.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:28px;text-align:center;">
+    <a href="/features/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--slate-600);text-decoration:none;border:1px solid var(--slate-200);background:#fff;padding:11px 20px;border-radius:10px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--og)';this.style.color='var(--og)'" onmouseout="this.style.borderColor='var(--slate-200)';this.style.color='var(--slate-600)'">
+      See all features
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 5. PRICING                                                              -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section style="background:var(--slate-50);border-bottom:1px solid var(--slate-200);" id="pricing">
+<div class="os-inner">
+  <div style="text-align:center;max-width:560px;margin:0 auto 52px;">
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--og);text-transform:uppercase;margin-bottom:14px;">Pricing</div>
+    <h2 style="margin:0 0 14px;font-size:clamp(26px,3vw,38px);line-height:1.1;letter-spacing:-.025em;font-weight:700;color:var(--navy);">One plan, all features &mdash; KES 5,000 per site</h2>
+    <p style="margin:0 0 14px;font-size:16px;line-height:1.6;color:var(--slate-600);">One licence, one price, every Pro feature included &mdash; no feature tiers. Running several stores? Talk to us about volume pricing.</p>
+    <a href="https://demo.ozupay.com/shop/" target="_blank" rel="noopener" class="ozp-demo-link" style="display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:var(--og);text-decoration:none;">
+      Not sure yet? Try a live checkout first &rarr;
+    </a>
+  </div>
+
+  <div class="opg" style="gap:20px;align-items:center;max-width:880px;margin:0 auto;">
+
+    <!-- Pro (featured) -->
+    <div style="position:relative;background:var(--navy);border-radius:22px;padding:34px 30px;box-shadow:0 30px 60px -22px rgba(15,23,42,.5),0 0 50px -8px rgba(0,166,81,.18);">
+      <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(145deg,#00C45F,#00924A);color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px -4px rgba(0,166,81,.5);">Everything Included</div>
+      <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">Pro</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:4px;">
+        <span style="font-size:13px;font-weight:600;color:var(--slate-600);">KES</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;letter-spacing:-.03em;color:#fff;">5,000</span>
+        <span style="font-size:13px;color:var(--slate-500);">/yr</span>
+      </div>
+      <div style="font-size:13px;color:var(--slate-500);margin-bottom:22px;">Per site &middot; billed annually</div>
+      <a href="?add-to-cart=1079" data-product_id="1079" data-quantity="1" class="ob ob-g ajax_add_to_cart add_to_cart_button product_type_simple" style="width:100%;font-size:15px;padding:14px;border-radius:12px;margin-bottom:22px;justify-content:center;">
+        Buy Pro
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <div style="height:1px;background:var(--slate-800);margin-bottom:20px;"></div>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;">
+        <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><strong style="font-weight:700;color:#fff;">Every Pro feature included</strong></li>
+        <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>M-Pesa on Delivery &amp; B2C refunds</li>
+        <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Analytics, webhooks, QR &amp; payment links</li>
+        <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>POS REST API for cashier apps</li>
+        <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>1 year of updates &amp; support tickets</li>
+      </ul>
+    </div>
+
+    <!-- Custom -->
+    <div style="background:#fff;border:1px solid var(--slate-200);border-radius:20px;padding:30px;">
+      <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--slate-400);text-transform:uppercase;margin-bottom:16px;">Custom</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:4px;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;letter-spacing:-.03em;color:var(--navy);line-height:1.1;padding:6px 0;">Custom pricing</span>
+      </div>
+      <div style="font-size:13px;color:var(--slate-500);margin-bottom:22px;">2+ sites &middot; agencies &amp; multi-store merchants</div>
+      <a href="/contact/" class="ob ob-o" style="width:100%;font-size:14.5px;padding:13px;border-radius:12px;margin-bottom:22px;">Contact Us</a>
+      <div style="height:1px;background:var(--slate-100);margin-bottom:20px;"></div>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;">
+        <li style="display:flex;gap:9px;font-size:13.5px;color:var(--slate-700);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><strong>Volume site licences</strong></li>
+        <li style="display:flex;gap:9px;font-size:13.5px;color:var(--slate-700);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>All Pro features on every site</li>
+        <li style="display:flex;gap:9px;font-size:13.5px;color:var(--slate-700);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>One licence key, one renewal</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Trust row -->
+  <div style="margin-top:24px;display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--slate-500);">
+    <span style="display:flex;align-items:center;gap:6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      Secure checkout
+    </span>
+    <span style="display:flex;align-items:center;gap:6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>
+      30-day money-back guarantee
+    </span>
+    <span style="display:flex;align-items:center;gap:6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--og)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+      Instant download after purchase
+    </span>
+  </div>
+
+  <!-- Welcome code -->
+  <p style="text-align:center;margin:16px 0 0;font-size:13.5px;color:var(--slate-500);">Use code <strong style="color:var(--navy);background:var(--slate-100);border:1px solid var(--slate-200);border-radius:5px;padding:2px 7px;font-family:monospace;letter-spacing:.04em;">WELCOME</strong> at checkout for 25% off.</p>
+
+  <!-- Why annual -->
+  <div style="margin-top:20px;background:#fff;border:1px solid var(--slate-200);border-radius:12px;padding:18px 22px;max-width:760px;margin-left:auto;margin-right:auto;">
+    <p style="margin:0;font-size:13.5px;color:var(--slate-600);line-height:1.65;"><strong style="color:var(--navy);">Why annual?</strong> Safaricom updates the Daraja API &mdash; credential formats, callback structures and STK flows can change without notice. An active licence keeps your plugin compatible: updates are pushed to your WordPress dashboard automatically and you keep a support channel. A lapsed licence won&apos;t break your store, but you stop receiving compatibility patches.</p>
+  </div>
+
+  <p style="text-align:center;font-size:13px;color:var(--slate-400);margin-top:16px;margin-bottom:0;">Already using the free version? Upgrading to Pro keeps all your existing settings.</p>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 6. FREE vs PRO                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section style="background:#fff;border-bottom:1px solid var(--slate-200);" id="compare">
+<div class="os-inner" style="max-width:1040px;">
+  <div style="text-align:center;max-width:560px;margin:0 auto 48px;">
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--og);text-transform:uppercase;margin-bottom:14px;">Free vs Pro</div>
+    <h2 style="margin:0 0 14px;font-size:clamp(26px,3vw,36px);line-height:1.1;letter-spacing:-.025em;font-weight:700;color:var(--navy);">Free to install, Pro when you need more</h2>
+    <p style="margin:0;font-size:16px;line-height:1.6;color:var(--slate-600);">Download from WordPress.org and take payments today. Upgrade to Pro when you need refunds, delivery deposits or analytics.</p>
+  </div>
+
+  <div class="ocg" style="gap:20px;align-items:start;">
+
+    <!-- Free column -->
+    <div style="background:var(--slate-50);border:1px solid var(--slate-200);border-radius:18px;padding:28px;">
+      <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--slate-400);text-transform:uppercase;margin-bottom:12px;">Free</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;letter-spacing:-.03em;color:var(--navy);margin-bottom:4px;">KES 0</div>
+      <div style="font-size:13px;color:var(--slate-500);margin-bottom:18px;">Forever free &mdash; no licence needed</div>
+      <a href="https://wordpress.org/plugins/ozupay/" class="ob ob-o" style="width:100%;font-size:14.5px;padding:12px;border-radius:11px;margin-bottom:20px;justify-content:center;" target="_blank" rel="noopener">Get Free Version</a>
+      <div style="height:1px;background:var(--slate-200);margin-bottom:18px;"></div>
+      <!-- Free rows -->
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">STK Push payments</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Paybill &amp; Till support</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">WooCommerce HPOS compatible</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Callback IP security</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Sandbox &amp; production environments</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="cx"></span><span style="font-size:13.5px;color:var(--slate-400);">Daraja testing panel (STK trigger, STK query)</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="cx"></span><span style="font-size:13.5px;color:var(--slate-400);">M-Pesa on Delivery (deposit)</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="cx"></span><span style="font-size:13.5px;color:var(--slate-400);">B2C refunds from order screen</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="cx"></span><span style="font-size:13.5px;color:var(--slate-400);">Analytics dashboard &amp; live KPIs</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--slate-100);"><span class="cx"></span><span style="font-size:13.5px;color:var(--slate-400);">Webhooks, QR codes &amp; payment links</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;"><span class="cx"></span><span style="font-size:13.5px;color:var(--slate-400);">POS REST API</span></div>
+    </div>
+
+    <!-- Pro column -->
+    <div style="background:#fff;border:2px solid var(--og);border-radius:18px;padding:28px;box-shadow:0 20px 50px -24px rgba(0,166,81,.3);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#15803D;text-transform:uppercase;">Pro</div>
+        <span class="ozp-mono" style="font-size:10px;font-weight:600;color:#fff;background:var(--og);padding:3px 9px;border-radius:5px;white-space:nowrap;">ALL FEATURES</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:4px;">
+        <span style="font-size:13px;font-weight:600;color:var(--slate-400);">KES</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;letter-spacing:-.03em;color:var(--navy);">5,000</span>
+        <span style="font-size:13px;color:var(--slate-400);">/yr</span>
+      </div>
+      <div style="font-size:13px;color:var(--slate-500);margin-bottom:18px;">Per site &middot; billed annually</div>
+      <a href="#pricing" class="ob ob-g" style="width:100%;font-size:14.5px;padding:12px;border-radius:11px;margin-bottom:20px;justify-content:center;">
+        Get Pro
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <div style="height:1px;background:var(--slate-100);margin-bottom:18px;"></div>
+      <!-- Pro rows — all checked -->
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">STK Push payments</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Paybill &amp; Till support</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">WooCommerce HPOS compatible</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Callback IP security</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Sandbox &amp; production environments</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Daraja testing panel (STK trigger, STK query)</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">M-Pesa on Delivery (deposit)</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">B2C refunds from order screen</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Analytics dashboard &amp; live KPIs</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F7FA;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">Webhooks, QR codes &amp; payment links</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;"><span class="ck"></span><span style="font-size:13.5px;color:var(--slate-700);">POS REST API</span></div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 7. FAQ                                                                  -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section style="background:var(--slate-50);border-bottom:1px solid var(--slate-200);" id="faq">
+<div class="os-inner" style="max-width:780px;">
+  <div style="text-align:center;margin-bottom:44px;">
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--og);text-transform:uppercase;margin-bottom:14px;">FAQ</div>
+    <h2 style="margin:0;font-size:clamp(26px,3vw,36px);line-height:1.1;letter-spacing:-.025em;font-weight:700;color:var(--navy);">Common questions</h2>
+  </div>
+
+  <div class="ofaq-acc" style="display:flex;flex-direction:column;gap:10px;">
+
+    <details style="border:1px solid var(--slate-200);border-radius:14px;background:#fff;overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:19px 22px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:600;color:var(--navy);list-style:none;">How does the M-Pesa integration work?<span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--slate-100);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:400;color:var(--slate-500);line-height:1;">+</span></summary>
+      <div style="padding:0 22px 20px;font-size:15px;line-height:1.7;color:var(--slate-600);">OzuPay connects your WooCommerce store directly to Safaricom&apos;s Daraja API. At checkout the customer receives an STK Push prompt on their phone and confirms with their M-Pesa PIN &mdash; the order is then marked paid automatically when the Daraja callback arrives.</div>
+    </details>
+
+    <details style="border:1px solid var(--slate-200);border-radius:14px;background:#fff;overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:19px 22px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:600;color:var(--navy);list-style:none;">Do I need a Safaricom Daraja account?<span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--slate-100);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:400;color:var(--slate-500);line-height:1;">+</span></summary>
+      <div style="padding:0 22px 20px;font-size:15px;line-height:1.7;color:var(--slate-600);">Yes. You&apos;ll need your own Daraja app credentials (Consumer Key, Consumer Secret and Passkey) plus a Paybill or Till number. OzuPay walks you through entering them, and you can validate everything against the Daraja sandbox before going live. Note that sandbox mode still sends a real STK Push to the test phone, so use a line you control.</div>
+    </details>
+
+    <details style="border:1px solid var(--slate-200);border-radius:14px;background:#fff;overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:19px 22px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:600;color:var(--navy);list-style:none;">What is M-Pesa on Delivery?<span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--slate-100);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:400;color:var(--slate-500);line-height:1;">+</span></summary>
+      <div style="padding:0 22px 20px;font-size:15px;line-height:1.7;color:var(--slate-600);">M-Pesa on Delivery collects a configurable deposit via STK Push at checkout. The remaining balance is charged when the customer confirms on delivery &mdash; no manual follow-up, no customer chasing.</div>
+    </details>
+
+    <details style="border:1px solid var(--slate-200);border-radius:14px;background:#fff;overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:19px 22px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:600;color:var(--navy);list-style:none;">What is the difference between Free and Pro?<span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--slate-100);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:400;color:var(--slate-500);line-height:1;">+</span></summary>
+      <div style="padding:0 22px 20px;font-size:15px;line-height:1.7;color:var(--slate-600);">Free covers STK Push, Paybill &amp; Till, and HPOS compatibility. Pro adds M-Pesa on Delivery with deposits, B2C refunds, analytics, webhooks, QR codes, payment links, POS REST API, C2B Paybill fallback, admin failure alerts, and the Daraja testing panel. There is one Pro licence &mdash; KES 5,000 per site, per year &mdash; and it includes every Pro feature. Running several sites? Contact us for volume pricing.</div>
+    </details>
+
+    <details style="border:1px solid var(--slate-200);border-radius:14px;background:#fff;overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:19px 22px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:600;color:var(--navy);list-style:none;">Why is Pro billed annually?<span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--slate-100);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:400;color:var(--slate-500);line-height:1;">+</span></summary>
+      <div style="padding:0 22px 20px;font-size:15px;line-height:1.7;color:var(--slate-600);">Safaricom updates the Daraja API &mdash; credential formats, callback structures and STK flows can change without notice. An active licence keeps your plugin compatible: updates are pushed to your WordPress dashboard automatically and you keep a support channel. A lapsed licence won&apos;t break your store, but you stop receiving compatibility patches.</div>
+    </details>
+
+    <details style="border:1px solid var(--slate-200);border-radius:14px;background:#fff;overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:19px 22px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:600;color:var(--navy);list-style:none;">Can I upgrade from Free to Pro later?<span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--slate-100);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:400;color:var(--slate-500);line-height:1;">+</span></summary>
+      <div style="padding:0 22px 20px;font-size:15px;line-height:1.7;color:var(--slate-600);">Yes &mdash; upgrading keeps all of your existing settings and credentials. Add your licence key in the plugin settings and Pro features are enabled immediately. No reconfiguration required.</div>
+    </details>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 8. FINAL CTA                                                            -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section class="os-cta-outer" style="background:#fff;">
+<div style="max-width:1100px;margin:0 auto;background:var(--navy);border-radius:22px;padding:60px 48px;text-align:center;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-60px;right:-40px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(0,166,81,.28),transparent 70%);pointer-events:none;"></div>
+  <div style="position:relative;">
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">Get started</div>
+    <h2 style="margin:0 0 14px;font-size:clamp(26px,3.5vw,38px);line-height:1.1;letter-spacing:-.025em;font-weight:700;color:#fff;">Start accepting M-Pesa today</h2>
+    <p style="margin:0 auto 28px;font-size:16px;line-height:1.6;color:var(--slate-400);max-width:520px;">The free plugin handles STK Push and Paybill. Pro adds refunds, delivery deposits and analytics. Both connect directly to the Daraja API.</p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+      <a href="#pricing" class="ob ob-g" style="font-size:15px;padding:14px 28px;">
+        Get Pro
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="https://wordpress.org/plugins/ozupay/" class="ob ob-dk" style="font-size:15px;padding:14px 24px;" target="_blank" rel="noopener">Get Free Version</a>
+    </div>
+    <p style="margin:0;font-size:12.5px;color:var(--slate-600);">A licence account is created automatically at checkout &mdash; nothing to set up beforehand.</p>
+  </div>
+</div>
+</section>
+
+</main>
+</div><!-- /ozp2 -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
