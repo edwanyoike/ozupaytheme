@@ -652,12 +652,34 @@ add_action( 'template_redirect', function () {
 <body style="margin:0;background:var(--slate-50);font-family:'Inter',system-ui,sans-serif;">
 
 <header class="ozp-header">
-  <div class="ozp-header-inner">
-    <a href="/" class="ozp-logo">
-      <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/favicon.png' ); ?>" width="32" height="32" alt="" class="ozp-logo-icon" aria-hidden="true">
-      OzuLabs
-    </a>
-  </div>
+    <div class="ozp-header-inner">
+        <a href="/" class="ozp-logo">
+            <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/favicon.png' ); ?>" width="32" height="32" alt="" class="ozp-logo-icon" aria-hidden="true">
+            OzuLabs
+        </a>
+        <nav class="ozp-header-nav" id="ozp-nav">
+            <ul class="ozp-nav">
+                <li><a href="/#features">Features</a></li>
+                <li><a href="/#pricing">Pricing</a></li>
+                <li><a href="/shop/">Shop</a></li>
+                <li><a href="/docs/">Docs</a></li>
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="https://demo.ozupay.com/shop/" target="_blank" rel="noopener">Live Demo</a></li>
+                <li><a href="/contact/">Contact Us</a></li>
+            </ul>
+        </nav>
+        <div class="ozp-header-actions">
+            <a href="/cart/" class="ozp-cart-btn" id="ozp-cart-btn" aria-label="View cart">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39A2 2 0 009.66 16h9.72a2 2 0 001.97-1.67L23 6H6"/></svg>
+                <span class="ozp-cart-count" id="ozp-cart-count" aria-label="items in cart"></span>
+            </a>
+            <a href="/my-account/" class="ozp-btn ozp-btn-outline ozp-btn-sm" id="ozp-login-btn">Log in</a>
+            <a href="/#pricing" class="ozp-btn ozp-btn-primary ozp-btn-sm">Buy Now &rarr;</a>
+        </div>
+        <button class="ozp-hamburger" id="ozp-hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
 </header>
 
 <section style="padding:56px 20px 80px;">
@@ -698,6 +720,23 @@ add_action( 'template_redirect', function () {
     document.getElementById( 'ozp-dl-title' ).textContent = 'Your download has started';
     document.getElementById( 'ozp-dl-sub' ).textContent = 'Check your browser’s downloads.';
   }, 1200 );
+})();
+</script>
+
+<script>
+(function () {
+    // Mobile nav toggle — mirrors the site-wide handler in wp_footer, which
+    // this standalone page doesn't go through.
+    var btn = document.getElementById( 'ozp-hamburger' );
+    var nav = document.getElementById( 'ozp-nav' );
+    if ( btn && nav ) {
+        btn.addEventListener( 'click', function () {
+            var open = nav.classList.toggle( 'open' );
+            btn.classList.toggle( 'open', open );
+            btn.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+            btn.setAttribute( 'aria-label', open ? 'Close menu' : 'Open menu' );
+        } );
+    }
 })();
 </script>
 
