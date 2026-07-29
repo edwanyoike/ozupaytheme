@@ -635,6 +635,19 @@ add_action( 'template_redirect', function () {
 <link rel="stylesheet" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/style.css' ); ?>">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
 <link rel="icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/favicon.png' ); ?>">
+<style>
+/* style.css doesn't define these — front-page.html carries its own local
+   :root/.ob button styles instead, so this page needs its own copy too. */
+:root{
+  --og:#00A651;--navy:#0F172A;
+  --slate-600:#475569;--slate-500:#64748B;--slate-400:#94A3B8;
+  --slate-200:#E4DECF;--slate-50:#F7F5EF;
+}
+.ozp-mono{font-family:'JetBrains Mono','Fira Code',monospace;}
+.ob{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;border:none;font-family:'Inter',system-ui,sans-serif;line-height:1;text-decoration:none!important;}
+.ob-g{background:linear-gradient(145deg,#00C45F,#00924A);color:#fff!important;box-shadow:0 8px 22px -6px rgba(0,166,81,.45);border:1.5px solid rgba(0,0,0,.18);}
+.ob-g:hover{background:linear-gradient(145deg,#00D46A,#00834A);box-shadow:0 10px 28px -6px rgba(0,166,81,.55);}
+</style>
 </head>
 <body style="margin:0;background:var(--slate-50);font-family:'Inter',system-ui,sans-serif;">
 
