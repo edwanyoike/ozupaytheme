@@ -138,21 +138,13 @@ add_action( 'after_setup_theme', function () {
 
 // ── SEO & Accessibility ──────────────────────────────────────────────────────
 
-// WordPress "Discourage search engines" sets blog_public=0 and adds both
-// noindex and nofollow via wp_robots_no_robots(). Strip both here so the
-// theme controls indexing independently of that admin toggle (the right
-// long-term fix is Settings > Reading > uncheck it). Leaving nofollow in
-// place would tell crawlers not to pass authority through any link on the
-// page, silently blocking internal link equity site-wide.
-add_filter( 'wp_robots', function ( array $robots ): array {
-    if ( is_admin() ) {
-        return $robots;
-    }
-    unset( $robots['noindex'] );
-    unset( $robots['nofollow'] );
-    $robots['follow'] = true;
-    return $robots;
-} );
+// "Discourage search engines" (Settings > Reading) is unchecked — blog_public=1 —
+// so WordPress's own wp_robots_no_robots() no longer adds noindex/nofollow and
+// WooCommerce's own cart/checkout/my-account noindex filter is free to run without
+// this theme fighting it. No filter needed here; do not re-add a blanket
+// unset-noindex/force-follow hack, it previously raced WooCommerce's wp_robots
+// filter and produced a contradictory `content="follow, noindex, nofollow"` tag
+// on the cart and my-account pages.
 
 // Hide WordPress and WooCommerce version from <meta name="generator"> — version
 // exposure is an unnecessary attack-surface signal.
@@ -230,6 +222,14 @@ add_filter( 'document_title_parts', function ( array $parts ): array {
     }
     return $parts;
 } );
+
+// WordPress core's own rel_canonical() also fires on wp_head and would print a
+// second <link rel="canonical"> alongside the one the callback below outputs
+// for every page type it covers. Unhook it here; the else branch below covers
+// every page type core would otherwise have handled (archives, search, cart,
+// my-account, etc.) with core's own wp_get_canonical_url(), so no page loses
+// its canonical.
+remove_action( 'wp_head', 'rel_canonical' );
 
 // Meta description, canonical, Open Graph, Twitter Card, JSON-LD.
 add_action( 'wp_head', function () {
@@ -465,6 +465,10 @@ add_action( 'wp_head', function () {
 }';
 
     } else {
+        $canonical = function_exists( 'wp_get_canonical_url' ) ? wp_get_canonical_url() : '';
+        if ( $canonical ) {
+            echo '<link rel="canonical" href="' . esc_url( $canonical ) . '">' . "\n";
+        }
         return;
     }
 
