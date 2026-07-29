@@ -691,7 +691,7 @@ add_action( 'template_redirect', function () {
   </div>
 
   <div style="max-width:420px;margin:44px auto 0;background:var(--navy);border-radius:22px;padding:34px 30px;box-shadow:0 30px 60px -22px rgba(15,23,42,.5),0 0 50px -8px rgba(0,166,81,.18);">
-    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">While that downloads&mdash;go Pro</div>
+    <div class="ozp-mono" style="font-size:13px;font-weight:600;letter-spacing:.06em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">While that downloads&mdash;checkout Pro features</div>
     <h2 style="margin:0 0 10px;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.02em;">Refunds, M-Pesa on Delivery, analytics &amp; more</h2>
     <p style="margin:0 0 22px;font-size:14px;line-height:1.6;color:#E4DECF;">One licence, every Pro feature included &mdash; KES 5,000/yr per site.</p>
     <ul style="list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:11px;text-align:left;">
