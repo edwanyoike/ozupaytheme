@@ -594,6 +594,103 @@ add_filter( 'robots_txt', function ( string $output ): string {
     return $output . "\nSitemap: " . home_url( '/sitemap.xml' ) . "\n";
 } );
 
+// ── Free download landing page ──────────────────────────────────────────────
+// The free-plugin download used to link straight to the R2-redirecting REST
+// endpoint, which left the browser tab blank while the zip streamed. Route it
+// through this on-site page instead: the file download kicks off invisibly
+// (hidden iframe) while the tab shows a Pro upsell.
+
+define( 'OZP_FREE_DOWNLOAD_URL', 'https://ozupay.com/wp-json/ozls/v1/download/free/ozupay_mpesa_payment_free' );
+
+add_action( 'init', function () {
+    add_rewrite_rule( '^get-free/?$', 'index.php?ozp_get_free=1', 'top' );
+} );
+
+add_filter( 'query_vars', function ( array $vars ): array {
+    $vars[] = 'ozp_get_free';
+    return $vars;
+} );
+
+// Same reasoning as the sitemap.xml rule above: without this, WordPress's
+// canonical redirect 301s /get-free to /get-free/ before the rewrite rule
+// ever gets a chance to serve it.
+add_filter( 'redirect_canonical', function ( $redirect_url ) {
+    return get_query_var( 'ozp_get_free' ) ? false : $redirect_url;
+} );
+
+add_action( 'template_redirect', function () {
+    if ( ! get_query_var( 'ozp_get_free' ) ) {
+        return;
+    }
+
+    header( 'Content-Type: text/html; charset=utf-8', true );
+    ?>
+<!doctype html>
+<html <?php language_attributes(); ?>>
+<head>
+<meta charset="<?php bloginfo( 'charset' ); ?>">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, follow">
+<title>Your download is starting&hellip; &mdash; OzuPay</title>
+<link rel="stylesheet" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/style.css' ); ?>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/favicon.png' ); ?>">
+</head>
+<body style="margin:0;background:var(--slate-50);font-family:'Inter',system-ui,sans-serif;">
+
+<header class="ozp-header">
+  <div class="ozp-header-inner">
+    <a href="/" class="ozp-logo">
+      <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/favicon.png' ); ?>" width="32" height="32" alt="" class="ozp-logo-icon" aria-hidden="true">
+      OzuLabs
+    </a>
+  </div>
+</header>
+
+<section style="padding:56px 20px 80px;">
+  <div style="max-width:640px;margin:0 auto;text-align:center;">
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--og);text-transform:uppercase;margin-bottom:14px;">OzuPay Free</div>
+    <h1 id="ozp-dl-title" style="margin:0 0 12px;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-.02em;font-weight:700;color:var(--navy);">Preparing your download&hellip;</h1>
+    <p id="ozp-dl-sub" style="margin:0 0 8px;font-size:15px;color:var(--slate-600);">Your download will start automatically in a moment.</p>
+    <p style="margin:0;font-size:13.5px;color:var(--slate-400);">Didn&rsquo;t start? <a href="<?php echo esc_url( OZP_FREE_DOWNLOAD_URL ); ?>" id="ozp-dl-fallback" style="color:var(--og);">Download manually</a>.</p>
+  </div>
+
+  <div style="max-width:420px;margin:44px auto 0;background:var(--navy);border-radius:22px;padding:34px 30px;box-shadow:0 30px 60px -22px rgba(15,23,42,.5),0 0 50px -8px rgba(0,166,81,.18);">
+    <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">While that downloads&mdash;go Pro</div>
+    <h2 style="margin:0 0 10px;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.02em;">Refunds, M-Pesa on Delivery, analytics &amp; more</h2>
+    <p style="margin:0 0 22px;font-size:14px;line-height:1.6;color:#E4DECF;">One licence, every Pro feature included &mdash; KES 5,000/yr per site.</p>
+    <ul style="list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:11px;text-align:left;">
+      <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>M-Pesa on Delivery &amp; B2C refunds</li>
+      <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Analytics, webhooks, QR &amp; payment links</li>
+      <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>POS REST API for cashier apps</li>
+    </ul>
+    <a href="/#pricing" class="ob ob-g" style="width:100%;font-size:15px;padding:14px;border-radius:12px;justify-content:center;">
+      See Pro pricing
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</section>
+
+<script>
+(function () {
+  var iframe = document.createElement( 'iframe' );
+  iframe.style.display = 'none';
+  iframe.src = <?php echo wp_json_encode( OZP_FREE_DOWNLOAD_URL ); ?>;
+  document.body.appendChild( iframe );
+
+  setTimeout( function () {
+    document.getElementById( 'ozp-dl-title' ).textContent = 'Your download has started';
+    document.getElementById( 'ozp-dl-sub' ).textContent = 'Check your browser’s downloads.';
+  }, 1200 );
+})();
+</script>
+
+</body>
+</html>
+    <?php
+    exit;
+} );
+
 // Breadcrumb for the article hero: Home > Category > Post title.
 add_shortcode( 'ozp_breadcrumb', function (): string {
     $items = [ '<a href="' . esc_url( home_url( '/' ) ) . '">Home</a>' ];
@@ -944,7 +1041,7 @@ add_action( 'wp_footer', function () {
     }
     ?>
     <div class="ozp-mobile-cta" role="navigation" aria-label="Quick actions">
-        <a href="https://wordpress.org/plugins/ozupay/" class="ozp-btn ozp-btn-outline" target="_blank" rel="noopener">Free</a>
+        <a href="/get-free/" class="ozp-btn ozp-btn-outline" target="_blank" rel="noopener">Free</a>
         <a href="#pricing" class="ozp-btn ozp-btn-primary">Get Pro &rarr;</a>
     </div>
 
