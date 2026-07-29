@@ -711,15 +711,40 @@ add_action( 'template_redirect', function () {
 
 <script>
 (function () {
-  var iframe = document.createElement( 'iframe' );
-  iframe.style.display = 'none';
-  iframe.src = <?php echo wp_json_encode( OZP_FREE_DOWNLOAD_URL ); ?>;
-  document.body.appendChild( iframe );
+  var downloadUrl = <?php echo wp_json_encode( OZP_FREE_DOWNLOAD_URL ); ?>;
+  var title = document.getElementById( 'ozp-dl-title' );
+  var sub   = document.getElementById( 'ozp-dl-sub' );
 
-  setTimeout( function () {
-    document.getElementById( 'ozp-dl-title' ).textContent = 'Your download has started';
-    document.getElementById( 'ozp-dl-sub' ).textContent = 'Check your browser’s downloads.';
-  }, 1200 );
+  // redirect:'manual' keeps fetch from following the 302 to R2 (which would
+  // fail cross-origin anyway) while still letting us read a same-origin,
+  // non-redirect response — i.e. a 429 from the rate limiter — for real,
+  // instead of blindly declaring success the way a bare iframe would.
+  fetch( downloadUrl, { redirect: 'manual', cache: 'no-store' } )
+    .then( function ( response ) {
+      if ( response.type === 'opaqueredirect' ) {
+        var iframe = document.createElement( 'iframe' );
+        iframe.style.display = 'none';
+        iframe.src = downloadUrl;
+        document.body.appendChild( iframe );
+
+        title.textContent = 'Your download has started';
+        sub.textContent = 'Check your browser’s downloads.';
+        return;
+      }
+
+      if ( response.status === 429 ) {
+        title.textContent = 'Too many downloads from your network';
+        sub.textContent = 'Please try again in a bit, or use the manual link below.';
+        return;
+      }
+
+      title.textContent = 'Download unavailable right now';
+      sub.textContent = 'Please use the manual link below.';
+    } )
+    .catch( function () {
+      title.textContent = 'Download unavailable right now';
+      sub.textContent = 'Please use the manual link below.';
+    } );
 })();
 </script>
 
