@@ -734,14 +734,27 @@ add_action( 'template_redirect', function () {
 
       if ( response.status === 429 ) {
         title.textContent = 'Too many downloads from your network';
-        sub.textContent = 'Please try again in a bit, or use the manual link below.';
+        sub.textContent = 'Please try again in about an hour.';
+        var fallback = document.getElementById( 'ozp-dl-fallback' );
+        if ( fallback ) {
+          fallback.parentElement.style.display = 'none';
+        }
         return;
       }
 
+      // A real (non-429) error response from the same endpoint the manual
+      // link points at — pointing the user back at it would just fail the
+      // same way, so don't offer it.
       title.textContent = 'Download unavailable right now';
-      sub.textContent = 'Please use the manual link below.';
+      sub.textContent = 'Please contact support.';
+      var fallbackErr = document.getElementById( 'ozp-dl-fallback' );
+      if ( fallbackErr ) {
+        fallbackErr.parentElement.style.display = 'none';
+      }
     } )
     .catch( function () {
+      // fetch() itself failed (offline, blocked by an extension, etc.) rather
+      // than the server responding — the manual link is a reasonable retry here.
       title.textContent = 'Download unavailable right now';
       sub.textContent = 'Please use the manual link below.';
     } );
