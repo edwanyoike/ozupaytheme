@@ -2,7 +2,7 @@
 Theme Name:  OzuLabs
 Template:    twentytwentyfive
 Description: OzuLabs child theme — mobile-first, conversion-focused design for ozulabs.com, serving OzuPay, Turbo Search, and OzuSMS
-Version:     1.8.22
+Version:     1.8.23
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -211,6 +211,18 @@ a.ozp-hero-price-btn.primary { color: #ffffff !important; }
     border-radius: var(--r-sm);
     display: block;
     flex-shrink: 0;
+}
+
+/* Company byline next to the product wordmark — ozupay.com is OzuPay-first
+   (single product, per steering); OzuLabs appears only as a small credit. */
+.ozp-logo-byline {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255,255,255,.55);
+    letter-spacing: .02em;
+    align-self: flex-end;
+    padding-bottom: 2px;
+    white-space: nowrap;
 }
 
 /* Mobile: nav hidden by default, drops down when .open */
