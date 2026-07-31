@@ -1614,6 +1614,17 @@ add_action( 'wp_footer', function (): void {
     if ( ! function_exists( 'WC' ) ) {
         return;
     }
+
+    // No toast on the cart/checkout pages: the customer is already where the
+    // toast's "Proceed to checkout" CTA points, and on mobile the toast sits
+    // on top of the payment box. Clear the session flag too, so navigating
+    // back to the shop doesn't resurrect a stale "added to cart" toast.
+    if ( is_cart() || is_checkout() ) {
+        ?>
+<script>try { sessionStorage.removeItem( 'ozp_toast' ); } catch ( e ) {}</script>
+        <?php
+        return;
+    }
     ?>
 <div id="ozp-cart-toast" class="ozp-cart-toast" role="status" aria-live="polite">
     <div class="ozp-cart-toast-top">
