@@ -2204,9 +2204,80 @@ add_action( 'woocommerce_before_checkout_form', function (): void {
     <?php
 }, 10 );
 
-// Order received / thank-you page — steps at the top.
-add_action( 'woocommerce_before_order_notes', function (): void {}, 1 );
+// ── Order received page — intro block (steps + account notice) ─────────────
+//
+// This site's order-received page is the WooCommerce *block* order
+// confirmation template, not the classic thankyou.php. On that template every
+// legacy `woocommerce_thankyou` callback is rendered by the
+// order-confirmation-additional-information block, which is the LAST block on
+// the page — so anything hooked there lands underneath the order totals, the
+// M-Pesa payment details and the pay-balance card, no matter what priority it
+// uses. That is how the progress breadcrumb and the account notice ended up at
+// the very bottom of the page.
+//
+// templates/order-confirmation.html therefore calls this shortcode at the top
+// of the page instead. The `woocommerce_thankyou` registrations further below
+// are kept as a fallback for the classic template and skip themselves when the
+// shortcode has already rendered, so nothing is ever output twice.
+
+/**
+ * Whether the order-received intro block has already been rendered on this
+ * request. Call with `true` to mark it as rendered.
+ */
+function ozp_order_intro_rendered( bool $mark = false ): bool {
+    static $rendered = false;
+    if ( $mark ) {
+        $rendered = true;
+    }
+    return $rendered;
+}
+
+/**
+ * The order being viewed on the order-received page, but only for a viewer
+ * allowed to see it. This is the same gate WooCommerce's classic thank-you
+ * template applies: the order key in the URL is the credential, or the
+ * logged-in customer owns the order.
+ */
+function ozp_order_received_order(): ?WC_Order {
+    if ( ! function_exists( 'is_order_received_page' ) || ! is_order_received_page() ) {
+        return null;
+    }
+    $order_id = absint( get_query_var( 'order-received' ) );
+    if ( ! $order_id ) {
+        return null;
+    }
+    $order = wc_get_order( $order_id );
+    if ( ! $order ) {
+        return null;
+    }
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display gate on a link the customer follows from their own order.
+    $key = isset( $_GET['key'] ) ? wc_clean( wp_unslash( $_GET['key'] ) ) : '';
+    if ( '' !== $key && hash_equals( $order->get_order_key(), $key ) ) {
+        return $order;
+    }
+    if ( is_user_logged_in() && (int) $order->get_customer_id() === get_current_user_id() ) {
+        return $order;
+    }
+    return null;
+}
+
+add_shortcode( 'ozp_order_confirmation_intro', function (): string {
+    $order = ozp_order_received_order();
+    ozp_order_intro_rendered( true );
+
+    ob_start();
+    ozp_checkout_steps( 'complete' );
+    if ( $order ) {
+        ozp_order_account_notice( $order );
+    }
+    return (string) ob_get_clean();
+} );
+
+// Classic thank-you template fallback — no-op once the shortcode above has run.
 add_action( 'woocommerce_thankyou', function (): void {
+    if ( ozp_order_intro_rendered() ) {
+        return;
+    }
     ozp_checkout_steps( 'complete' );
 }, 1 );
 
@@ -2930,15 +3001,10 @@ add_action( 'woocommerce_payment_complete', function ( $order_id ): void {
 // the same window as this order as "just created for this purchase" — this
 // also covers a cancelled-then-retried STK push, where the account was
 // created against an earlier, separate order.
-add_action( 'woocommerce_thankyou', function ( $order_id ): void {
-    if ( ! $order_id ) {
-        return;
-    }
-    $order = wc_get_order( $order_id );
-    if ( ! $order ) {
-        return;
-    }
-
+// Rendered at the top of the order-received page by the
+// [ozp_order_confirmation_intro] shortcode, and from the woocommerce_thankyou
+// fallback below on the classic thank-you template.
+function ozp_order_account_notice( WC_Order $order ): void {
     $customer_id = $order->get_customer_id();
     if ( ! $customer_id ) {
         return;
@@ -2953,7 +3019,7 @@ add_action( 'woocommerce_thankyou', function ( $order_id ): void {
 
     if ( $just_registered ) {
         printf(
-            '<div class="woocommerce-message" role="alert">%s</div>',
+            '<div class="ozp-order-notice" role="status">%s</div>',
             wp_kses_post( sprintf(
                 /* translators: %s: customer's email address */
                 __( 'Your account details have been emailed to you at <strong>%s</strong> — check your spam or junk folder if you don\'t see it within a few minutes.', 'ozupay' ),
@@ -2962,13 +3028,24 @@ add_action( 'woocommerce_thankyou', function ( $order_id ): void {
         );
     } else {
         printf(
-            '<div class="woocommerce-message" role="alert">%s</div>',
+            '<div class="ozp-order-notice" role="status">%s</div>',
             wp_kses_post( sprintf(
                 /* translators: %s: My Account page URL */
                 __( 'You already have an account — <a href="%s">log in</a> to access your license and download.', 'ozupay' ),
                 esc_url( wc_get_page_permalink( 'myaccount' ) )
             ) )
         );
+    }
+}
+
+// Classic thank-you template fallback — no-op once the intro shortcode has run.
+add_action( 'woocommerce_thankyou', function ( $order_id ): void {
+    if ( ozp_order_intro_rendered() || ! $order_id ) {
+        return;
+    }
+    $order = wc_get_order( $order_id );
+    if ( $order ) {
+        ozp_order_account_notice( $order );
     }
 }, 5 );
 

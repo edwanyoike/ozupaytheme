@@ -2,7 +2,7 @@
 Theme Name:  OzuLabs
 Template:    twentytwentyfive
 Description: OzuLabs child theme — mobile-first, conversion-focused design for ozulabs.com, serving OzuPay, Turbo Search, and OzuSMS
-Version:     1.8.23
+Version:     1.8.24
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -5962,3 +5962,250 @@ ul.ozl-cat-pills.wp-block-categories-list {
     flex-shrink: 0;
 }
 .ozl-blog-search .wp-block-search__button:hover { background: var(--accent-dark); }
+
+/* ── Order received (WooCommerce block order confirmation) ──────────────────
+   The order-received endpoint renders WooCommerce's block order-confirmation
+   template, which ships with none of the checkout's styling — so without this
+   section the page falls back to raw WooCommerce/TT5 defaults right after a
+   fully designed checkout. templates/order-confirmation.html supplies the
+   layout; everything below gives those blocks the same card language as
+   #order_review on the checkout page (white cards, --border hairlines, cream
+   table headers in mono caps).
+   Selectors are scoped to .ozp-order-received so nothing here can leak into
+   My Account → View order, which reuses several of the same block classes. */
+
+.ozp-order-received { color: var(--text); }
+
+/* Progress steps sit at the very top, above the "Order received" heading. */
+.ozp-order-received .ozp-checkout-steps { margin: 0 0 18px; }
+
+/* Status: "Order received" + "Thank you. Your order has been received." */
+.ozp-order-received .wc-block-order-confirmation-status h1 {
+    font-size: clamp(24px, 3.2vw, 32px) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    color: var(--text) !important;
+    margin: 0 0 6px !important;
+    line-height: 1.15 !important;
+}
+.ozp-order-received .wc-block-order-confirmation-status p,
+.ozp-order-received .wc-block-order-confirmation-status-description p {
+    font-size: 15px !important;
+    color: var(--text-muted) !important;
+    margin: 0 0 8px !important;
+    line-height: 1.6 !important;
+}
+.ozp-order-received .wc-block-order-confirmation-status-description { margin-bottom: 20px; }
+
+/* Section headings — "Order details", "Shipping address", … */
+.ozp-order-received h2 {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+    color: var(--text) !important;
+    margin: 26px 0 8px !important;
+}
+
+/* Summary — order no. / date / total / email / payment method. Rendered by WC
+   as a flat <ul>; turn it into a bordered card of label-over-value cells. */
+.ozp-order-received .wc-block-order-confirmation-summary-list {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1px !important;
+    list-style: none !important;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    background: var(--surface-alt) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--r-md) !important;
+    overflow: hidden !important;
+}
+.ozp-order-received .wc-block-order-confirmation-summary-list-item {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    margin: 0 !important;
+    padding: 10px 14px !important;
+    background: var(--surface) !important;
+    border: none !important;
+}
+.ozp-order-received .wc-block-order-confirmation-summary-list-item__key {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.07em !important;
+    color: var(--text-dim) !important;
+}
+.ozp-order-received .wc-block-order-confirmation-summary-list-item__value {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--text) !important;
+    overflow-wrap: anywhere !important;
+}
+
+@media (min-width: 782px) {
+    .ozp-order-received .wc-block-order-confirmation-summary-list {
+        grid-template-columns: repeat(5, 1fr) !important;
+    }
+}
+
+/* Order totals table — same card as the checkout's order review table. */
+.ozp-order-received .wc-block-order-confirmation-totals__table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--r-md) !important;
+    overflow: hidden !important;
+    margin: 0 0 8px !important;
+}
+.ozp-order-received .wc-block-order-confirmation-totals__table thead th {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.07em !important;
+    color: var(--text-dim) !important;
+    text-align: left !important;
+    padding: 7px 14px !important;
+    background: var(--bg) !important;
+    border-bottom: 1px solid var(--surface-alt) !important;
+}
+.ozp-order-received .wc-block-order-confirmation-totals__table thead th.wc-block-order-confirmation-totals__total,
+.ozp-order-received .wc-block-order-confirmation-totals__table td.wc-block-order-confirmation-totals__total {
+    text-align: right !important;
+}
+.ozp-order-received .wc-block-order-confirmation-totals__table tbody td {
+    padding: 10px 14px !important;
+    border-bottom: 1px solid var(--bg) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--text) !important;
+    vertical-align: middle !important;
+}
+.ozp-order-received .wc-block-order-confirmation-totals__table tbody td .product-quantity {
+    color: var(--text-subtle) !important;
+    font-weight: 400 !important;
+}
+.ozp-order-received .wc-block-order-confirmation-totals__table tbody a {
+    color: var(--text) !important;
+    text-decoration: none !important;
+}
+.ozp-order-received .wc-block-order-confirmation-totals__table tbody a:hover { color: var(--accent) !important; }
+.ozp-order-received .wc-block-order-confirmation-totals__table tfoot th,
+.ozp-order-received .wc-block-order-confirmation-totals__table tfoot td {
+    padding: 7px 14px !important;
+    border-top: 1px solid var(--surface-alt) !important;
+    font-size: 12px !important;
+    background: var(--surface) !important;
+}
+.ozp-order-received .wc-block-order-confirmation-totals__table tfoot th {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    color: var(--text-dim) !important;
+    text-align: left !important;
+}
+.ozp-order-received .wc-block-order-confirmation-totals__table tfoot td {
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+    text-align: right !important;
+}
+/* Grand total — the last footer row, emphasised like the checkout's. */
+.ozp-order-received .wc-block-order-confirmation-totals__table tfoot tr:last-child th,
+.ozp-order-received .wc-block-order-confirmation-totals__table tfoot tr:last-child td {
+    font-family: 'Inter', system-ui, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    text-transform: none !important;
+    color: var(--text) !important;
+    border-top: 1px solid var(--border) !important;
+}
+
+/* Addresses — one card per column, side by side from tablet up. */
+.ozp-order-received .wc-block-order-confirmation-address-wrapper {
+    gap: 12px !important;
+    margin-top: 0 !important;
+}
+.ozp-order-received .wc-block-order-confirmation-shipping-address,
+.ozp-order-received .wc-block-order-confirmation-billing-address {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--r-md) !important;
+    padding: 12px 14px !important;
+    font-size: 13px !important;
+    line-height: 1.65 !important;
+    color: var(--text-muted) !important;
+    margin: 0 !important;
+}
+.ozp-order-received .wc-block-order-confirmation-shipping-address address,
+.ozp-order-received .wc-block-order-confirmation-billing-address address {
+    font-style: normal !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* M-Pesa payment details, injected by the OzuPay plugin with inline styles of
+   its own — override them so the receipt matches the cards above. */
+.ozp-order-received .ozupay-payment-details { margin: 26px 0 0 !important; }
+.ozp-order-received .ozupay-payment-details h2 {
+    margin: 0 0 8px !important;
+}
+.ozp-order-received .ozupay-payment-details-table {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--r-md) !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    overflow: hidden !important;
+    background: var(--surface) !important;
+}
+.ozp-order-received .ozupay-payment-details-table th,
+.ozp-order-received .ozupay-payment-details-table td {
+    border: none !important;
+    border-bottom: 1px solid var(--bg) !important;
+    padding: 9px 14px !important;
+    font-size: 13px !important;
+}
+.ozp-order-received .ozupay-payment-details-table tr:last-child th,
+.ozp-order-received .ozupay-payment-details-table tr:last-child td { border-bottom: none !important; }
+.ozp-order-received .ozupay-payment-details-table th {
+    background: var(--bg) !important;
+    color: var(--text-subtle) !important;
+    font-weight: 600 !important;
+    width: 45% !important;
+}
+.ozp-order-received .ozupay-payment-details-table td {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    font-weight: 600 !important;
+}
+
+/* Account notice ("your details have been emailed" / "you already have an
+   account"). Deliberately not .woocommerce-message: WooCommerce's own notice
+   CSS absolutely positions a tick glyph in the padding box, which had nothing
+   reserved for it here and printed straight over the first line of text. */
+.ozp-order-notice {
+    background: var(--accent-dim);
+    border: 1px solid rgba(5,150,105,.25);
+    border-radius: var(--r-md);
+    padding: 11px 14px;
+    margin: 0 0 18px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-muted);
+}
+.ozp-order-notice::before { content: none !important; }
+.ozp-order-notice strong { color: var(--text); }
+.ozp-order-notice a { color: var(--accent-dark); font-weight: 700; text-decoration: underline; }
+
+/* Empty block wrappers (no downloads, no additional fields) must not leave
+   their heading behind as a stray label. */
+.ozp-order-received .wc-block-order-confirmation-downloads-wrapper:empty,
+.ozp-order-received .wc-block-order-confirmation-additional-fields-wrapper:empty,
+.ozp-order-received .wc-block-order-confirmation-additional-information:empty { display: none !important; }
