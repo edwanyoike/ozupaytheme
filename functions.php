@@ -3017,25 +3017,48 @@ function ozp_order_account_notice( WC_Order $order ): void {
 
     $just_registered = ( time() - strtotime( $user->user_registered . ' UTC' ) ) < 30 * MINUTE_IN_SECONDS;
 
+    // WooCommerce logs the customer straight in when it creates their account
+    // during checkout, and a returning customer has to be logged in to reach
+    // checkout at all (guest checkout is disabled site-wide) — so on this page
+    // the viewer is normally already signed in as the order's customer. Telling
+    // them to "log in" in that state is wrong; point them at their licenses
+    // instead. Anyone else reaching this page holds the order key rather than
+    // the account (an admin, or the link opened in a browser that isn't signed
+    // in), where the log-in prompt is still the right thing to show.
+    $viewing_own_order = is_user_logged_in() && get_current_user_id() === (int) $customer_id;
+
     if ( $just_registered ) {
-        printf(
-            '<div class="ozp-order-notice" role="status">%s</div>',
-            wp_kses_post( sprintf(
-                /* translators: %s: customer's email address */
-                __( 'Your account details have been emailed to you at <strong>%s</strong> — check your spam or junk folder if you don\'t see it within a few minutes.', 'ozupay' ),
-                esc_html( $order->get_billing_email() )
-            ) )
+        $message = sprintf(
+            /* translators: %s: customer's email address */
+            __( 'Your account details have been emailed to you at <strong>%s</strong> — check your spam or junk folder if you don\'t see it within a few minutes.', 'ozupay' ),
+            esc_html( $order->get_billing_email() )
+        );
+    } elseif ( $viewing_own_order ) {
+        $message = sprintf(
+            /* translators: %s: My Account licenses URL */
+            __( 'Your license key and plugin download are in <a href="%s">your account</a>.', 'ozupay' ),
+            esc_url( ozp_account_licenses_url() )
         );
     } else {
-        printf(
-            '<div class="ozp-order-notice" role="status">%s</div>',
-            wp_kses_post( sprintf(
-                /* translators: %s: My Account page URL */
-                __( 'You already have an account — <a href="%s">log in</a> to access your license and download.', 'ozupay' ),
-                esc_url( wc_get_page_permalink( 'myaccount' ) )
-            ) )
+        $message = sprintf(
+            /* translators: %s: My Account page URL */
+            __( 'You already have an account — <a href="%s">log in</a> to access your license and download.', 'ozupay' ),
+            esc_url( wc_get_page_permalink( 'myaccount' ) )
         );
     }
+
+    printf( '<div class="ozp-order-notice" role="status">%s</div>', wp_kses_post( $message ) );
+}
+
+/**
+ * My Account → Licenses (the OzuLicense customer portal endpoint), falling back
+ * to the My Account root when that plugin isn't active on this install.
+ */
+function ozp_account_licenses_url(): string {
+    if ( class_exists( 'OzLS\Portal\PortalEndpoint' ) && function_exists( 'wc_get_account_endpoint_url' ) ) {
+        return wc_get_account_endpoint_url( 'ozls-licenses' );
+    }
+    return (string) wc_get_page_permalink( 'myaccount' );
 }
 
 // Classic thank-you template fallback — no-op once the intro shortcode has run.
