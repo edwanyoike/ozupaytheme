@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.28
+Version:     1.8.29
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -6703,4 +6703,40 @@ ul.ozl-cat-pills.wp-block-categories-list {
 @media (max-width: 640px) {
     .ozp-article-page .wp-block-post-content p,
     .ozp-article-page .wp-block-post-content li { font-size: 17px; line-height: 1.76; }
+}
+
+@media (min-width: 900px) {
+    .ozp-article-page .ozp-article-layout { gap: 64px; max-width: 1080px; }
+    .ozp-article-page .ozp-article-sidebar {
+        width: 260px;
+        padding: 22px 20px 20px;
+        background: #FFFFFF;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 12px 28px -28px rgba(15,23,42,.55);
+    }
+    .ozp-article-page .ozp-article-sidebar::before {
+        content: 'On this page';
+        display: block;
+        margin-bottom: 13px;
+        color: var(--text-subtle);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .09em;
+        text-transform: uppercase;
+    }
+    .ozp-article-page .ozp-toc-list { display: flex; flex-direction: column; gap: 8px; }
+    .ozp-article-page .ozp-toc-list li { margin: 0; }
+    .ozp-article-page .ozp-toc-list a { gap: 9px; padding: 4px 0; font-size: 13px; line-height: 1.52; }
+    .ozp-article-page .ozp-article-content { max-width: 700px; padding: 56px 58px 64px; }
+    .ozp-article-page .wp-block-post-content { max-width: 585px !important; }
+    .ozp-article-page .wp-block-post-content p,
+    .ozp-article-page .wp-block-post-content li { font-size: 17px; line-height: 1.92; }
+    .ozp-article-page .wp-block-post-content p { margin-bottom: 1.55em; }
+    .ozp-article-page .wp-block-post-content h2 { margin-top: 62px !important; margin-bottom: 20px !important; }
+    .ozp-article-page .wp-block-post-content h3 { margin-top: 42px !important; margin-bottom: 14px !important; }
+    .ozp-article-page .wp-block-post-content ul,
+    .ozp-article-page .wp-block-post-content ol { margin: 26px 0 32px; }
+    .ozp-article-page .wp-block-post-content li + li { margin-top: .65em; }
 }
