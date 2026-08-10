@@ -1,7 +1,7 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:group {"align":"full","style":{"color":{"background":"#ffffff"},"spacing":{"padding":{"top":"80px","bottom":"80px"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull" style="background-color:#ffffff;padding-top:80px;padding-bottom:80px">
+<!-- wp:group {"tagName":"main","align":"full","anchor":"ozp-main","style":{"color":{"background":"#ffffff"},"spacing":{"padding":{"top":"80px","bottom":"80px"}}},"layout":{"type":"constrained"}} -->
+<main id="ozp-main" class="wp-block-group alignfull" style="background-color:#ffffff;padding-top:80px;padding-bottom:80px">
 
     <div class="ozp-404-block">
         <div class="ozp-404-code">404</div>
@@ -10,10 +10,12 @@
         <div class="ozp-404-actions">
             <a href="/" class="ozp-btn ozp-btn-primary">Go home</a>
             <a href="/docs/" class="ozp-btn ozp-btn-outline">Read the docs</a>
+            <a href="/contact/" class="ozp-btn ozp-btn-outline">Contact support</a>
         </div>
+        <!-- wp:search {"label":"Search the site","showLabel":true,"placeholder":"Search documentation and guides…","buttonText":"Search","buttonPosition":"button-inside","className":"ozp-404-search"} /-->
     </div>
 
-</div>
+</main>
 <!-- /wp:group -->
 
 <!-- wp:group {"align":"full","style":{"color":{"background":"#ffffff"},"spacing":{"padding":{"top":"0","bottom":"80px"}}},"layout":{"type":"constrained"}} -->

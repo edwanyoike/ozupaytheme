@@ -87,7 +87,7 @@
 .ofp-modal-body li{line-height:1.55;}
 </style>
 
-<div class="ofp">
+<main id="ozp-main" class="ofp">
 
 <!-- Hero -->
 <section class="ofp-hero">
@@ -120,7 +120,7 @@
 </div>
 </section>
 
-</div><!-- /ofp -->
+</main><!-- /ofp -->
 
 <!-- Modal -->
 <div class="ofp-modal-backdrop" id="ofp-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="ofp-modal-title">
@@ -361,10 +361,11 @@
     var modalBadge = document.getElementById( 'ofp-modal-badge' );
     var modalBody  = document.getElementById( 'ofp-modal-body' );
     var closeBtn   = document.getElementById( 'ofp-modal-close' );
+    var lastTrigger = null;
 
     function allFeatures() { return freeFeatures.concat( proFeatures ); }
 
-    function openModal( id, updateHash ) {
+    function openModal( id, updateHash, trigger ) {
       var f    = allFeatures().find( function (x) { return x.id === id; } );
       var tier = freeFeatures.find( function (x) { return x.id === id; } ) ? FREE : PRO;
       if ( ! f ) return;
@@ -372,6 +373,7 @@
       modalBadge.textContent = tier;
       modalBadge.className   = 'ofp-badge ofp-badge--' + tier.toLowerCase();
       modalBody.innerHTML    = f.detail;
+      lastTrigger = trigger || document.activeElement;
       backdrop.removeAttribute( 'hidden' );
       document.body.style.overflow = 'hidden';
       closeBtn.focus();
@@ -386,12 +388,13 @@
       if ( window.location.hash ) {
         history.replaceState( null, '', window.location.pathname + window.location.search );
       }
+      if ( lastTrigger && typeof lastTrigger.focus === 'function' ) lastTrigger.focus();
     }
 
     document.addEventListener( 'click', function (e) {
       var btn = e.target.closest( '.ofp-readmore' );
       if ( btn ) {
-        openModal( btn.closest( '.ofp-card' ).dataset.id );
+        openModal( btn.closest( '.ofp-card' ).dataset.id, true, btn );
         return;
       }
       if ( e.target === backdrop ) {
@@ -404,6 +407,13 @@
     document.addEventListener( 'keydown', function (e) {
       if ( e.key === 'Escape' && ! backdrop.hasAttribute( 'hidden' ) ) {
         closeModal();
+      }
+      if ( e.key === 'Tab' && ! backdrop.hasAttribute( 'hidden' ) ) {
+        var focusable = backdrop.querySelectorAll( 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])' );
+        var first = focusable[0], last = focusable[focusable.length - 1];
+        if ( ! first ) return;
+        if ( e.shiftKey && document.activeElement === first ) { e.preventDefault(); last.focus(); }
+        else if ( ! e.shiftKey && document.activeElement === last ) { e.preventDefault(); first.focus(); }
       }
     } );
 

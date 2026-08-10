@@ -169,6 +169,78 @@ add_action( 'wp_body_open', function () {
     echo '<a class="ozp-skip-link" href="#ozp-main">' . esc_html__( 'Skip to main content', 'ozupay-theme' ) . '</a>' . "\n";
 } );
 
+// Block templates are static HTML, while WordPress installations are often
+// served from a subdirectory on staging or behind a managed host. Resolve the
+// theme's internal root-relative links at render time so navigation and theme
+// assets remain valid in either environment.
+add_filter( 'render_block', function ( string $content ): string {
+    if ( is_admin() || '' === $content ) {
+        return $content;
+    }
+    $content = preg_replace(
+        '~\bhref="/(?!/)~',
+        'href="' . esc_url( home_url( '/' ) ),
+        $content
+    );
+    return str_replace(
+        'src="/wp-content/themes/ozupay-theme/',
+        'src="' . esc_url( get_stylesheet_directory_uri() ) . '/',
+        $content
+    );
+}, 20 );
+
+// Keep customers focused once they enter the purchase flow.  The normal site
+// navigation is useful while browsing, but adds competing exits on checkout,
+// pay-for-order, and the receipt page.  This is deliberately rendered through
+// wp_body_open (rather than a template override) so it also works with either
+// classic or block-based WooCommerce checkout content.
+add_action( 'wp_body_open', function (): void {
+    if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+        return;
+    }
+    $home_url = home_url( '/' );
+    $icon_url = get_stylesheet_directory_uri() . '/favicon.png';
+    ?>
+    <header class="ozp-compact-checkout-header">
+        <a href="<?php echo esc_url( $home_url ); ?>" class="ozp-ccheader-logo" aria-label="<?php esc_attr_e( 'OzuPay home', 'ozupay-theme' ); ?>">
+            <img src="<?php echo esc_url( $icon_url ); ?>" width="20" height="20" alt="">
+            <span>OzuPay</span>
+        </a>
+        <span class="ozp-ccheader-secure">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <?php esc_html_e( 'Secure checkout', 'ozupay-theme' ); ?>
+        </span>
+    </header>
+    <?php
+}, 5 );
+
+// The compact header above is output before template parts, so suppress the
+// full marketing navigation before it can briefly flash during page load.
+add_action( 'wp_head', function (): void {
+    if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+        echo '<style>.woocommerce-checkout .ozp-header{display:none!important}</style>' . "\n";
+    }
+}, 1 );
+
+// The header is a portable static template part, so give visitors a reliable
+// current-page cue after it has rendered instead of baking page-specific URLs
+// into every template variant.
+add_action( 'wp_footer', function (): void {
+    if ( is_admin() ) {
+        return;
+    }
+    ?>
+    <script>
+    document.querySelectorAll('.ozp-nav a').forEach(function (link) {
+        var url = new URL(link.href, window.location.origin);
+        if (url.pathname === window.location.pathname && !url.hash) {
+            link.setAttribute('aria-current', 'page');
+        }
+    });
+    </script>
+    <?php
+}, 1 );
+
 // Per-page document titles — keyword-rich, consistently cased.
 add_filter( 'document_title_parts', function ( array $parts ): array {
     if ( is_front_page() ) {
