@@ -34,8 +34,16 @@
 
             <!-- wp:post-content {"layout":{"type":"constrained"},"style":{"color":{"text":"#475569"},"typography":{"fontSize":"16px","lineHeight":"1.9"}}} /-->
 
-            <!-- wp:group {"style":{"spacing":{"margin":{"top":"64px","bottom":"64px"},"padding":{"top":"32px"}},"border":{"top":{"color":"#E4DECF","width":"1px"}}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-            <div class="wp-block-group" style="margin-top:64px;margin-bottom:64px;padding-top:32px;border-top:1px solid #D6CFBE">
+            <!-- wp:group {"className":"ozp-author-bio","style":{"spacing":{"blockGap":"6px","margin":{"top":"48px","bottom":"0"},"padding":{"top":"24px","bottom":"4px"}},"border":{"top":{"color":"#E4DECF","width":"1px"}}},"layout":{"type":"constrained"}} -->
+            <div class="wp-block-group ozp-author-bio" style="border-top-color:#E4DECF;border-top-width:1px;margin-top:48px;margin-bottom:0;padding-top:24px;padding-bottom:4px">
+                <!-- wp:post-author-name {"isLink":true,"style":{"color":{"text":"#0F172A"},"typography":{"fontSize":"15px","fontWeight":"700"}}} /-->
+
+                <!-- wp:post-author-biography {"showAvatar":true,"avatarSize":48,"style":{"color":{"text":"#475569"},"typography":{"fontSize":"14px","lineHeight":"1.6"}}} /-->
+            </div>
+            <!-- /wp:group -->
+
+            <!-- wp:group {"style":{"spacing":{"margin":{"top":"32px","bottom":"64px"},"padding":{"top":"32px"}},"border":{"top":{"color":"#E4DECF","width":"1px"}}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
+            <div class="wp-block-group" style="margin-top:32px;margin-bottom:64px;padding-top:32px;border-top:1px solid #D6CFBE">
                 <!-- wp:post-navigation-link {"type":"previous","style":{"color":{"text":"#059669"},"typography":{"fontSize":"14px"}}} /-->
                 <!-- wp:post-navigation-link {"type":"next","style":{"color":{"text":"#059669"},"typography":{"fontSize":"14px"}}} /-->
             </div>
