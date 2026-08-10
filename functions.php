@@ -20,6 +20,16 @@ add_action( 'wp_enqueue_scripts', function () {
         [],
         null
     );
+    // A dedicated serif face makes long-form guides comfortable to read
+    // without loading it on product, account, or checkout pages.
+    if ( is_singular( 'post' ) ) {
+        wp_enqueue_style(
+            'ozupay-article-font',
+            'https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&display=swap',
+            [],
+            null
+        );
+    }
 } );
 
 // jQuery core/migrate are the last render-blocking <head> scripts on the front end — every
@@ -240,6 +250,30 @@ add_action( 'wp_footer', function (): void {
     </script>
     <?php
 }, 1 );
+
+// A quiet reading-position indicator helps on the deliberately long technical
+// guides, without introducing a floating action that competes with the text.
+add_action( 'wp_footer', function (): void {
+    if ( ! is_singular( 'post' ) ) {
+        return;
+    }
+    ?>
+    <div class="ozp-reading-progress" aria-hidden="true"><span></span></div>
+    <script>
+    (function () {
+        var bar = document.querySelector('.ozp-reading-progress span');
+        if (!bar) return;
+        function update() {
+            var total = document.documentElement.scrollHeight - window.innerHeight;
+            bar.style.transform = 'scaleX(' + (total > 0 ? Math.min(1, window.scrollY / total) : 0) + ')';
+        }
+        window.addEventListener('scroll', update, {passive: true});
+        window.addEventListener('resize', update);
+        update();
+    }());
+    </script>
+    <?php
+}, 5 );
 
 // Per-page document titles — keyword-rich, consistently cased.
 add_filter( 'document_title_parts', function ( array $parts ): array {
