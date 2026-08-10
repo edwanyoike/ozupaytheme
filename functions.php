@@ -516,8 +516,8 @@ add_action( 'wp_head', function () {
         $json_ld[] = '{
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "' . esc_js( $plan_name ) . '",
-    "description": "' . esc_js( $plan_desc ) . '",
+    "name": ' . wp_json_encode( $plan_name ) . ',
+    "description": ' . wp_json_encode( $plan_desc ) . ',
     "url": "' . $url . '",
     "brand": { "@type": "Brand", "name": "OzuPay" },
     "offers": {
@@ -540,7 +540,7 @@ add_action( 'wp_head', function () {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "OzuPay Blog",
-    "description": "' . esc_js( $desc ) . '",
+    "description": ' . wp_json_encode( $desc ) . ',
     "url": "' . $url . '",
     "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" }
 }';
@@ -557,15 +557,30 @@ add_action( 'wp_head', function () {
             $og_image = esc_url( $thumb );
         }
 
+        // A named author with a bio on file gets full Person credit in schema; otherwise fall
+        // back to the Organization rather than ever inventing a name or bio.
+        $author_id   = (int) get_post_field( 'post_author', $queried_id );
+        $author_name = $author_id ? get_the_author_meta( 'display_name', $author_id ) : '';
+        $author_bio  = $author_id ? get_the_author_meta( 'description', $author_id ) : '';
+        if ( $author_name && $author_bio ) {
+            // esc_js() escapes for a JS string literal (allows \'), which is not valid inside
+            // strict JSON: an author bio containing an apostrophe ("OzuPay's...") broke every
+            // schema parser reading this block. wp_json_encode() produces a real JSON string,
+            // quotes included, so it's spliced in directly rather than wrapped in '"..."'.
+            $author_json = '{ "@type": "Person", "name": ' . wp_json_encode( $author_name ) . ', "description": ' . wp_json_encode( $author_bio ) . ', "url": "' . esc_url( get_author_posts_url( $author_id ) ) . '" }';
+        } else {
+            $author_json = '{ "@type": "Organization", "name": "OzuPay" }';
+        }
+
         $json_ld[] = '{
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "' . esc_js( get_the_title( $queried_id ) ) . '",
-    "description": "' . esc_js( $desc ) . '",
+    "headline": ' . wp_json_encode( get_the_title( $queried_id ) ) . ',
+    "description": ' . wp_json_encode( $desc ) . ',
     "url": "' . $url . '",
     "datePublished": "' . esc_js( get_the_date( 'c', $queried_id ) ) . '",
     "dateModified": "' . esc_js( get_the_modified_date( 'c', $queried_id ) ) . '",
-    "author": { "@type": "Organization", "name": "OzuPay" },
+    "author": ' . $author_json . ',
     "publisher": { "@type": "Organization", "name": "OzuPay", "url": "' . $site_url . '" },
     "mainEntityOfPage": { "@type": "WebPage", "@id": "' . $url . '" }
 }';
@@ -1152,10 +1167,30 @@ add_action( 'wp_head', function () {
     }
 }, 1 );
 
+/**
+ * True when the current cart contains something that actually needs a real
+ * shipping address (e.g. a physical test product), as opposed to the normal
+ * digital-goods-only OzuPay plugin purchase. Billing address fields below
+ * are only safe to strip when this is false — with them gone, a cart that
+ * does need shipping has no address to fall back to at all, and the
+ * customer only discovers "Ship to a different address?" by accident.
+ */
+function ozp_cart_needs_real_address(): bool {
+    return function_exists( 'WC' ) && WC()->cart && WC()->cart->needs_shipping();
+}
+
 // Billing form for digital goods in the Kenyan market: email, name, phone.
 // Not needed: street address, city, state/county, postcode, company,
 // address 2, country — OzuPay only supports KES, so country is fixed below.
+// Skipped entirely when the cart needs a real shipping address (see
+// ozp_cart_needs_real_address()) — that address has to come from somewhere,
+// and hiding the billing address fields left no way to enter one except by
+// discovering the collapsed "Ship to a different address?" section.
 add_filter( 'woocommerce_checkout_fields', function ( array $fields ): array {
+    if ( ozp_cart_needs_real_address() ) {
+        return $fields;
+    }
+
     // Remove fields irrelevant to a digital plugin purchase from Kenya.
     unset(
         $fields['billing']['billing_company'],
@@ -1325,7 +1360,7 @@ add_action( 'wp_footer', function () {
     <div id="fd-tx-fee" data-title="Transaction Fee Passthrough" hidden>
         <p>When enabled, the plugin automatically adds the official Safaricom transaction fee to the WooCommerce order total at checkout — but only when the M-Pesa gateway is selected. The amount is looked up from the published Safaricom tariff based on the order total. No manual configuration is needed.</p>
         <p><strong>Paybill merchants:</strong> Safaricom charges a fixed fee per transaction band — for example KES 5 on orders between KES 101 and KES 500, rising to a maximum of KES 108 on orders above KES 45,000. The plugin applies the correct amount automatically.</p>
-        <p><strong>Till (Buy Goods) merchants:</strong> Safaricom does not charge the customer on Till payments. The merchant pays 0.5% of the transaction amount capped at KES 200. Enabling this feature passes that merchant cost to the customer. Transactions of KES 200 and below are free — no fee is added.</p>
+        <p><strong>Till (Buy Goods) merchants:</strong> Safaricom does not charge the customer on Till payments. The merchant pays 0.5% of the transaction amount capped at KES 200. Enabling this feature passes that merchant cost to the customer. Transactions of KES 500 and below are free — no fee is added.</p>
         <p>The fee appears as a named line item in the order totals table and is saved to the order record. Customers see it on the checkout page, order confirmation email, and order detail screen. Available in Pro only.</p>
     </div>
 
@@ -1781,7 +1816,7 @@ document.addEventListener('DOMContentLoaded', function () {
         el.classList.add( 'ozp-added' );
         Array.from( el.childNodes ).forEach( function ( node ) {
             if ( node.nodeType === 3 && node.textContent.trim() ) {
-                node.textContent = ' In cart — Go to checkout  ';
+                node.textContent = ' In cart: Go to checkout  ';
             }
         } );
     }
