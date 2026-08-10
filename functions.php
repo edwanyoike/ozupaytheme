@@ -200,12 +200,17 @@ add_filter( 'render_block', function ( string $content ): string {
 }, 20 );
 
 // Keep customers focused once they enter the purchase flow.  The normal site
-// navigation is useful while browsing, but adds competing exits on checkout,
-// pay-for-order, and the receipt page.  This is deliberately rendered through
-// wp_body_open (rather than a template override) so it also works with either
-// classic or block-based WooCommerce checkout content.
+// navigation is useful while browsing, but adds competing exits on checkout
+// and pay-for-order.  Once the order is placed, the customer needs the normal
+// menu again (e.g. to reach My Account or keep browsing), so the receipt page
+// is excluded.  This is deliberately rendered through wp_body_open (rather
+// than a template override) so it also works with either classic or
+// block-based WooCommerce checkout content.
 add_action( 'wp_body_open', function (): void {
     if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+        return;
+    }
+    if ( function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
         return;
     }
     $home_url = home_url( '/' );
@@ -226,10 +231,15 @@ add_action( 'wp_body_open', function (): void {
 
 // The compact header above is output before template parts, so suppress the
 // full marketing navigation before it can briefly flash during page load.
+// Excludes the receipt page, matching the wp_body_open callback above.
 add_action( 'wp_head', function (): void {
-    if ( function_exists( 'is_checkout' ) && is_checkout() ) {
-        echo '<style>.woocommerce-checkout .ozp-header{display:none!important}</style>' . "\n";
+    if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+        return;
     }
+    if ( function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
+        return;
+    }
+    echo '<style>.woocommerce-checkout .ozp-header{display:none!important}</style>' . "\n";
 }, 1 );
 
 // The header is a portable static template part, so give visitors a reliable
