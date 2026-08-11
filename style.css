@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.33
+Version:     1.8.34
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -405,11 +405,17 @@ html.ozp-logged-in .ozp-account-dropdown.ozp-auth-only { display: none !importan
 
 /* Nav divider — separates account links from page links in mobile nav.
    These items only exist for mobile (hamburger menu); hide them on desktop
-   where the header-actions bar already shows Log in / My Account. */
+   where the header-actions bar already shows Log in / My Account.
+   Uses the #ozp-nav ID (not the .ozp-nav class) so this outranks
+   `html.ozp-logged-in .ozp-auth-only { display: inline-flex !important }`
+   above — that rule has one more class in its selector, which otherwise
+   beats a same-specificity `.ozp-nav .ozp-auth-only` and leaves Orders/
+   Licenses/Profile/Log out visible (and overflowing) in the desktop bar
+   for logged-in users. */
 .ozp-nav-divider { border-top: 1px solid #1E293B !important; margin-top: 6px !important; padding-top: 6px !important; }
 @media (min-width: 640px) {
-    .ozp-nav .ozp-nav-divider,
-    .ozp-nav .ozp-auth-only { display: none !important; }
+    #ozp-nav .ozp-nav-divider,
+    #ozp-nav .ozp-auth-only { display: none !important; }
 }
 
 /* Logout button styling */
