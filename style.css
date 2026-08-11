@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.32
+Version:     1.8.33
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -244,8 +244,13 @@ a.ozp-hero-price-btn.primary { color: #ffffff !important; }
 }
 
 /* Company byline next to the product wordmark — ozupay.com is OzuPay-first
-   (single product, per steering); OzuLabs appears only as a small credit. */
+   (single product, per steering); OzuLabs appears only as a small credit.
+   Hidden below tablet: on a 320-375px header row it was pushing cart/Buy
+   Now/hamburger into overflow alongside the logo — "OzuPay" alone reads
+   fine on its own, the byline is decoration, not navigation. Restored at
+   the 640px breakpoint below where there's room. */
 .ozp-logo-byline {
+    display: none;
     font-size: 11px;
     font-weight: 500;
     color: rgba(255,255,255,.55);
@@ -1404,6 +1409,7 @@ body { font-weight: 400; }
 
     body { padding-bottom: 0; }
     .ozp-mobile-cta { display: none; }
+    .ozp-logo-byline { display: inline; }
 
     .ozp-hero { padding: 40px var(--px) 48px; }
     .ozp-hero-actions { flex-direction: row; justify-content: center; }
