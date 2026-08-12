@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.36
+Version:     1.8.37
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -1914,10 +1914,14 @@ body { font-weight: 400; }
 
 /* Tables */
 .ozp-docs-table {
+    display: block;
+    max-width: 100%;
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
     margin: 12px 0 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .ozp-docs-table th {
     text-align: left;
@@ -1990,6 +1994,7 @@ body { font-weight: 400; }
         overflow-y: auto;
     }
     .ozp-docs-content { width: auto; padding-top: 36px; }
+    .ozp-docs-table { display: table; max-width: none; overflow: visible; }
     .ozp-docs-table td:first-child {
         white-space: nowrap;
         width: 36%;
