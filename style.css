@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.38
+Version:     1.8.39
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -17,7 +17,7 @@ Version:     1.8.38
     --accent-dim:  rgba(0,166,81,.1);
     --text:        #0F172A;
     --text-muted:  #475569;
-    --text-subtle: #64748B;
+    --text-subtle: #5B6B7E;
     --text-dim:    #94A3B8;
     --r-sm:   8px;
     --r-md:   12px;
@@ -1868,7 +1868,7 @@ body { font-weight: 400; }
     margin: 4px 0 4px;
 }
 .ozp-docs-section code {
-    font-family: 'Courier New', monospace;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
     font-size: 12px;
     background: rgba(0,166,81,.08);
     color: var(--accent);
@@ -6572,8 +6572,9 @@ ul.ozl-cat-pills.wp-block-categories-list {
     line-height: 1.04;
 }
 .ozp-blog-intro p { max-width: 590px; color: #CBD5E1 !important; font-size: 16px !important; line-height: 1.65; }
-.ozp-blog-page .wp-block-search.ozl-blog-search { max-width: 480px; margin: 22px 0 14px !important; }
+.ozp-blog-page .wp-block-search.ozl-blog-search { max-width: 1120px; margin: 22px auto 14px !important; }
 .ozp-blog-page .ozl-blog-search .wp-block-search__inside-wrapper {
+    max-width: 480px;
     border: 1px solid var(--border);
     border-radius: 10px;
     box-shadow: 0 8px 18px -16px rgba(15,23,42,.35);
@@ -6719,6 +6720,7 @@ ul.ozl-cat-pills.wp-block-categories-list {
 }
 @media (max-width: 640px) {
     .ozp-blog-page { padding-inline: 14px; }
+    .ozp-blog-page .wp-block-search.ozl-blog-search { max-width: none; }
     .ozp-blog-intro { border-radius: 14px; padding: 26px 20px !important; }
     .ozp-blog-page .ozl-blog-grid .wp-block-post-template.ozl-post-grid { grid-template-columns: 1fr; gap: 12px; }
     .ozp-blog-page .ozl-post-card .wp-block-post-title a { font-size: 18px; }
