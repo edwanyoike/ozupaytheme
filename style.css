@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.41
+Version:     1.8.42
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -1591,7 +1591,7 @@ body { font-weight: 400; }
     }
 
     .ozp-nav { flex-direction: row; gap: 2px; align-items: center; }
-    .ozp-nav li a { min-height: auto; height: auto; padding: 6px 14px; font-size: 14px; }
+    .ozp-nav li a { position: relative; min-height: auto; height: auto; padding: 6px 14px; font-size: 14px; }
     /* The current section needs a clear, brand-colour cue rather than the
        inherited white inset line used by WordPress menu items. */
     .ozp-header .ozp-nav li a[aria-current="page"],
@@ -1600,7 +1600,18 @@ body { font-weight: 400; }
         color: #ffffff !important;
         font-weight: 700;
         text-decoration: none;
-        box-shadow: inset 0 -2px 0 var(--accent);
+        box-shadow: none;
+    }
+    .ozp-header .ozp-nav li a[aria-current="page"]::after,
+    .ozp-header .ozp-nav li.current-menu-item a::after {
+        content: '';
+        position: absolute;
+        right: 14px;
+        bottom: 0;
+        left: 14px;
+        height: 2px;
+        background: var(--accent);
+        border-radius: 0;
     }
     .ozp-hamburger { display: none !important; }
 
