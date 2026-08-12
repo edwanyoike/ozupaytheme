@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.37
+Version:     1.8.38
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -4058,6 +4058,15 @@ input[name="cart[*][qty]"] {
     color: var(--text-subtle);
 }
 .ozp-ccheader-secure svg { width: 12px; height: 12px; }
+.ozp-ccheader-actions { display: flex; align-items: center; gap: 14px; }
+.ozp-ccheader-help {
+    color: var(--accent) !important;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.ozp-ccheader-help:hover { color: var(--accent-dark) !important; text-decoration: underline; }
 
 /* Checkout-specific page shells. Keeping the canvas softly tinted makes the
    white form and receipt cards legible without adding visual noise. */
@@ -4068,6 +4077,8 @@ input[name="cart[*][qty]"] {
 @media (max-width: 480px) {
     .ozp-compact-checkout-header { padding-inline: 14px; }
     .ozp-ccheader-secure { font-size: 11px; }
+    .ozp-ccheader-actions { gap: 10px; }
+    .ozp-ccheader-help { font-size: 11px; }
 }
 
 /* Powered-by notice — compact centered pill above the form (static, part of

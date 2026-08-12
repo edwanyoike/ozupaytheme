@@ -214,6 +214,7 @@ add_action( 'wp_body_open', function (): void {
         return;
     }
     $home_url = home_url( '/' );
+    $contact_url = home_url( '/contact/' );
     $icon_url = get_stylesheet_directory_uri() . '/favicon.png';
     ?>
     <header class="ozp-compact-checkout-header">
@@ -221,10 +222,13 @@ add_action( 'wp_body_open', function (): void {
             <img src="<?php echo esc_url( $icon_url ); ?>" width="20" height="20" alt="">
             <span>OzuPay</span>
         </a>
-        <span class="ozp-ccheader-secure">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-            <?php esc_html_e( 'Secure checkout', 'ozupay-theme' ); ?>
-        </span>
+        <div class="ozp-ccheader-actions">
+            <span class="ozp-ccheader-secure">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                <?php esc_html_e( 'Secure checkout', 'ozupay-theme' ); ?>
+            </span>
+            <a href="<?php echo esc_url( $contact_url ); ?>" class="ozp-ccheader-help"><?php esc_html_e( 'Need help?', 'ozupay-theme' ); ?></a>
+        </div>
     </header>
     <?php
 }, 5 );
