@@ -255,12 +255,23 @@ add_action( 'wp_footer', function (): void {
     }
     ?>
     <script>
-    document.querySelectorAll('.ozp-nav a').forEach(function (link) {
-        var url = new URL(link.href, window.location.origin);
-        if (url.origin === window.location.origin && url.pathname === window.location.pathname && !url.hash) {
-            link.setAttribute('aria-current', 'page');
+    (function () {
+        var links = document.querySelectorAll('.ozp-nav a');
+        function updateCurrentNav() {
+            links.forEach(function (link) {
+                var url = new URL(link.href, window.location.origin);
+                var isCurrent = url.origin === window.location.origin &&
+                    url.pathname === window.location.pathname &&
+                    (url.hash ? url.hash === window.location.hash : !window.location.hash);
+                link.toggleAttribute('aria-current', isCurrent);
+                if (isCurrent) {
+                    link.setAttribute('aria-current', 'page');
+                }
+            });
         }
-    });
+        updateCurrentNav();
+        window.addEventListener('hashchange', updateCurrentNav);
+    }());
     </script>
     <?php
 }, 1 );
@@ -339,6 +350,14 @@ add_filter( 'document_title_parts', function ( array $parts ): array {
             $parts['title'] = 'OzuPay M-Pesa Pro';
             $parts['site']  = 'OzuPay';
         }
+    } elseif ( is_page( 'blog' ) ) {
+        $parts['title']   = 'Blog — M-Pesa & WooCommerce Guides | OzuPay';
+        $parts['tagline'] = '';
+        $parts['site']    = '';
+    } elseif ( is_singular( 'post' ) ) {
+        $parts['title']   = get_the_title() . ' | OzuPay Blog';
+        $parts['tagline'] = '';
+        $parts['site']    = '';
     }
     return $parts;
 } );
