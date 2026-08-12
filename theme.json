@@ -37,8 +37,8 @@
                 },
                 {
                     "slug": "heading",
-                    "name": "Inter",
-                    "fontFamily": "'Inter', system-ui, sans-serif"
+                    "name": "Space Grotesk",
+                    "fontFamily": "'Space Grotesk', system-ui, sans-serif"
                 },
                 {
                     "slug": "mono",
@@ -90,7 +90,7 @@
             },
             "h1": {
                 "typography": {
-                    "fontFamily": "'Inter', system-ui, sans-serif",
+                    "fontFamily": "'Space Grotesk', system-ui, sans-serif",
                     "fontSize": "var:preset|font-size|3xl",
                     "fontWeight": "700",
                     "lineHeight": "1.1",
@@ -99,7 +99,7 @@
             },
             "h2": {
                 "typography": {
-                    "fontFamily": "'Inter', system-ui, sans-serif",
+                    "fontFamily": "'Space Grotesk', system-ui, sans-serif",
                     "fontSize": "var:preset|font-size|2xl",
                     "fontWeight": "700",
                     "lineHeight": "1.25",
@@ -108,13 +108,13 @@
             },
             "h3": {
                 "typography": {
-                    "fontFamily": "'Inter', system-ui, sans-serif",
+                    "fontFamily": "'Space Grotesk', system-ui, sans-serif",
                     "fontSize": "var:preset|font-size|xl",
                     "fontWeight": "600",
                     "lineHeight": "1.35"
                 }
             },
-            "h4": { "typography": { "fontFamily": "'Inter', system-ui, sans-serif", "fontSize": "var:preset|font-size|lg", "fontWeight": "600" } },
+            "h4": { "typography": { "fontFamily": "'Space Grotesk', system-ui, sans-serif", "fontSize": "var:preset|font-size|lg", "fontWeight": "600" } },
             "h5": { "typography": { "fontWeight": "500", "letterSpacing": "0.5px" } },
             "h6": { "typography": { "fontWeight": "600", "letterSpacing": "1.4px" } },
             "button": {
