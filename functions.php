@@ -257,7 +257,7 @@ add_action( 'wp_footer', function (): void {
     <script>
     document.querySelectorAll('.ozp-nav a').forEach(function (link) {
         var url = new URL(link.href, window.location.origin);
-        if (url.pathname === window.location.pathname && !url.hash) {
+        if (url.origin === window.location.origin && url.pathname === window.location.pathname && !url.hash) {
             link.setAttribute('aria-current', 'page');
         }
     });
