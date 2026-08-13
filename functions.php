@@ -259,6 +259,15 @@ add_action( 'wp_footer', function (): void {
         var links = document.querySelectorAll('.ozp-nav a');
         function updateCurrentNav() {
             links.forEach(function (link) {
+                // Placeholder action links (e.g. .ozp-logout-link, wired up to a
+                // real URL by a separate script) use href="#" until then. That
+                // resolves to "current page, no hash" on any hash-less page —
+                // matching the homepage and most other pages — so it must be
+                // excluded here rather than treated as a real destination.
+                if (link.getAttribute('href') === '#') {
+                    link.removeAttribute('aria-current');
+                    return;
+                }
                 var url = new URL(link.href, window.location.origin);
                 var isCurrent = url.origin === window.location.origin &&
                     url.pathname === window.location.pathname &&
