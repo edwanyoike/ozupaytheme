@@ -123,7 +123,7 @@ add_action( 'woocommerce_login_form', function () {
     if ( ! defined( 'OZP_TURNSTILE_SITE_KEY' ) ) {
         return;
     }
-    echo '<div class="cf-turnstile" data-sitekey="' . esc_attr( OZP_TURNSTILE_SITE_KEY ) . '" data-appearance="interaction-only" style="margin:12px 0"></div>' . "\n";
+    echo '<div class="cf-turnstile" data-sitekey="' . esc_attr( OZP_TURNSTILE_SITE_KEY ) . '" data-appearance="interaction-only" data-execution="explicit" style="margin:12px 0"></div>' . "\n";
 } );
 
 // Verify Turnstile token when WooCommerce login form is submitted.
@@ -1743,6 +1743,31 @@ add_action( 'wp_footer', function () {
         ozpHandleForm('ozp-contact-guest-form', '/support');
         ozpHandleForm('ozp-ticket-form',        '/support');
         ozpHandleForm('ozp-fr-form',            '/feature-request');
+    })();
+
+    // Wait for Turnstile token before the WooCommerce login form submits.
+    // Native POST (not AJAX like ozpHandleForm above), so it needs its own handler.
+    (function() {
+        var form = document.querySelector('form.woocommerce-form-login');
+        var widget = form && form.querySelector('.cf-turnstile');
+        if (!widget) return;
+        var rendering = false;
+        form.addEventListener('submit', function(e) {
+            var tokenInput = form.querySelector('[name="cf-turnstile-response"]');
+            if (window.turnstile && !rendering && (!tokenInput || !tokenInput.value)) {
+                e.preventDefault();
+                rendering = true;
+                turnstile.render(widget, {
+                    sitekey: widget.getAttribute('data-sitekey'),
+                    appearance: 'interaction-only',
+                    callback: function() {
+                        rendering = false;
+                        form.submit();
+                    },
+                    'error-callback': function() { rendering = false; }
+                });
+            }
+        });
     })();
     </script>
     <?php
