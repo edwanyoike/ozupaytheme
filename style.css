@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.45
+Version:     1.8.46
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -3999,12 +3999,21 @@ input[name="cart[*][qty]"] {
         width: 64px !important;
     }
     .woocommerce-cart table.cart td.product-thumbnail img { width: 60px !important; height: 60px !important; }
-    /* Product name */
+    /* Product name — WooCommerce core's woocommerce-smallscreen.css (loaded at
+       max-width:768px) puts a `content: attr(data-title) ": "` label plus
+       `text-align:right !important` on every table.shop_table_responsive td.
+       The grid card layout below never accounted for that, so a "Product: "
+       label and right-aligned, ragged-left text bled through. Suppress both
+       here rather than relying on the column being narrow enough to hide it. */
     .woocommerce-cart table.cart tbody tr td.product-name {
         grid-column: 2 !important;
         grid-row: 1 !important;
         padding: 0 !important;
         border: none !important;
+        text-align: left !important;
+    }
+    .woocommerce-cart table.cart tbody tr td.product-name::before {
+        content: none !important;
     }
     /* Price */
     .woocommerce-cart table.cart tbody tr td.product-price {
@@ -4014,19 +4023,29 @@ input[name="cart[*][qty]"] {
         border: none !important;
         font-size: 13px !important;
         color: var(--text-subtle) !important;
+        text-align: left !important;
     }
     .woocommerce-cart table.cart tbody tr td.product-price::before {
         content: 'Price: ' !important;
+        display: block !important;
+        float: none !important;
         color: var(--text-subtle) !important;
     }
-    /* Quantity */
+    /* Quantity — same core-CSS "Quantity: " label bleed-through as Product above. */
     .woocommerce-cart table.cart tbody tr td.product-quantity {
         grid-column: 2 !important;
         grid-row: 3 !important;
         padding: 0 !important;
         border: none !important;
+        text-align: left !important;
     }
-    /* Subtotal: right, spans rows */
+    .woocommerce-cart table.cart tbody tr td.product-quantity::before {
+        content: none !important;
+    }
+    /* Subtotal: right, spans rows. Core CSS's default label floats left,
+       which — combined with align-self:end on a row-spanning grid item —
+       collapsed onto the quantity stepper instead of clearing it. Replace it
+       with a non-floated label, matching the Price label's own pattern. */
     .woocommerce-cart table.cart tbody tr td.product-subtotal {
         grid-column: 3 !important;
         grid-row: 2 / 4 !important;
@@ -4037,11 +4056,31 @@ input[name="cart[*][qty]"] {
         font-size: 15px !important;
         font-weight: 700 !important;
     }
+    .woocommerce-cart table.cart tbody tr td.product-subtotal::before {
+        content: 'Subtotal: ' !important;
+        display: block !important;
+        float: none !important;
+        font-weight: 400 !important;
+        font-size: 11px !important;
+        color: var(--text-subtle) !important;
+    }
     /* Actions row (coupon + update) */
     .woocommerce-cart table.cart tbody tr td.actions {
         grid-column: 1 / -1 !important;
         padding: 14px !important;
         border-top: 1px solid var(--border) !important;
+    }
+    /* "Apply coupon" button — the sitewide .woocommerce button.button rule
+       sets line-height:52px assuming one line of text. flex-wrap on the
+       coupon row (below) squeezes this button below "Apply coupon"'s natural
+       width, wrapping it to two lines that each render at the full 52px
+       line-height — the two lines land stacked directly on top of each
+       other. Keep it on one line and let the coupon input shrink instead. */
+    .woocommerce-cart table.cart td.actions .coupon button[name="apply_coupon"] {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        padding: 0 16px !important;
+        font-size: 14px !important;
     }
 
     /* Qty buttons stay compact on mobile */
