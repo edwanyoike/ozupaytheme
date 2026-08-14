@@ -1802,8 +1802,11 @@ add_action( 'wp_footer', function () {
                         // clicked button's name/value in the POST, and WooCommerce's
                         // process_login() requires $_POST['login'] to be set or it silently
                         // no-ops (no wp_signon() call, no error, page just reloads as-is).
+                        // Re-enable the button first: disabled submitters are not successful
+                        // form controls, so leaving it disabled also drops name="login".
                         // This re-fires the 'submit' event, but tokenInput.value is already
                         // set at this point so the listener below lets it through untouched.
+                        if (submitBtn) submitBtn.disabled = false;
                         form.requestSubmit(submitBtn);
                     },
                     'error-callback': function() {
