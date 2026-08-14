@@ -1798,7 +1798,13 @@ add_action( 'wp_footer', function () {
                 turnstile.execute(widget, {
                     callback: function() {
                         executing = false;
-                        form.submit();
+                        // requestSubmit() (not submit()) - submit() does NOT include the
+                        // clicked button's name/value in the POST, and WooCommerce's
+                        // process_login() requires $_POST['login'] to be set or it silently
+                        // no-ops (no wp_signon() call, no error, page just reloads as-is).
+                        // This re-fires the 'submit' event, but tokenInput.value is already
+                        // set at this point so the listener below lets it through untouched.
+                        form.requestSubmit(submitBtn);
                     },
                     'error-callback': function() {
                         executing = false;
