@@ -123,7 +123,7 @@ add_action( 'woocommerce_login_form', function () {
     if ( ! defined( 'OZP_TURNSTILE_SITE_KEY' ) ) {
         return;
     }
-    echo '<div class="cf-turnstile" data-sitekey="' . esc_attr( OZP_TURNSTILE_SITE_KEY ) . '" data-appearance="interaction-only" data-execution="explicit" style="margin:12px 0"></div>' . "\n";
+    echo '<div class="cf-turnstile" data-sitekey="' . esc_attr( OZP_TURNSTILE_SITE_KEY ) . '" data-appearance="interaction-only" data-execution="execute" style="margin:12px 0"></div>' . "\n";
 } );
 
 // Verify Turnstile token when WooCommerce login form is submitted.
@@ -1756,26 +1756,36 @@ add_action( 'wp_footer', function () {
 
     // Wait for Turnstile token before the WooCommerce login form submits.
     // Native POST (not AJAX like ozpHandleForm above), so it needs its own handler.
+    // The widget uses data-execution="execute": Turnstile implicitly renders it on script
+    // load but does NOT run the challenge until turnstile.execute() is called below - calling
+    // turnstile.render() again on an already-rendered container (the previous approach) throws.
     (function() {
         var form = document.querySelector('form.woocommerce-form-login');
         var widget = form && form.querySelector('.cf-turnstile');
         if (!widget) return;
-        var rendering = false;
+        var executing = false;
+
+        function waitForTurnstile(cb, triesLeft) {
+            if (window.turnstile) return cb();
+            if (triesLeft <= 0) return; // Script never loaded; let the native submit fail server-side as before.
+            setTimeout(function() { waitForTurnstile(cb, triesLeft - 1); }, 100);
+        }
+
         form.addEventListener('submit', function(e) {
             var tokenInput = form.querySelector('[name="cf-turnstile-response"]');
-            if (window.turnstile && !rendering && (!tokenInput || !tokenInput.value)) {
-                e.preventDefault();
-                rendering = true;
-                turnstile.render(widget, {
-                    sitekey: widget.getAttribute('data-sitekey'),
-                    appearance: 'interaction-only',
+            if (executing || (tokenInput && tokenInput.value)) return;
+            e.preventDefault();
+            waitForTurnstile(function() {
+                if (executing) return;
+                executing = true;
+                turnstile.execute(widget, {
                     callback: function() {
-                        rendering = false;
+                        executing = false;
                         form.submit();
                     },
-                    'error-callback': function() { rendering = false; }
+                    'error-callback': function() { executing = false; }
                 });
-            }
+            }, 100); // up to ~10s for the async script to load
         });
     })();
     </script>
