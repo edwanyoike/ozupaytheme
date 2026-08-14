@@ -1763,6 +1763,7 @@ add_action( 'wp_footer', function () {
         var form = document.querySelector('form.woocommerce-form-login');
         var widget = form && form.querySelector('.cf-turnstile');
         if (!widget) return;
+        var submitBtn = form.querySelector('button[type="submit"], button[name="login"]');
         var executing = false;
 
         function waitForTurnstile(cb, triesLeft) {
@@ -1773,17 +1774,33 @@ add_action( 'wp_footer', function () {
 
         form.addEventListener('submit', function(e) {
             var tokenInput = form.querySelector('[name="cf-turnstile-response"]');
-            if (executing || (tokenInput && tokenInput.value)) return;
+            if (tokenInput && tokenInput.value) return; // token already ready, let it submit normally
+
+            // Always block the native submit while no token is ready yet - a repeat click
+            // while the first execute() call is still pending must not fall through to a
+            // premature empty-token submit (that previously caused "Security check failed"
+            // on the 2nd/3rd click of a still-in-progress first attempt).
             e.preventDefault();
+            if (executing) return;
+            executing = true;
+            if (submitBtn) submitBtn.disabled = true;
+
             waitForTurnstile(function() {
-                if (executing) return;
-                executing = true;
+                // Reset first: if the page has been sitting open a while before the user
+                // logs in, the widget's implicit render from page-load time may be stale.
+                // Resetting immediately before execute() guarantees a fresh challenge
+                // regardless of how long the widget had been idle, rather than trusting an
+                // undocumented pre-execution validity window.
+                turnstile.reset(widget);
                 turnstile.execute(widget, {
                     callback: function() {
                         executing = false;
                         form.submit();
                     },
-                    'error-callback': function() { executing = false; }
+                    'error-callback': function() {
+                        executing = false;
+                        if (submitBtn) submitBtn.disabled = false;
+                    }
                 });
             }, 100); // up to ~10s for the async script to load
         });
