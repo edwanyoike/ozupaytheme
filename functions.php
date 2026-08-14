@@ -101,6 +101,9 @@ function ozp_verify_turnstile( string $token ): bool {
         return false;
     }
     $body = json_decode( wp_remote_retrieve_body( $response ), true );
+    if ( empty( $body['success'] ) ) {
+        error_log( 'OzuPay Turnstile siteverify rejected token: ' . wp_json_encode( $body['error-codes'] ?? $body ) );
+    }
     return ! empty( $body['success'] );
 }
 
