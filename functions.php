@@ -2379,6 +2379,8 @@ add_action( 'woocommerce_before_checkout_form', function (): void {
             <p class="ozp-checkout-eyebrow">
                 <span aria-hidden="true">&#128274;</span>
                 <?php esc_html_e( 'Secure M-Pesa checkout', 'ozupay' ); ?>
+                <span class="ozp-checkout-eyebrow-separator" aria-hidden="true">&middot;</span>
+                <span class="ozp-checkout-eyebrow-powered"><?php esc_html_e( 'powered by', 'ozupay' ); ?> <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'OzuPay M-Pesa Payments Pro', 'ozupay' ); ?></a></span>
             </p>
             <h1 id="ozp-checkout-title"><?php esc_html_e( 'Complete your order', 'ozupay' ); ?></h1>
             <p><?php esc_html_e( 'Your payment details are protected and your M-Pesa prompt is sent only after you place the order.', 'ozupay' ); ?></p>
@@ -2389,7 +2391,6 @@ add_action( 'woocommerce_before_checkout_form', function (): void {
         </a>
     </section>
     <?php
-    ozp_checkout_powered_by();
 }, 5 );
 // Guest checkout is disabled site-wide, so every order either uses an
 // existing account or creates one automatically — tell first-time buyers

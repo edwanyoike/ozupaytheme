@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.48
+Version:     1.8.49
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -4781,6 +4781,19 @@ body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-step-badge--done {
     letter-spacing: .06em;
     text-transform: uppercase;
 }
+.ozp-checkout-eyebrow-separator { color: #9ab7aa; }
+.ozp-checkout-eyebrow-powered {
+    color: #5b6b7e;
+    font-weight: 600;
+    letter-spacing: .02em;
+    text-transform: none;
+}
+.ozp-checkout-eyebrow-powered a {
+    color: #047857 !important;
+    font-weight: 750;
+    text-decoration: none !important;
+}
+.ozp-checkout-eyebrow-powered a:hover { text-decoration: underline !important; }
 .ozp-checkout-intro h1 {
     margin: 0 0 7px !important;
     color: #10233d !important;
@@ -4820,19 +4833,6 @@ body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-step-badge--done {
     font-size: 11px;
 }
 .ozp-checkout-help-link:hover { border-color: #059669; color: #047857 !important; }
-body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-checkout-powered-by-wrap {
-    max-width: 1060px;
-    justify-content: flex-start;
-    margin: 0 auto 18px;
-    padding: 0;
-}
-body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-checkout-powered-by {
-    padding: 5px 9px;
-    border: 1px solid #cfe9dc;
-    border-radius: 7px;
-    background: #f1fbf5;
-    color: #047857;
-}
 body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-coupon-toggle,
 body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-account-notice,
 body.woocommerce-checkout:not(.woocommerce-order-pay) form.checkout_coupon {
@@ -4942,10 +4942,32 @@ body.woocommerce-checkout:not(.woocommerce-order-pay) #payment::before {
     font-weight: 750;
 }
 body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .wc_payment_methods li {
+    display: grid !important;
+    grid-template-columns: 20px minmax(0, 1fr) !important;
+    align-items: center !important;
+    column-gap: 10px !important;
     padding: 13px 14px !important;
     border-color: #ded8cb !important;
     border-radius: 10px !important;
     transition: border-color .15s, background .15s, box-shadow .15s;
+}
+/* WooCommerce renders the radio before the label in the DOM. Grid keeps them
+   on the same, compact selection row instead of leaving the radio stranded
+   above a block-level label. */
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .wc_payment_methods li > input[type="radio"] {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .wc_payment_methods li > label {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-height: 24px;
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
 }
 body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .wc_payment_methods li:has(input:checked) {
     border-color: #059669 !important;
@@ -4953,12 +4975,17 @@ body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .wc_payment_metho
     box-shadow: inset 0 0 0 1px rgba(5,150,105,.1);
 }
 body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .payment_box {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
     margin-top: 12px !important;
     padding: 14px !important;
     border-color: #bee5cf !important;
     background: #f8fffa !important;
     font-size: 13px !important;
     line-height: 1.5 !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .payment_box::before {
+    display: none !important;
 }
 body.woocommerce-checkout:not(.woocommerce-order-pay) #payment #place_order {
     min-height: 52px;
