@@ -2406,6 +2406,42 @@ add_action( 'woocommerce_before_checkout_form', function (): void {
     <?php
 }, 6 );
 remove_action( 'woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10 );
+// WooCommerce's duplicate-email error normally links to "#" so its inline
+// checkout login form can expand. This theme deliberately removes that form,
+// therefore send the customer to My Account and return them to checkout after
+// a successful sign-in instead of leaving them with a dead link.
+add_filter( 'woocommerce_registration_error_email_exists', function ( string $message, string $email ): string {
+    $login_url = add_query_arg(
+        'redirect_to',
+        wc_get_checkout_url(),
+        wc_get_page_permalink( 'myaccount' )
+    );
+
+    return sprintf(
+        /* translators: %s: My Account login URL. */
+        __( 'An account is already registered with your email address. <a href="%s">Please log in.</a>', 'ozupay' ),
+        esc_url( $login_url )
+    );
+}, 10, 2 );
+add_filter( 'woocommerce_login_redirect', function ( string $redirect, $user ): string {
+    $referer = wp_get_referer();
+    if ( ! $referer ) {
+        return $redirect;
+    }
+
+    $query = wp_parse_url( $referer, PHP_URL_QUERY );
+    if ( ! $query ) {
+        return $redirect;
+    }
+
+    parse_str( $query, $args );
+    if ( empty( $args['redirect_to'] ) || ! is_string( $args['redirect_to'] ) ) {
+        return $redirect;
+    }
+
+    // Accept only a destination WordPress considers safe for this site.
+    return wp_validate_redirect( $args['redirect_to'], $redirect );
+}, 10, 2 );
 remove_action( 'woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10 );
 add_action( 'woocommerce_before_checkout_form', function (): void {
     if ( ! wc_coupons_enabled() ) {

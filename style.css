@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.50
+Version:     1.8.52
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -5016,6 +5016,168 @@ body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .form-row.woocomm
     body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #customer_details .col-1,
     body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #customer_details .col-2 { padding: 18px; }
     body.woocommerce-checkout:not(.woocommerce-order-pay) #payment { padding: 16px !important; }
+}
+
+/* ── M-Pesa on Delivery: pay outstanding balance ───────────────────────────
+   The normal order table remains useful as an order overview, but it contains
+   the full order value. This context-specific layout makes the amount being
+   charged now unambiguous and groups it with the QR/STK action. */
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay .ozp-checkout-page {
+    background: linear-gradient(180deg, #f8f7f2 0%, #f2efe7 100%) !important;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #order_review {
+    max-width: 980px !important;
+    gap: 0 28px !important;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #order_review > table.shop_table,
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment > .wc_payment_methods {
+    border: 1px solid #ded8cb !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 14px 30px -25px rgba(15,23,42,.38) !important;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #order_review > table.shop_table {
+    overflow: hidden !important;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment > .wc_payment_methods {
+    margin: 0 !important;
+    padding: 18px !important;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment > .wc_payment_methods::before {
+    content: 'Pay your outstanding balance';
+    display: block;
+    margin: 0 0 12px;
+    color: #10233d;
+    font-size: 16px;
+    font-weight: 750;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment .wc_payment_methods li {
+    display: grid !important;
+    grid-template-columns: 20px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 13px 14px !important;
+    border: 1px solid #059669 !important;
+    border-radius: 10px !important;
+    background: #f0faf4 !important;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment .wc_payment_methods li > input[type="radio"] {
+    grid-column: 1;
+    grid-row: 1;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    accent-color: #059669;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment .wc_payment_methods li > label {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0 !important;
+    color: #10233d !important;
+    font-size: 14px !important;
+    font-weight: 750 !important;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment .payment_box {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #4b637c !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment .payment_box::before { display: none !important; }
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment > .form-row {
+    margin-top: 22px !important;
+    padding: 20px !important;
+    border: 1px solid #ded8cb;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 14px 30px -25px rgba(15,23,42,.38);
+}
+.ozupay-mpesa-balance-pay-notice {
+    margin: 0 0 18px;
+    padding: 16px;
+    border: 1px solid #bfe6cf;
+    border-radius: 11px;
+    background: #f3fcf6;
+    color: #16334c;
+}
+.ozupay-mpesa-balance-pay-notice__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 4px;
+}
+.ozupay-mpesa-balance-pay-notice__heading span {
+    color: #075f46;
+    font-size: 13px;
+    font-weight: 750;
+}
+.ozupay-mpesa-balance-pay-notice__heading strong {
+    color: #075f46;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+}
+.ozupay-mpesa-balance-pay-notice > p {
+    margin: 0 0 13px !important;
+    color: #4b637c !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+}
+.ozupay-mpesa-balance-pay-notice__breakdown { margin: 0; }
+.ozupay-mpesa-balance-pay-notice__breakdown > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 0;
+    border-top: 1px solid #d8efe1;
+    font-size: 12px;
+}
+.ozupay-mpesa-balance-pay-notice__breakdown dt { color: #5c7085; }
+.ozupay-mpesa-balance-pay-notice__breakdown dd {
+    margin: 0;
+    color: #16334c;
+    font-weight: 700;
+    text-align: right;
+}
+.ozupay-mpesa-balance-pay-notice__breakdown .ozupay-mpesa-balance-pay-notice__due {
+    padding-bottom: 0;
+}
+.ozupay-mpesa-balance-pay-notice__breakdown .ozupay-mpesa-balance-pay-notice__due dt,
+.ozupay-mpesa-balance-pay-notice__breakdown .ozupay-mpesa-balance-pay-notice__due dd {
+    color: #075f46;
+    font-size: 13px;
+    font-weight: 800;
+}
+.ozupay-mpesa-balance-pay-notice__receipt { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay .ozupay-mpesa-qr-pay-block {
+    margin: 0 0 18px !important;
+    padding: 16px 0 !important;
+    border-top: 0 !important;
+    border-bottom: 1px solid #e6e1d7;
+}
+body.woocommerce-order-pay.ozupay-mpesa-balance-pay #place_order {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 54px !important;
+    margin: 14px 0 0 !important;
+    border-radius: 10px !important;
+    background: #059669 !important;
+    color: #fff !important;
+    font-size: 15px !important;
+    font-weight: 750 !important;
+    line-height: 1.2 !important;
+}
+@media (max-width: 767px) {
+    body.woocommerce-order-pay.ozupay-mpesa-balance-pay #payment > .form-row { padding: 16px !important; }
+    .ozupay-mpesa-balance-pay-notice { padding: 14px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
