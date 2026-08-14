@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.47
+Version:     1.8.48
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -4716,6 +4716,274 @@ body.woocommerce-order-pay #payment > .form-row {
         top: 76px !important;
         align-self: start !important;
     }
+}
+
+/* ── Checkout refresh ──────────────────────────────────────────────────────
+   A checkout is a decision screen, not a settings page. These final, narrowly
+   scoped rules give the classic checkout a single reading order: delivery
+   details on the left, order/payment confirmation on the right. They also
+   deliberately leave the pay-for-order page alone. */
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-checkout-page {
+    background: linear-gradient(180deg, #f9f7f2 0%, #f4f1e9 100%) !important;
+    padding: 30px 20px 64px !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-checkout-page .entry-content {
+    max-width: 1060px;
+    margin: 0 auto;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-checkout-steps {
+    max-width: 1060px;
+    margin: 0 auto 22px !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-steps {
+    gap: 8px;
+    color: #64748b;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-steps li:not(:last-child)::after {
+    content: '';
+    width: 26px;
+    height: 1px;
+    margin: 0 2px;
+    background: #d6cfbe;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-step-badge {
+    width: 22px;
+    height: 22px;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e7e2d8;
+    color: #64748b;
+    font-size: 11px;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-step--active,
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-step--active > span { color: #047857; }
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-step--active .ozp-step-badge,
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-step-badge--done {
+    background: #059669;
+    color: #fff;
+}
+.ozp-checkout-intro {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    max-width: 1060px;
+    margin: 0 auto 16px;
+}
+.ozp-checkout-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 6px !important;
+    color: #047857;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+.ozp-checkout-intro h1 {
+    margin: 0 0 7px !important;
+    color: #10233d !important;
+    font-size: clamp(26px, 3vw, 34px) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -.035em !important;
+}
+.ozp-checkout-intro > div > p:last-child {
+    max-width: 590px;
+    margin: 0 !important;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.55;
+}
+.ozp-checkout-help-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex: none;
+    padding: 9px 12px;
+    border: 1px solid #d6cfbe;
+    border-radius: 9px;
+    background: rgba(255,255,255,.75);
+    color: #334155 !important;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+.ozp-checkout-help-link span {
+    display: inline-grid;
+    width: 16px;
+    height: 16px;
+    place-items: center;
+    border-radius: 50%;
+    background: #e7f6ef;
+    color: #047857;
+    font-size: 11px;
+}
+.ozp-checkout-help-link:hover { border-color: #059669; color: #047857 !important; }
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-checkout-powered-by-wrap {
+    max-width: 1060px;
+    justify-content: flex-start;
+    margin: 0 auto 18px;
+    padding: 0;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-checkout-powered-by {
+    padding: 5px 9px;
+    border: 1px solid #cfe9dc;
+    border-radius: 7px;
+    background: #f1fbf5;
+    color: #047857;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-coupon-toggle,
+body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-account-notice,
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.checkout_coupon {
+    max-width: 1060px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout {
+    max-width: 1060px;
+    margin: 0 auto;
+    gap: 0 30px !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #customer_details .col-1,
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #customer_details .col-2 {
+    padding: 24px;
+    border: 1px solid #ded8cb;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 12px 28px -25px rgba(15,23,42,.45);
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #customer_details .col-2 {
+    margin-top: 16px;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout .woocommerce-billing-fields__field-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout .ozp-billing-heading,
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout h3#ship-to-different-address {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 20px !important;
+    color: #10233d !important;
+    font-size: 18px !important;
+    font-weight: 750 !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout .ozp-billing-heading::before,
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout h3#ship-to-different-address::before {
+    content: '1';
+    display: inline-grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    border-radius: 50%;
+    background: #e7f6ef;
+    color: #047857;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout .form-row { margin-bottom: 14px !important; }
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout .form-row label {
+    margin-bottom: 6px !important;
+    color: #334155 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout .input-text,
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout input[type="text"],
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout input[type="email"],
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout input[type="tel"],
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout select {
+    height: 46px !important;
+    border-radius: 9px !important;
+    padding-inline: 13px !important;
+    font-size: 14px !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #order_review {
+    overflow: visible !important;
+    border-radius: 14px;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #order_review .shop_table {
+    margin-bottom: 14px !important;
+    border: 1px solid #ded8cb !important;
+    border-radius: 14px !important;
+    box-shadow: 0 12px 28px -25px rgba(15,23,42,.45);
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #order_review .shop_table thead th {
+    padding: 12px 16px !important;
+    background: #f8f6f1 !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #order_review .shop_table tbody tr td { padding: 14px 16px !important; }
+body.woocommerce-checkout:not(.woocommerce-order-pay) #order_review .shop_table tfoot tr th,
+body.woocommerce-checkout:not(.woocommerce-order-pay) #order_review .shop_table tfoot tr td { padding: 10px 16px !important; }
+body.woocommerce-checkout:not(.woocommerce-order-pay) #order_review .shop_table tfoot tr.order-total th,
+body.woocommerce-checkout:not(.woocommerce-order-pay) #order_review .shop_table tfoot tr.order-total td {
+    padding: 15px 16px !important;
+    background: #effbf4 !important;
+    color: #075f46 !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment {
+    padding: 18px !important;
+    border: 1px solid #ded8cb !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 12px 28px -25px rgba(15,23,42,.45);
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment::before {
+    content: '2  Choose how to pay';
+    display: block;
+    margin: 0 0 14px;
+    color: #10233d;
+    font-size: 16px;
+    font-weight: 750;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .wc_payment_methods li {
+    padding: 13px 14px !important;
+    border-color: #ded8cb !important;
+    border-radius: 10px !important;
+    transition: border-color .15s, background .15s, box-shadow .15s;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .wc_payment_methods li:has(input:checked) {
+    border-color: #059669 !important;
+    background: #f0faf4 !important;
+    box-shadow: inset 0 0 0 1px rgba(5,150,105,.1);
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .payment_box {
+    margin-top: 12px !important;
+    padding: 14px !important;
+    border-color: #bee5cf !important;
+    background: #f8fffa !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment #place_order {
+    min-height: 52px;
+    margin-top: 14px !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+}
+body.woocommerce-checkout:not(.woocommerce-order-pay) #payment .form-row.woocommerce-terms-and-conditions-wrapper {
+    margin-top: 14px !important;
+}
+@media (max-width: 1023px) {
+    body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-checkout-page { padding: 22px 16px 48px !important; }
+    .ozp-checkout-intro { align-items: flex-start; flex-direction: column; gap: 12px; }
+    .ozp-checkout-help-link { align-self: flex-start; }
+    body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #order_review {
+        margin-top: 18px;
+        position: static !important;
+    }
+}
+@media (max-width: 600px) {
+    body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-steps li:not(:last-child)::after { width: 13px; }
+    body.woocommerce-checkout:not(.woocommerce-order-pay) .ozp-steps { font-size: 11px; }
+    body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #customer_details .col-1,
+    body.woocommerce-checkout:not(.woocommerce-order-pay) form.woocommerce-checkout #customer_details .col-2 { padding: 18px; }
+    body.woocommerce-checkout:not(.woocommerce-order-pay) #payment { padding: 16px !important; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

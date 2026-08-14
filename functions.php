@@ -2373,6 +2373,22 @@ add_action( 'woocommerce_before_cart', function (): void {
 // replace with minimal single-line coupon toggle.
 add_action( 'woocommerce_before_checkout_form', function (): void {
     ozp_checkout_steps( 'checkout' );
+    ?>
+    <section class="ozp-checkout-intro" aria-labelledby="ozp-checkout-title">
+        <div>
+            <p class="ozp-checkout-eyebrow">
+                <span aria-hidden="true">&#128274;</span>
+                <?php esc_html_e( 'Secure M-Pesa checkout', 'ozupay' ); ?>
+            </p>
+            <h1 id="ozp-checkout-title"><?php esc_html_e( 'Complete your order', 'ozupay' ); ?></h1>
+            <p><?php esc_html_e( 'Your payment details are protected and your M-Pesa prompt is sent only after you place the order.', 'ozupay' ); ?></p>
+        </div>
+        <a class="ozp-checkout-help-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">
+            <span aria-hidden="true">?</span>
+            <?php esc_html_e( 'Need help?', 'ozupay' ); ?>
+        </a>
+    </section>
+    <?php
     ozp_checkout_powered_by();
 }, 5 );
 // Guest checkout is disabled site-wide, so every order either uses an
