@@ -44,6 +44,7 @@
                             <li><a href="#feat-alerts">Failure Alerts</a></li>
                             <li><a href="#feat-reports">Scheduled Reports</a></li>
                             <li><a href="#feat-pos-intro">POS API (intro)</a></li>
+                            <li><a href="#feat-export-import">Export / Import Settings</a></li>
                         </ul>
                     </li>
                     <li><a href="#go-live">8. Going Live</a></li>
@@ -137,7 +138,7 @@
                     <h4>Step 1: Install from WordPress.org</h4>
                     <ol>
                         <li>Go to <strong>Plugins → Add New</strong> in WordPress admin.</li>
-                        <li>Search for <strong>OzuPay M-Pesa Payments</strong>.</li>
+                        <li>Search for <strong>OzuPay Payment Gateway for M-Pesa</strong> (the plugin's listing title on WordPress.org — you'll see it referred to as "OzuPay M-Pesa" or "OzuPay M-Pesa Payments" once installed, in the admin menu and elsewhere).</li>
                         <li>Click <strong>Install Now</strong> on the OzuPay result, then <strong>Activate Plugin</strong>.</li>
                     </ol>
 
@@ -204,7 +205,7 @@
             <!-- 4 -->
             <section id="credentials" class="ozp-docs-section">
                 <h2>4. Daraja Credentials Setup</h2>
-                <p>Go to <strong>OzuPay → Settings</strong> and scroll to the <strong>Daraja Credentials</strong> section. (OzuPay → Settings is a single page with sections: Daraja Credentials, Premium Features, Usage Data, Danger Zone, and C2B URL Registration, rather than separate tabs.)</p>
+                <p>Go to <strong>OzuPay → Settings → Credentials</strong>. OzuPay → Settings is organized into tabs: <strong>Checkout Settings</strong> (Section 5), <strong>Credentials</strong> (Daraja Credentials below, plus Verify Callback IP and Log Retention), <strong>Premium Features</strong> (Section 7), <strong>Testing &amp; C2B</strong> <span class="ozp-pro-badge">Pro</span> (C2B URL Registration — Section 6 — plus sandbox testing tools and a health check), <strong>Plugin Data</strong> (Usage Data and Danger Zone), and <strong>Export / Import</strong> <span class="ozp-pro-badge">Pro</span> (Section 7). The Free edition shows four tabs — Checkout Settings, Credentials, Features, Plugin Data — since Testing &amp; C2B and Export / Import both depend on Pro-only features.</p>
 
                 <table class="ozp-docs-table">
                     <thead><tr><th>Field</th><th>Where to find it</th></tr></thead>
@@ -226,6 +227,7 @@
             <section id="gateway" class="ozp-docs-section">
                 <h2>5. Gateway Configuration</h2>
                 <p>Go to <strong>WooCommerce → Settings → Payments</strong>. In the Payment providers list you'll see <strong>M-Pesa</strong> and, if enabled, <strong>M-Pesa on Delivery</strong>. Click <strong>Manage</strong> next to the one you want to configure. There is no listing literally called "OzuPay M-Pesa"; that's just the plugin's internal name for the gateway.</p>
+                <p>The same Title/Description/Phone field label/Manual Instructions/STK Push Retries fields are also editable from <strong>OzuPay → Settings → Checkout Settings</strong>. Both screens read and write the same settings, so editing either one keeps them identical — use whichever you already have open.</p>
                 <table class="ozp-docs-table">
                     <thead><tr><th>Setting</th><th>Description</th></tr></thead>
                     <tbody>
@@ -237,7 +239,7 @@
                         <tr><td>STK Push Retry Attempts</td><td>How many times OzuPay automatically retries the STK Push before falling back to manual payment options</td></tr>
                     </tbody>
                 </table>
-                <div class="ozp-docs-note"><strong>Transaction Logging</strong> and <strong>Verify Callback IP</strong> are not on this gateway screen. They are global toggles in the Daraja Credentials section of <strong>OzuPay → Settings</strong> (Section 4).</div>
+                <div class="ozp-docs-note"><strong>Transaction Logging</strong> and <strong>Verify Callback IP</strong> are not on this gateway screen. They are global toggles on the <strong>Credentials</strong> tab of <strong>OzuPay → Settings</strong> (Section 4).</div>
             </section>
 
             <!-- 6 -->
@@ -248,19 +250,20 @@
                     <li><strong>Validation URL</strong>: Safaricom asks OzuPay before accepting a payment</li>
                     <li><strong>Confirmation URL</strong>: Safaricom notifies OzuPay after payment is processed</li>
                 </ul>
-                <p>Go to <strong>OzuPay → Settings</strong> and scroll to the <strong>C2B URL Registration</strong> section, then click <strong>Register C2B URLs</strong>. Re-register whenever you switch environments or change your domain. There is no "Regenerate Callback Token" feature. The token generated on activation is permanent.</p>
+                <p>Go to <strong>OzuPay → Settings → Testing &amp; C2B</strong> and scroll to the <strong>C2B URL Registration</strong> section, then click <strong>Register C2B URLs</strong>. Re-register whenever you switch environments or change your domain. There is no "Regenerate Callback Token" feature. The token generated on activation is permanent.</p>
                 <div class="ozp-docs-note">Sandbox accepts registration but may not deliver callbacks actively. Use the Daraja portal's Simulate C2B tool for sandbox testing.</div>
+                <div class="ozp-docs-note">If your site's URL changes (e.g. a domain migration), OzuPay shows a "C2B callback URL prefix changed" admin notice on every admin screen until it's resolved. If you already re-registered from this tab, the notice clears on its own. If you separately confirmed with Safaricom that they have the current URL, click <strong>"Already registered — dismiss this notice"</strong> directly on the notice instead of returning to this tab.</div>
             </section>
 
             <!-- 7 -->
             <section id="features" class="ozp-docs-section">
                 <h2>7. Feature Configuration <span class="ozp-pro-badge">Pro</span></h2>
-                <p>All features below are available in the Pro edition. Enable each from the <strong>Premium Features</strong> section on the <strong>OzuPay → Settings</strong> page (there is no separate "Features" tab). Disabling a feature never deletes its settings. Re-enabling restores them.</p>
+                <p>All features below are available in the Pro edition. Enable each from <strong>OzuPay → Settings → Premium Features</strong>. Disabling a feature never deletes its settings. Re-enabling restores them.</p>
 
                 <div id="feat-cod" class="ozp-docs-feature">
                     <h3>M-Pesa on Delivery (COD Deposit) <span class="ozp-pro-badge">Pro</span></h3>
                     <p>Customers pay a configurable deposit at checkout; the balance is collected on delivery.</p>
-                    <p><strong>Configure at</strong> WooCommerce → Settings → Payments → M-Pesa on Delivery (this gateway has its own settings screen, like the main M-Pesa gateway; it isn't configured on the OzuPay Settings page).</p>
+                    <p><strong>Configure at</strong> WooCommerce → Settings → Payments → M-Pesa on Delivery (this gateway has its own settings screen, like the main M-Pesa gateway), or <strong>OzuPay → Settings → Checkout Settings → M-Pesa on Delivery</strong> sub-tab — Checkout Settings splits M-Pesa and M-Pesa on Delivery into separate sub-tabs so you don't scroll past one gateway's fields to reach the other's, and both screens stay in sync.</p>
                     <table class="ozp-docs-table">
                         <thead><tr><th>Setting</th><th>Description</th></tr></thead>
                         <tbody>
@@ -335,8 +338,8 @@
 
                 <div id="feat-analytics" class="ozp-docs-feature">
                     <h3>Analytics Dashboard <span class="ozp-pro-badge">Pro</span></h3>
-                    <p>Pre-aggregated revenue and payment metrics at <strong>OzuPay → Dashboard</strong>. Data is aggregated nightly at 00:05 server time. Exportable as CSV.</p>
-                    <p>KPI cards: Revenue, STK Success Rate, Average Transaction, Median Time to Pay, Refunds Issued, and (for M-Pesa on Delivery) Deposits Collected / COD Balance Collected as raw KES totals. A separate widget shows raw counts for confirmed/failed/auto-cancelled orders, Paybill Fallbacks, and Manual Verified: as counts, not percentage rates.</p>
+                    <p>Payment metrics at <strong>OzuPay → Dashboard</strong>, reorganized around net collections and anything needing action. Daily figures are also rolled up nightly at 00:05 server time. Exportable as CSV.</p>
+                    <p>KPI cards: Net Collected, STK Success Rate, Avg Collected Payment, Avg Time to Pay, Refunds Issued, and (for M-Pesa on Delivery) Deposits Collected / COD Balance Collected as raw KES totals. A separate STK summary widget shows counts (not percentages) for Initiated, Confirmed, Failed, Success Rate, C2B Fallbacks, Manual Verified, and Auto-Cancelled. A <strong>Work Requiring Attention</strong> panel lists anything that needs a look — failed or timed-out STK attempts, unmatched C2B payments, COD balances awaiting collection — each linking straight to the screen to resolve it.</p>
                 </div>
 
                 <div id="feat-admin-tools" class="ozp-docs-feature">
@@ -372,6 +375,13 @@
                     <p><strong>Setup:</strong> Enable the feature, then generate WooCommerce API keys at <strong>WooCommerce → Settings → Advanced → REST API</strong>. Set Permissions to Read/Write. Use the Consumer Key and Consumer Secret for HTTP Basic Auth on all API calls.</p>
                     <p>See <a href="#pos-api">Section 13: POS API Reference</a> for the full endpoint list with request and response examples.</p>
                 </div>
+
+                <div id="feat-export-import" class="ozp-docs-feature">
+                    <h3>Export / Import Settings <span class="ozp-pro-badge">Pro</span></h3>
+                    <p>Available at <strong>OzuPay → Settings → Export / Import</strong>, gated behind the <strong>Advanced Admin Tools</strong> premium feature — enable that under Premium Features first, or the tab shows a message pointing you there instead of the export/import tools.</p>
+                    <p>Export downloads a JSON file covering your OzuPay settings and both gateways' settings (M-Pesa and M-Pesa on Delivery). Daraja credentials (Consumer Key/Secret, STK Passkey, B2C Initiator Name/Security Credential) are always stripped — re-enter them manually on the destination site. The Callback Token is excluded by default too; including it is an explicit opt-in at export time, and importing a file that contains one requires a second explicit confirmation before OzuPay applies it.</p>
+                    <p>Import reads back a previously exported file and shows a preview of what it found — which settings, whether credentials or a token are present — before you confirm applying it.</p>
+                </div>
             </section>
 
             <!-- 8 -->
@@ -379,10 +389,10 @@
                 <h2>8. Going Live</h2>
                 <p>Use <strong>OzuPay → Go-Live Checklist</strong> to track progress. Steps in detail:</p>
                 <ol>
-                    <li>In <strong>OzuPay → Settings</strong>, Daraja Credentials section → Environment, switch to <strong>Production</strong>.</li>
+                    <li>In <strong>OzuPay → Settings → Credentials</strong>, under Daraja Credentials → Environment, switch to <strong>Production</strong>.</li>
                     <li>Enter your <strong>production credentials</strong> (Consumer Key, Consumer Secret, STK Passkey) from your live Daraja app. Leave fields blank to keep existing values.</li>
-                    <li>In <strong>OzuPay → Settings</strong>, C2B URL Registration section, click <strong>Register C2B URLs</strong> for production (required even if registered in sandbox).</li>
-                    <li>In <strong>OzuPay → Settings</strong>, Daraja Credentials section, set <strong>Verify Callback IP</strong> to Yes (this is a global OzuPay setting, not a per-gateway one).</li>
+                    <li>In <strong>OzuPay → Settings → Testing &amp; C2B</strong>, C2B URL Registration section, click <strong>Register C2B URLs</strong> for production (required even if registered in sandbox).</li>
+                    <li>In <strong>OzuPay → Settings → Credentials</strong>, set <strong>Verify Callback IP</strong> to Yes (this is a global OzuPay setting, not a per-gateway one).</li>
                     <li><strong>Test with a real transaction</strong>: place an order, enter a real Safaricom number, approve the STK Push.</li>
                     <li>In <strong>OzuPay → Transaction Log</strong>, confirm it shows <code>stk_initiated</code> (Result: 0) and <code>stk_confirmed</code> (Result: 0).</li>
                     <li><strong>Confirm order status</strong>: the test order should be Processing or Completed.</li>
@@ -487,15 +497,15 @@
                 <table class="ozp-docs-table">
                     <thead><tr><th>Metric</th><th>Definition</th></tr></thead>
                     <tbody>
-                        <tr><td>Revenue</td><td>Total KES received from confirmed payments</td></tr>
+                        <tr><td>Net Collected</td><td>All confirmed M-Pesa collections, including COD deposits and balances, less confirmed refunds</td></tr>
                         <tr><td>STK Success Rate</td><td>Percentage of STK Push attempts that resulted in a confirmed payment</td></tr>
-                        <tr><td>Average Transaction</td><td>Mean confirmed payment amount</td></tr>
-                        <tr><td>Median Time to Pay</td><td>Median time from STK Push sent to payment confirmed</td></tr>
+                        <tr><td>Avg Collected Payment</td><td>Gross collections divided by the number of confirmed payment events</td></tr>
+                        <tr><td>Avg Time to Pay</td><td>Average time between the STK prompt being sent and the customer confirming payment on their phone</td></tr>
                         <tr><td>Refunds Issued</td><td>Total refunded via B2C</td></tr>
                     </tbody>
                 </table>
-                <p>Below the KPI cards, a separate widget shows raw counts (not percentages) for confirmed, failed, and auto-cancelled orders, plus a Paybill Fallbacks count and a Manual Verified count.</p>
-                <p>Click <strong>Export CSV</strong> to download the aggregated data for the selected period.</p>
+                <p>Below the KPI cards, the STK summary widget shows counts (not percentages) for Initiated, Confirmed, Failed, Success Rate, C2B Fallbacks, Manual Verified, and Auto-Cancelled. A separate <strong>Work Requiring Attention</strong> panel surfaces anything needing action — failed/timed-out STK attempts, unmatched C2B payments, COD balances awaiting collection — each linking directly to where you resolve it.</p>
+                <p>Click <strong>Export CSV</strong> to download the data for the selected period.</p>
             </section>
 
             <!-- 13 -->
@@ -1227,8 +1237,8 @@ X-WC-Webhook-Source: https://yourstore.co.ke</code></pre>
 
                 <h3>C2B payments not received</h3>
                 <ul>
-                    <li>Re-register C2B URLs: OzuPay → Settings, C2B URL Registration section → Register C2B URLs. Success message: "C2B URLs registered successfully with Safaricom."</li>
-                    <li>Confirm the shortcode matches the Business Shortcode in the Daraja Credentials section of OzuPay → Settings.</li>
+                    <li>Re-register C2B URLs: OzuPay → Settings → Testing &amp; C2B, C2B URL Registration section → Register C2B URLs. Success message: "C2B URLs registered successfully with Safaricom."</li>
+                    <li>Confirm the shortcode matches the Business Shortcode on the Credentials tab of OzuPay → Settings.</li>
                     <li>In sandbox, use Daraja's Simulate C2B tool for controlled testing.</li>
                 </ul>
 
@@ -1271,7 +1281,7 @@ X-WC-Webhook-Source: https://yourstore.co.ke</code></pre>
                 <p>When <strong>Tools → Erase Personal Data</strong> is processed, OzuPay replaces the M-Pesa phone number in order meta with a masked placeholder (e.g. <code>254XXXXXXXXX</code>): masking, not a cryptographic hash. Receipt codes are retained for financial audit purposes. The raw transaction log payload and response for that order's rows <strong>are</strong> overwritten with <code>[erased]</code>. The <code>wp_ozupay_customer_risk</code> table is not currently covered by this erasure routine.</p>
 
                 <h3>Transaction log retention</h3>
-                <p>Configure "Log Retention (days)" in the Daraja Credentials section of <strong>OzuPay → Settings</strong> (there is no separate "Advanced" tab). Range: 30–3650 days. Default: 365 days. Security events are always purged after 30 days regardless of this setting.</p>
+                <p>Configure "Log Retention (days)" on the <strong>Credentials</strong> tab of <strong>OzuPay → Settings</strong>, alongside the Daraja Credentials fields. Range: 30–3650 days. Default: 365 days. Security events are always purged after 30 days regardless of this setting.</p>
             </section>
 
         </main>
