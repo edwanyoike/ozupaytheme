@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.52
+Version:     1.8.53
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -1656,7 +1656,7 @@ body { font-weight: 400; }
 
 /* Hero */
 .ozp-docs-hero {
-    background: var(--bg-card);
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
     padding: 48px var(--px) 36px;
 }
@@ -1713,7 +1713,7 @@ body { font-weight: 400; }
 }
 .ozp-docs-search-input {
     width: 100%;
-    background: var(--bg-card);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--r);
     color: var(--text);
@@ -1730,7 +1730,7 @@ body { font-weight: 400; }
     top: calc(100% + 6px);
     left: 0;
     right: 0;
-    background: var(--bg-card);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--r);
     padding: 6px;
@@ -1780,7 +1780,7 @@ body { font-weight: 400; }
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    background: var(--bg-card);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--r);
     color: var(--text);
@@ -1803,7 +1803,7 @@ body { font-weight: 400; }
 /* TOC — collapsed by default on mobile, expanded via .open; always shown on desktop. */
 .ozp-docs-toc {
     display: none;
-    background: var(--bg-card);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--r);
     padding: 12px 8px;
@@ -1924,7 +1924,7 @@ body { font-weight: 400; }
 
 /* Feature sub-sections */
 .ozp-docs-feature {
-    background: var(--bg-card);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--r);
     padding: 20px 22px;
@@ -2065,7 +2065,7 @@ body { font-weight: 400; }
     border-radius: var(--r);
     padding: 18px 20px;
     margin: 20px 0;
-    background: var(--bg-card);
+    background: var(--surface);
     scroll-margin-top: 90px;
 }
 .ozp-docs-endpoint-header {
