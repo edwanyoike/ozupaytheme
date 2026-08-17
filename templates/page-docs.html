@@ -117,11 +117,12 @@
                 </table>
 
                 <h3>What you need from the Daraja portal</h3>
+                <p>These four values come from Safaricom's Daraja portal, not from OzuPay — where exactly they live inside that portal is Safaricom's to change, so check the Daraja portal itself (or your app's documentation there) rather than relying on a fixed menu path here.</p>
                 <ul>
-                    <li><strong>Consumer Key</strong>: app's Keys &amp; Secrets tab</li>
-                    <li><strong>Consumer Secret</strong>: app's Keys &amp; Secrets tab</li>
+                    <li><strong>Consumer Key</strong>: found in the Daraja portal, under your app</li>
+                    <li><strong>Consumer Secret</strong>: found in the Daraja portal, under your app</li>
                     <li><strong>Business Shortcode</strong>: your Paybill or Till/Buy Goods number</li>
-                    <li><strong>Passkey</strong>: STK Push section of your app's Go Live tab</li>
+                    <li><strong>Passkey</strong>: found in the Daraja portal, under your app</li>
                 </ul>
 
                 <h3>OzuPay license key</h3>
@@ -211,14 +212,15 @@
                     <thead><tr><th>Field</th><th>Where to find it</th></tr></thead>
                     <tbody>
                         <tr><td>Environment</td><td><strong>Sandbox</strong> for testing, <strong>Production</strong> when live. Sandbox still sends a real STK Push to the test phone and may briefly deduct funds before an automatic reversal. Use a phone or line you control</td></tr>
-                        <tr><td>Consumer Key</td><td>Daraja app → Keys &amp; Secrets tab</td></tr>
-                        <tr><td>Consumer Secret</td><td>Daraja app → Keys &amp; Secrets tab</td></tr>
+                        <tr><td>Consumer Key</td><td>Found in the Daraja portal, under your app</td></tr>
+                        <tr><td>Consumer Secret</td><td>Found in the Daraja portal, under your app</td></tr>
                         <tr><td>Business Shortcode</td><td>Your Paybill or Till number: no spaces or dashes</td></tr>
                         <tr><td>Shortcode Type</td><td><strong>Paybill</strong> for Paybill numbers, <strong>Till / Buy Goods</strong> for Till numbers. Controls <code>TransactionType</code> in STK Push. Mismatch causes error <em>Invalid TransactionType</em></td></tr>
-                        <tr><td>STK Passkey</td><td>Daraja app → Go Live → STK Push. Sandbox passkey: <code>bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919</code></td></tr>
+                        <tr><td>STK Passkey</td><td>Found in the Daraja portal, under your app. Sandbox passkey: <code>bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919</code></td></tr>
                         <tr><td>Customer-Facing Number</td><td>Optional. Shown to customers on the payment screen. Leave blank to use the Business Shortcode</td></tr>
                     </tbody>
                 </table>
+                <div class="ozp-docs-note">Consumer Key, Consumer Secret, and STK Passkey come from Safaricom's Daraja portal, not from OzuPay — exactly where they sit inside that portal is Safaricom's to change without notice, so treat "found in the Daraja portal" as the reliable answer rather than a specific tab name.</div>
 
                 <div class="ozp-docs-note">OzuPay encrypts five sensitive fields (Consumer Key, Consumer Secret, STK Passkey, and the B2C Initiator Name / Security Credential) and masks them once saved; leaving one of those blank on save keeps its existing value. Business Shortcode and Customer-Facing Number are stored as plain text and are <strong>not</strong> covered by that "leave blank to keep" behavior. Always re-enter them when saving other settings.</div>
             </section>
@@ -328,8 +330,8 @@
                     <table class="ozp-docs-table">
                         <thead><tr><th>Setting</th><th>Where to find it</th></tr></thead>
                         <tbody>
-                            <tr><td>B2C Initiator Name</td><td>Daraja portal → B2C → Initiator Name</td></tr>
-                            <tr><td>B2C Security Credential</td><td>Daraja portal → B2C → Security Credential</td></tr>
+                            <tr><td>B2C Initiator Name</td><td>Found in the Daraja portal, under your app's B2C setup</td></tr>
+                            <tr><td>B2C Security Credential</td><td>Found in the Daraja portal, under your app's B2C setup</td></tr>
                             <tr><td>B2C Shortcode</td><td>Your B2C shortcode (may differ from the STK Push shortcode)</td></tr>
                         </tbody>
                     </table>
