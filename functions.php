@@ -403,10 +403,10 @@ add_action( 'wp_head', function () {
     "operatingSystem": "WordPress",
     "description": "OzuPay M-Pesa Payments Plugin is the complete M-Pesa payment plugin for WooCommerce. Accept STK Push, C2B Paybill, M-Pesa on Delivery and send B2C refunds from your WooCommerce store.",
     "url": "' . $site_url . '",
-    "downloadUrl": "https://wordpress.org/plugins/ozupay/",
+    "downloadUrl": "' . esc_url( home_url( '/get-free' ) ) . '",
     "keywords": "mpesa, woocommerce, wordpress plugin, stk push, daraja, c2b paybill, kenya, m-pesa payment gateway",
     "offers": [
-        { "@type": "Offer", "name": "OzuPay Free", "price": "0",    "priceCurrency": "KES", "availability": "https://schema.org/InStock", "url": "https://wordpress.org/plugins/ozupay/" },
+        { "@type": "Offer", "name": "OzuPay Free", "price": "0",    "priceCurrency": "KES", "availability": "https://schema.org/InStock", "url": "' . esc_url( home_url( '/get-free' ) ) . '" },
         { "@type": "Offer", "name": "OzuPay Pro",  "price": "5000", "priceCurrency": "KES", "availability": "https://schema.org/InStock", "url": "' . esc_url( home_url( '/shop/' ) ) . '" }
     ],
     "publisher": { "@type": "Organization", "name": "OzuPay", "url": "' . $site_url . '" }
@@ -669,6 +669,20 @@ add_action( 'wp_head', function () {
 
 // ── Sitemap ──────────────────────────────────────────────────────────────────
 
+// Publish one deliberate URL inventory. Core's parallel sitemap otherwise
+// exposes low-value author/account archives and duplicates this sitemap.
+add_filter( 'wp_sitemaps_enabled', '__return_false' );
+
+// A legacy WooCommerce test product is still published in production. Keep it
+// out of the index until the catalogue record itself can be retired.
+add_filter( 'wp_robots', function ( array $robots ): array {
+    if ( function_exists( 'is_product' ) && is_product() && get_post_field( 'post_name', get_queried_object_id() ) === 'tst' ) {
+        $robots['noindex'] = true;
+        $robots['follow']  = true;
+    }
+    return $robots;
+} );
+
 add_action( 'init', function () {
     add_rewrite_rule( '^sitemap\.xml$', 'index.php?ozp_sitemap=1', 'top' );
 } );
@@ -690,37 +704,61 @@ add_action( 'template_redirect', function () {
         return;
     }
 
-    $now  = gmdate( 'c' );
+    $page_entry = static function ( string $path, string $priority, string $changefreq ): ?array {
+        $page = get_page_by_path( $path );
+        if ( ! $page || $page->post_status !== 'publish' ) {
+            return null;
+        }
+        return [
+            'loc'        => get_permalink( $page ),
+            'priority'   => $priority,
+            'changefreq' => $changefreq,
+            'lastmod'    => get_post_modified_time( 'c', true, $page ),
+        ];
+    };
+
+    $front_page = (int) get_option( 'page_on_front' );
     $urls = [
         [
             'loc'        => home_url( '/' ),
             'priority'   => '1.0',
             'changefreq' => 'weekly',
-            'lastmod'    => $now,
+            'lastmod'    => $front_page ? get_post_modified_time( 'c', true, $front_page ) : gmdate( 'c' ),
             'image'      => [
                 'loc'     => get_stylesheet_directory_uri() . '/og-image.jpg',
                 'title'   => 'OzuPay: M-Pesa Payments for WooCommerce',
                 'caption' => 'OzuPay integrates Safaricom Daraja 2.0 STK Push payments directly into WooCommerce checkout for Kenyan merchants.',
             ],
         ],
-        [ 'loc' => home_url( '/features/' ),         'priority' => '0.9', 'changefreq' => 'weekly',  'lastmod' => $now ],
-        [ 'loc' => home_url( '/shop/' ),             'priority' => '0.9', 'changefreq' => 'weekly',  'lastmod' => $now ],
-        [ 'loc' => home_url( '/docs/' ),             'priority' => '0.8', 'changefreq' => 'weekly',  'lastmod' => $now ],
-        [ 'loc' => home_url( '/blog/' ),             'priority' => '0.7', 'changefreq' => 'weekly',  'lastmod' => $now ],
-        [ 'loc' => home_url( '/contact/' ),          'priority' => '0.6', 'changefreq' => 'monthly', 'lastmod' => $now ],
-        [ 'loc' => home_url( '/privacy-policy/' ),   'priority' => '0.3', 'changefreq' => 'yearly',  'lastmod' => $now ],
-        [ 'loc' => home_url( '/terms-of-use/' ),     'priority' => '0.3', 'changefreq' => 'yearly',  'lastmod' => $now ],
-        [ 'loc' => home_url( '/refund-policy/' ),    'priority' => '0.4', 'changefreq' => 'yearly',  'lastmod' => $now ],
     ];
+
+    foreach ( [
+        [ 'features',       '0.9', 'weekly' ],
+        [ 'shop',           '0.9', 'weekly' ],
+        [ 'docs',           '0.8', 'weekly' ],
+        [ 'blog',           '0.7', 'weekly' ],
+        [ 'contact',        '0.6', 'monthly' ],
+        [ 'privacy-policy', '0.3', 'yearly' ],
+        [ 'terms-of-use',   '0.3', 'yearly' ],
+        [ 'refund-policy',  '0.4', 'yearly' ],
+    ] as [ $path, $priority, $changefreq ] ) {
+        $entry = $page_entry( $path, $priority, $changefreq );
+        if ( $entry ) {
+            $urls[] = $entry;
+        }
+    }
 
     if ( function_exists( 'wc_get_products' ) ) {
         foreach ( wc_get_products( [ 'status' => 'publish', 'limit' => -1 ] ) as $product ) {
+            if ( $product->get_slug() === 'tst' ) {
+                continue;
+            }
             $mod    = $product->get_date_modified();
             $urls[] = [
                 'loc'        => get_permalink( $product->get_id() ),
                 'priority'   => '0.8',
                 'changefreq' => 'monthly',
-                'lastmod'    => $mod ? $mod->format( 'c' ) : $now,
+                'lastmod'    => $mod ? $mod->format( 'c' ) : gmdate( 'c' ),
             ];
         }
     }
