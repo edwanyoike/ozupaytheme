@@ -98,7 +98,7 @@
   </a>
   <div class="ofp-mono" style="color:var(--og);margin-bottom:0;">OzuPay for WooCommerce</div>
   <h1>All features</h1>
-  <p>Everything OzuPay does — from the basics available in the free plugin to the full Pro feature set.</p>
+  <p>Everything OzuPay does, from the basics available in the free plugin to the full Pro feature set.</p>
 </div>
 </section>
 
@@ -182,8 +182,8 @@
       id: 'stk',
       icon: icons.phone,
       name: 'STK Push payments',
-      summary: 'Customers pay directly from their Safaricom phone — no card, no redirect, no leaving your store.',
-      detail: '<p>When a customer places an order and selects M-Pesa, OzuPay sends an STK Push prompt to their phone via the Safaricom Daraja 2.0 API. The customer enters their M-Pesa PIN and the payment clears. WooCommerce marks the order paid automatically when the Daraja callback arrives — no manual checking or reconciliation.</p><p>The STK Push goes to whichever number the customer enters at checkout, not just their registered line. If the prompt does not arrive, customers can retry up to twice from the order page or fall back to paying manually via Paybill.</p>',
+      summary: 'Customers pay directly from their Safaricom phone: no card, no redirect, no leaving your store.',
+      detail: '<p>When a customer places an order and selects M-Pesa, OzuPay sends an STK Push prompt to their phone via the Safaricom Daraja 2.0 API. The customer enters their M-Pesa PIN and the payment clears. WooCommerce marks the order paid automatically when the Daraja callback arrives: no manual checking or reconciliation.</p><p>The STK Push goes to whichever number the customer enters at checkout, not just their registered line. If the prompt does not arrive, customers can retry up to twice from the order page or fall back to paying manually via Paybill.</p>',
     },
     {
       id: 'paybill',
@@ -196,21 +196,21 @@
       id: 'hpos',
       icon: icons.hpos,
       name: 'WooCommerce HPOS compatible',
-      summary: 'Built for the high-performance order storage system — all order queries use the WC_Order API.',
-      detail: '<p>OzuPay declares full compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout Blocks. All order access goes through <code>wc_get_orders()</code> and the <code>WC_Order</code> API — never direct post table access.</p><p>HPOS and Blocks compatibility flags are declared via <code>FeaturesUtil::declare_compatibility()</code> so the WooCommerce compatibility warning does not appear on your site.</p>',
+      summary: 'Built for the high-performance order storage system: all order queries use the WC_Order API.',
+      detail: '<p>OzuPay declares full compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout Blocks. All order access goes through <code>wc_get_orders()</code> and the <code>WC_Order</code> API; never direct post table access.</p><p>HPOS and Blocks compatibility flags are declared via <code>FeaturesUtil::declare_compatibility()</code> so the WooCommerce compatibility warning does not appear on your site.</p>',
     },
     {
       id: 'ip-security',
       icon: icons.shield,
       name: 'Callback IP security',
       summary: 'Only Safaricom\'s published Daraja IP ranges are accepted on your callback endpoint.',
-      detail: '<p>Every inbound callback from Daraja is validated against Safaricom\'s published IP range before any order status change is applied. Requests from unknown IPs are rejected and logged — no order is falsely marked paid from a spoofed request.</p><p>The IP allowlist is applied on both the STK callback and the C2B confirmation endpoints. No configuration is required — the check is on by default.</p>',
+      detail: '<p>Every inbound callback from Daraja is validated against Safaricom\'s published IP range before any order status change is applied. Requests from unknown IPs are rejected and logged: no order is falsely marked paid from a spoofed request.</p><p>The IP allowlist is applied on both the STK callback and the C2B confirmation endpoints. No configuration is required: the check is on by default.</p>',
     },
     {
       id: 'sandbox',
       icon: icons.sandbox,
       name: 'Sandbox & production environments',
-      summary: 'Test against the Daraja sandbox before going live — switch with a single dropdown.',
+      summary: 'Test against the Daraja sandbox before going live: switch with a single dropdown.',
       detail: '<p>Switch between the Safaricom Daraja sandbox and production environments from a single dropdown in the plugin settings. Sandbox and production credentials are stored separately so you can configure and test a Daraja app before switching your store to production.</p><p>The Daraja sandbox still sends a real STK Push to the phone number you test with, and can briefly deduct and then auto-reverse a small amount. Test with a phone number you control, not a customer\'s. The admin panel shows which environment is active so there is no ambiguity about which Daraja app is in use.</p>',
     },
     {
@@ -218,7 +218,7 @@
       icon: icons.code,
       name: 'Manual transaction code entry',
       summary: 'Customers who cannot receive an STK Push can pay manually and submit their M-Pesa code.',
-      detail: '<p>If the STK Push does not arrive — poor signal, wrong number, Daraja delay — customers can pay manually via Paybill or Till and enter their M-Pesa confirmation SMS code directly on the order page. The code is stored on the order and the order moves to on-hold for admin review.</p><p>Duplicate code detection runs across all orders so the same M-Pesa reference cannot be used to pay two orders. Retries are rate-limited to prevent abuse.</p>',
+      detail: '<p>If the STK Push does not arrive (poor signal, wrong number, Daraja delay), customers can pay manually via Paybill or Till and enter their M-Pesa confirmation SMS code directly on the order page. The code is stored on the order and the order moves to on-hold for admin review.</p><p>Duplicate code detection runs across all orders so the same M-Pesa reference cannot be used to pay two orders. Retries are rate-limited to prevent abuse.</p>',
     },
   ];
 
@@ -228,41 +228,41 @@
       icon: icons.truck,
       name: 'M-Pesa on Delivery',
       summary: 'Collect a deposit at checkout via STK Push. Balance is charged when the customer confirms delivery.',
-      detail: '<p>A configurable deposit — flat amount or percentage of the order total — is collected via STK Push when the order is placed. The remaining balance is charged when the customer or your delivery agent confirms delivery.</p><p>Collecting a deposit upfront lowers exposure to no-show cash-on-delivery orders without requiring full payment before dispatch. The order moves to a custom "Awaiting COD" status after the deposit is confirmed. A full transaction log of deposit and balance payments is recorded on every order. Deposit amount and percentage are configurable per product category or globally.</p>',
+      detail: '<p>A configurable deposit (flat amount or percentage of the order total) is collected via STK Push when the order is placed. The remaining balance is charged when the customer or your delivery agent confirms delivery.</p><p>Collecting a deposit upfront lowers exposure to no-show cash-on-delivery orders without requiring full payment before dispatch. The order moves to a custom "Awaiting COD" status after the deposit is confirmed. A full transaction log of deposit and balance payments is recorded on every order. Deposit amount and percentage are configurable per product category or globally.</p>',
     },
     {
       id: 'refunds',
       icon: icons.refund,
       name: 'B2C Refunds',
       summary: 'Refund directly to the customer\'s M-Pesa wallet from the WooCommerce order screen.',
-      detail: '<p>Initiate a B2C (Business to Customer) M-Pesa transfer from the WooCommerce order screen. The refund goes directly to the customer\'s phone — no Safaricom portal access required. Partial refunds are supported.</p><p>All refund transactions are logged on the order with M-Pesa reference codes. The B2C result callback updates the order note automatically so you have a full audit trail. Requires B2C credentials on your Daraja app.</p>',
+      detail: '<p>Initiate a B2C (Business to Customer) M-Pesa transfer from the WooCommerce order screen. The refund goes directly to the customer\'s phone: no Safaricom portal access required. Partial refunds are supported.</p><p>All refund transactions are logged on the order with M-Pesa reference codes. The B2C result callback updates the order note automatically so you have a full audit trail. Requires B2C credentials on your Daraja app.</p>',
     },
     {
       id: 'analytics',
       icon: icons.chart,
       name: 'Analytics dashboard',
-      summary: 'Revenue charts, STK success rates, and a searchable transaction log — all inside wp-admin.',
-      detail: '<p>A dedicated analytics page inside wp-admin shows M-Pesa revenue over time, STK Push success and failure rates, and a full searchable transaction log. Data is sourced directly from your WooCommerce orders — no third-party analytics service or external data sharing.</p><p>The dashboard includes KPIs for the current period, trend charts, and a per-order transaction breakdown. The transaction log can be exported to CSV for reconciliation with your M-Pesa statements.</p>',
+      summary: 'Revenue charts, STK success rates, and a searchable transaction log: all inside wp-admin.',
+      detail: '<p>A dedicated analytics page inside wp-admin shows M-Pesa revenue over time, STK Push success and failure rates, and a full searchable transaction log. Data is sourced directly from your WooCommerce orders: no third-party analytics service or external data sharing.</p><p>The dashboard includes KPIs for the current period, trend charts, and a per-order transaction breakdown. The transaction log can be exported to CSV for reconciliation with your M-Pesa statements.</p>',
     },
     {
       id: 'webhooks',
       icon: icons.webhook,
       name: 'Webhooks',
-      summary: 'Fire WooCommerce webhooks on M-Pesa payment events — payment confirmed, failed, refund issued.',
+      summary: 'Fire WooCommerce webhooks on M-Pesa payment events: payment confirmed, failed, refund issued.',
       detail: '<p>OzuPay registers custom webhook topics in WooCommerce: payment confirmed, payment failed, manual code submitted, and refund issued. Configure webhook deliveries from WooCommerce → Settings → Advanced → Webhooks.</p><p>Payloads include full order data and M-Pesa transaction details. Compatible with Zapier, Make, and any HTTP endpoint that accepts WooCommerce webhook payloads. Webhooks are created and managed from the OzuPay → Webhooks admin page.</p>',
     },
     {
       id: 'qr',
       icon: icons.qr,
       name: 'QR codes',
-      summary: 'A scannable M-Pesa QR code appears automatically on the customer\'s payment-waiting page — no STK Push needed.',
-      detail: '<p>When a customer checks out with M-Pesa, a Safaricom Daraja QR code appears automatically on their payment-waiting page as an alternative to STK Push. The QR encodes the payment details — amount, business number, account reference — so they can scan and pay from the Safaricom My One App without typing anything or waiting for a push prompt.</p><p>The same QR code can also be generated or regenerated from the order screen in wp-admin, downloaded, and printed or shared digitally. Useful for in-person sales, market stalls, and situations where the customer is physically present but not using your WooCommerce checkout.</p>',
+      summary: 'A scannable M-Pesa QR code appears automatically on the customer\'s payment-waiting page: no STK Push needed.',
+      detail: '<p>When a customer checks out with M-Pesa, a Safaricom Daraja QR code appears automatically on their payment-waiting page as an alternative to STK Push. The QR encodes the payment details (amount, business number, account reference) so they can scan and pay from the Safaricom My One App without typing anything or waiting for a push prompt.</p><p>The same QR code can also be generated or regenerated from the order screen in wp-admin, downloaded, and printed or shared digitally. Useful for in-person sales, market stalls, and situations where the customer is physically present but not using your WooCommerce checkout.</p>',
     },
     {
       id: 'payment-links',
       icon: icons.link,
       name: 'Payment links',
-      summary: 'Create shareable payment links for any amount — useful for invoicing and WhatsApp sales.',
+      summary: 'Create shareable payment links for any amount: useful for invoicing and WhatsApp sales.',
       detail: '<p>Generate a unique payment link for any amount directly from wp-admin. The link opens a hosted payment page where the customer enters their M-Pesa number, receives an STK Push, and completes the payment without going through WooCommerce checkout.</p><p>Useful for collecting payments outside the normal order flow: invoices, service fees, event registrations, or WhatsApp-based sales. Each link is single-use and expires after payment.</p>',
     },
     {
@@ -270,20 +270,20 @@
       icon: icons.pos,
       name: 'POS REST API',
       summary: 'REST endpoints for Android cashier and point-of-sale applications.',
-      detail: '<p>A set of authenticated REST API endpoints that let external Android apps or POS systems initiate M-Pesa STK Push payments, query payment status, and receive confirmations — without a browser or the WooCommerce checkout flow.</p><p>Built for cashier apps and retail counter use cases where the order is created in a separate system. Authentication uses application passwords or a dedicated API key. The API is versioned and documented in the OzuPay developer reference.</p>',
+      detail: '<p>A set of authenticated REST API endpoints that let external Android apps or POS systems initiate M-Pesa STK Push payments, query payment status, and receive confirmations, without a browser or the WooCommerce checkout flow.</p><p>Built for cashier apps and retail counter use cases where the order is created in a separate system. Authentication uses application passwords or a dedicated API key. The API is versioned and documented in the OzuPay developer reference.</p>',
     },
     {
       id: 'c2b',
       icon: icons.c2b,
       name: 'Paybill &amp; Till fallback',
       summary: 'Automatically match manual Paybill or Buy Goods (Till) payments to orders when STK Push is unavailable.',
-      detail: '<p>When a customer pays manually via Paybill or Buy Goods (Till) &mdash; C2B &mdash; instead of using the STK Push, OzuPay listens to the Daraja C2B confirmation endpoint and automatically matches the payment to the corresponding WooCommerce order by account reference. The order is confirmed without admin intervention.</p><p>Requires C2B registration on your Daraja shortcode. Unmatched C2B payments are queued for manual review from the OzuPay admin panel. Useful as a fallback for customers in low-signal areas or on older phones.</p>',
+      detail: '<p>When a customer pays manually via C2B (Paybill or Buy Goods/Till) instead of using the STK Push, OzuPay listens to the Daraja C2B confirmation endpoint and automatically matches the payment to the corresponding WooCommerce order by account reference. The order is confirmed without admin intervention.</p><p>Requires C2B registration on your Daraja shortcode. Unmatched C2B payments are queued for manual review from the OzuPay admin panel. Useful as a fallback for customers in low-signal areas or on older phones.</p>',
     },
     {
       id: 'notifications',
       icon: icons.bell,
       name: 'Admin alerts',
-      summary: 'Configurable email alerts when an STK Push fails, a callback encounters an error, or a C2B payment can\'t be matched or is auto-matched — pick exactly which ones you want.',
+      summary: 'Configurable email alerts when an STK Push fails, a callback encounters an error, or a C2B payment can\'t be matched or is auto-matched: pick exactly which ones you want.',
       detail: '<p>OzuPay sends an email to configured recipients when an STK Push request fails at the Daraja level, when a callback arrives but cannot be processed, or when a payment is left unconfirmed beyond the expected timeout.</p><p>It also alerts you when a C2B (Paybill/Till) payment arrives that can\'t be automatically matched to an order, and when one is matched and confirmed automatically with no cashier or admin action needed.</p><p>An Alert Types checklist lets you choose exactly which of these events send an email, so you\'re not stuck with an all-or-nothing toggle. Alerts include the order number, error details from the Daraja response, and a direct link to the WooCommerce order screen so you can act immediately. Recipient addresses are configurable, helping you spot payment issues before a customer reports one.</p>',
     },
     {
@@ -291,7 +291,7 @@
       icon: icons.terminal,
       name: 'Daraja testing panel',
       summary: 'Trigger STK Pushes and query payment status for any order directly from wp-admin.',
-      detail: '<p>A testing and support interface inside wp-admin that lets you send STK Push requests and query Daraja payment status for any order — without logging in to the Safaricom portal. Useful for diagnosing payment issues and for testing new Daraja credentials.</p><p>Both sandbox and production environments are supported. The panel records the Daraja request and response on the order note so you have a full trace of what was sent and received. Access is restricted to administrators.</p>',
+      detail: '<p>A testing and support interface inside wp-admin that lets you send STK Push requests and query Daraja payment status for any order, without logging in to the Safaricom portal. Useful for diagnosing payment issues and for testing new Daraja credentials.</p><p>Both sandbox and production environments are supported. The panel records the Daraja request and response on the order note so you have a full trace of what was sent and received. Access is restricted to administrators.</p>',
     },
     {
       id: 'tx-fee',
@@ -312,21 +312,21 @@
       icon: icons.match,
       name: 'Manual C2B matching',
       summary: 'Assign an unmatched C2B payment to a WooCommerce order when automatic matching fails.',
-      detail: '<p>When an automatic C2B match fails — wrong account reference entered by the customer, Daraja delay, or a reference format mismatch — an admin can manually assign the Daraja C2B transaction to the correct order from the OzuPay admin panel.</p><p>The payment is applied to the order and its status updated to reflect the confirmed payment. The manual assignment is recorded on the order note with the M-Pesa transaction reference for audit purposes.</p>',
+      detail: '<p>When an automatic C2B match fails (wrong account reference entered by the customer, Daraja delay, or a reference format mismatch), an admin can manually assign the Daraja C2B transaction to the correct order from the OzuPay admin panel.</p><p>The payment is applied to the order and its status updated to reflect the confirmed payment. The manual assignment is recorded on the order note with the M-Pesa transaction reference for audit purposes.</p>',
     },
     {
       id: 'dev-licences',
       icon: icons.devkey,
       name: 'Development licences',
       summary: 'Activate OzuPay on a staging or development site at no extra cost, tied to your production licence.',
-      detail: '<p>Each Pro licence can have development licences generated for it. A development licence activates only on a subdomain of the production domain already registered on the parent licence — for example, <code>staging.yourdomain.com</code> if production is activated on <code>yourdomain.com</code>.</p><p>Development licences are single-seat and do not count against your production seat limit. Expiry matches the parent licence by default and can be set to any date when issuing. Contact support to have development licences added to your licence.</p>',
+      detail: '<p>Each Pro licence can have development licences generated for it. A development licence activates only on a subdomain of the production domain already registered on the parent licence, for example <code>staging.yourdomain.com</code> if production is activated on <code>yourdomain.com</code>.</p><p>Development licences are single-seat and do not count against your production seat limit. Expiry matches the parent licence by default and can be set to any date when issuing. Contact support to have development licences added to your licence.</p>',
     },
     {
       id: 'email-design',
       icon: icons.palette,
       name: 'Email design',
       summary: 'Transactional emails pick up your store\'s brand color instead of the default OzuPay green.',
-      detail: '<p>OzuPay\'s transactional emails — payment confirmation, manual verification instructions, refund notices, and more — adopt the accent color already set at WooCommerce → Settings → Emails, instead of the default green, so they match the rest of your store\'s email branding.</p><p>A live preview renders every template with sample order data before you save, so you can check how each email looks with your color before it goes out to customers.</p>',
+      detail: '<p>OzuPay\'s transactional emails (payment confirmation, manual verification instructions, refund notices, and more) adopt the accent color already set at WooCommerce → Settings → Emails, instead of the default green, so they match the rest of your store\'s email branding.</p><p>A live preview renders every template with sample order data before you save, so you can check how each email looks with your color before it goes out to customers.</p>',
     },
   ];
 

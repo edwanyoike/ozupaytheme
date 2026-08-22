@@ -315,20 +315,20 @@ add_action( 'wp_footer', function (): void {
 // Per-page document titles — keyword-rich, consistently cased.
 add_filter( 'document_title_parts', function ( array $parts ): array {
     if ( is_front_page() ) {
-        $parts['title']   = 'OzuPay — M-Pesa Payments Plugin for WordPress & WooCommerce';
+        $parts['title']   = 'OzuPay: M-Pesa Payments Plugin for WordPress & WooCommerce';
         $parts['tagline'] = '';
         $parts['site']    = '';
     } elseif ( function_exists( 'is_shop' ) && is_shop() ) {
-        $parts['title'] = 'Buy OzuPay M-Pesa Pro — Plans & Pricing';
+        $parts['title'] = 'Buy OzuPay M-Pesa Pro: Plans & Pricing';
         $parts['site']  = 'OzuPay';
     } elseif ( is_page( 'features' ) ) {
-        $parts['title'] = 'OzuPay M-Pesa Plugin Features — Free vs Pro';
+        $parts['title'] = 'OzuPay M-Pesa Plugin Features: Free vs Pro';
         $parts['site']  = 'OzuPay';
     } elseif ( is_page( [ 'docs', 'documentation' ] ) ) {
         $parts['title'] = 'M-Pesa Payments Plugin Setup & Configuration Guide';
         $parts['site']  = 'OzuPay';
     } elseif ( is_page( 'contact' ) ) {
-        $parts['title'] = 'Contact OzuPay — M-Pesa Plugin Support & Enquiries';
+        $parts['title'] = 'Contact OzuPay: M-Pesa Plugin Support & Enquiries';
         $parts['tagline'] = '';
         $parts['site']    = '';
     } elseif ( is_page( 'support' ) ) {
@@ -341,21 +341,21 @@ add_filter( 'document_title_parts', function ( array $parts ): array {
         $parts['title'] = 'About OzuPay';
         $parts['site']  = 'OzuPay';
     } elseif ( is_page( [ 'privacy-policy', 'privacy' ] ) ) {
-        $parts['title']   = 'OzuPay Privacy Policy — M-Pesa Payments Plugin';
+        $parts['title']   = 'OzuPay Privacy Policy: M-Pesa Payments Plugin';
         $parts['tagline'] = '';
         $parts['site']    = '';
     } elseif ( is_page( [ 'terms-of-use', 'terms' ] ) ) {
-        $parts['title']   = 'OzuPay Terms of Use — M-Pesa Payments Plugin';
+        $parts['title']   = 'OzuPay Terms of Use: M-Pesa Payments Plugin';
         $parts['tagline'] = '';
         $parts['site']    = '';
     } elseif ( is_page( [ 'refund-policy', 'refund' ] ) ) {
-        $parts['title']   = 'OzuPay Refund Policy — 30-Day Money-Back Guarantee';
+        $parts['title']   = 'OzuPay Refund Policy: 30-Day Money-Back Guarantee';
         $parts['tagline'] = '';
         $parts['site']    = '';
     } elseif ( function_exists( 'is_product' ) && is_product() ) {
         $slug = get_queried_object() ? get_queried_object()->post_name : '';
         if ( str_contains( $slug, 'one-site' ) ) {
-            $parts['title'] = 'OzuPay M-Pesa Pro — KES 5,000/yr per site, every feature included';
+            $parts['title'] = 'OzuPay M-Pesa Pro: KES 5,000/yr per site, every feature included';
             $parts['site']  = 'OzuPay';
         } else {
             // Legacy multi-site plan products — retired from sale.
@@ -363,7 +363,7 @@ add_filter( 'document_title_parts', function ( array $parts ): array {
             $parts['site']  = 'OzuPay';
         }
     } elseif ( is_page( 'blog' ) ) {
-        $parts['title']   = 'Blog — M-Pesa & WooCommerce Guides | OzuPay';
+        $parts['title']   = 'Blog: M-Pesa & WooCommerce Guides | OzuPay';
         $parts['tagline'] = '';
         $parts['site']    = '';
     } elseif ( is_singular( 'post' ) ) {
@@ -390,8 +390,8 @@ add_action( 'wp_head', function () {
 
     // ── Per-page SEO data ──────────────────────────────────────────────────
     if ( is_front_page() ) {
-        $title = 'OzuPay — M-Pesa Payments Plugin for WordPress & WooCommerce';
-        $desc  = 'The M-Pesa payments plugin for WooCommerce. STK Push, C2B Paybill, M-Pesa on Delivery and B2C refunds — built for Kenyan merchants. Free and Pro plans.';
+        $title = 'OzuPay: M-Pesa Payments Plugin for WordPress & WooCommerce';
+        $desc  = 'The M-Pesa payments plugin for WooCommerce. STK Push, C2B Paybill, M-Pesa on Delivery and B2C refunds: built for Kenyan merchants. Free and Pro plans.';
         $url   = $site_url;
         $type  = 'website';
 
@@ -427,17 +427,17 @@ add_action( 'wp_head', function () {
     "mainEntity": [
         { "@type": "Question", "name": "What is the difference between the free and Pro OzuPay M-Pesa plugin?", "acceptedAnswer": { "@type": "Answer", "text": "The free plugin covers STK Push, Paybill, and Till (Buy Goods) payments and is available on WordPress.org. Pro adds M-Pesa on Delivery (COD deposit collection), B2C refunds from the WooCommerce order screen, an analytics dashboard, webhook events, payment links, QR codes, and a POS REST API." } },
         { "@type": "Question", "name": "Is OzuPay compatible with my WordPress theme?", "acceptedAnswer": { "@type": "Answer", "text": "OzuPay M-Pesa Payments Plugin adds a payment method to WooCommerce checkout and is compatible with any WordPress theme that supports WooCommerce, including block themes and page builders like Elementor and Divi." } },
-        { "@type": "Question", "name": "Can I upgrade from the free OzuPay WooCommerce M-Pesa plugin to Pro later?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Install the Pro plugin and activate your license key. All existing settings — Paybill number, passkey, credentials — are retained automatically. No reconfiguration needed." } },
+        { "@type": "Question", "name": "Can I upgrade from the free OzuPay WooCommerce M-Pesa plugin to Pro later?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Install the Pro plugin and activate your license key. All existing settings (Paybill number, passkey, credentials) are retained automatically. No reconfiguration needed." } },
         { "@type": "Question", "name": "What happens when my OzuPay M-Pesa Payments Pro license expires?", "acceptedAnswer": { "@type": "Answer", "text": "Your site continues to process M-Pesa payments normally. An expired license only disables automatic updates and Pro features. Core STK Push and C2B Paybill payment processing is unaffected." } },
         { "@type": "Question", "name": "Does OzuPay offer a refund policy?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. OzuPay M-Pesa Payments Plugin offers a 30-day money-back guarantee on all Pro plans. If the plugin does not work for your store within 30 days of purchase, contact support for a full refund." } },
         { "@type": "Question", "name": "Is OzuPay compatible with WooCommerce HPOS?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. OzuPay M-Pesa Payments Plugin declares full compatibility with WooCommerce High-Performance Order Storage (HPOS) and is tested against WooCommerce 8+." } },
-        { "@type": "Question", "name": "How do I get support for the OzuPay M-Pesa plugin?", "acceptedAnswer": { "@type": "Answer", "text": "Free users can use the WordPress.org support forums. Anyone with a Pro licence can open a support ticket — submit it from the Contact page with your site URL and issue description." } }
+        { "@type": "Question", "name": "How do I get support for the OzuPay M-Pesa plugin?", "acceptedAnswer": { "@type": "Answer", "text": "Free users can use the WordPress.org support forums. Anyone with a Pro licence can open a support ticket: submit it from the Contact page with your site URL and issue description." } }
     ]
 }';
 
     } elseif ( function_exists( 'is_shop' ) && is_shop() ) {
-        $title = 'Buy OzuPay M-Pesa Pro — KES 5,000/yr Per Site | OzuPay';
-        $desc  = 'OzuPay M-Pesa Pro: KES 5,000 per site, per year — every Pro feature included, no feature tiers. Volume pricing for agencies and multi-store merchants. 30-day money-back guarantee.';
+        $title = 'Buy OzuPay M-Pesa Pro: KES 5,000/yr Per Site | OzuPay';
+        $desc  = 'OzuPay M-Pesa Pro: KES 5,000 per site, per year, every Pro feature included, no feature tiers. Volume pricing for agencies and multi-store merchants. 30-day money-back guarantee.';
         $url   = esc_url( home_url( '/shop/' ) );
         $type  = 'website';
 
@@ -445,7 +445,7 @@ add_action( 'wp_head', function () {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "OzuPay M-Pesa Payments Pro",
-    "description": "Every OzuPay Pro feature — STK Push, M-Pesa on Delivery, B2C refunds, analytics, webhooks, payment links, QR codes, and the POS REST API — in one licence per WooCommerce site.",
+    "description": "Every OzuPay Pro feature (STK Push, M-Pesa on Delivery, B2C refunds, analytics, webhooks, payment links, QR codes, and the POS REST API) in one licence per WooCommerce site.",
     "url": "' . esc_url( home_url( '/shop/' ) ) . '",
     "brand": { "@type": "Brand", "name": "OzuPay" },
     "offers": {
@@ -459,7 +459,7 @@ add_action( 'wp_head', function () {
 }';
 
     } elseif ( is_page( 'features' ) ) {
-        $title = 'OzuPay M-Pesa Plugin Features — Free vs Pro | OzuPay';
+        $title = 'OzuPay M-Pesa Plugin Features: Free vs Pro | OzuPay';
         $desc  = 'Full OzuPay feature list. Compare Free vs Pro: STK Push, C2B Paybill, M-Pesa on Delivery, B2C refunds, analytics, webhooks, and POS REST API.';
         $url   = esc_url( get_permalink() );
         $type  = 'website';
@@ -467,7 +467,7 @@ add_action( 'wp_head', function () {
         $json_ld[] = '{
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "OzuPay M-Pesa Plugin Features — Free vs Pro",
+    "name": "OzuPay M-Pesa Plugin Features: Free vs Pro",
     "description": "Full feature comparison of OzuPay Free and Pro editions for WooCommerce M-Pesa payments.",
     "url": "' . esc_url( get_permalink() ) . '",
     "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" }
@@ -482,7 +482,7 @@ add_action( 'wp_head', function () {
         $json_ld[] = '{
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "name": "OzuPay M-Pesa Payments Plugin — Setup & Configuration Guide",
+    "name": "OzuPay M-Pesa Payments Plugin: Setup & Configuration Guide",
     "description": "Complete guide to installing, configuring, and operating OzuPay M-Pesa Payments (Free and Pro) on your WooCommerce store.",
     "url": "' . esc_url( get_permalink() ) . '",
     "about": { "@type": "SoftwareApplication", "name": "OzuPay M-Pesa Payments Plugin", "url": "' . $site_url . '" },
@@ -490,7 +490,7 @@ add_action( 'wp_head', function () {
 }';
 
     } elseif ( is_page( 'contact' ) ) {
-        $title = 'Contact OzuPay — M-Pesa Plugin Support & Enquiries';
+        $title = 'Contact OzuPay: M-Pesa Plugin Support & Enquiries';
         $desc  = 'Contact OzuPay. Submit a support ticket for the M-Pesa WooCommerce plugin, suggest a feature, or ask a pre-sales question. Pro customers get priority response.';
         $url   = esc_url( get_permalink() );
         $type  = 'website';
@@ -505,7 +505,7 @@ add_action( 'wp_head', function () {
 }';
 
     } elseif ( is_page( 'support' ) ) {
-        $title = 'OzuPay Support — M-Pesa Plugin Help & Ticket';
+        $title = 'OzuPay Support: M-Pesa Plugin Help & Ticket';
         $desc  = 'Get help with OzuPay M-Pesa plugin. Anyone with a Pro licence can submit a support ticket with direct access to the OzuPay team.';
         $url   = esc_url( get_permalink() );
         $type  = 'website';
@@ -517,7 +517,7 @@ add_action( 'wp_head', function () {
         $type  = 'website';
 
     } elseif ( is_page( 'about' ) ) {
-        $title = 'About OzuPay — M-Pesa Payments for WooCommerce';
+        $title = 'About OzuPay: M-Pesa Payments for WooCommerce';
         $desc  = 'OzuPay builds the M-Pesa Payments Plugin for WordPress and WooCommerce merchants in Kenya.';
         $url   = esc_url( get_permalink() );
         $type  = 'website';
@@ -539,7 +539,7 @@ add_action( 'wp_head', function () {
         $json_ld[] = '{ "@context": "https://schema.org", "@type": "WebPage", "name": "Terms of Use", "url": "' . esc_url( get_permalink() ) . '", "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" } }';
 
     } elseif ( is_page( [ 'refund-policy', 'refund' ] ) ) {
-        $title = 'Refund Policy — 30-Day Money-Back Guarantee | OzuPay';
+        $title = 'Refund Policy: 30-Day Money-Back Guarantee | OzuPay';
         $desc  = 'OzuPay offers a 30-day money-back guarantee on all Pro plans. Full refund if the plugin does not work for your WooCommerce store within 30 days of purchase.';
         $url   = esc_url( get_permalink() );
         $type  = 'website';
@@ -552,8 +552,8 @@ add_action( 'wp_head', function () {
         $url         = esc_url( get_permalink() );
         $type        = 'website';
 
-        $title       = 'OzuPay M-Pesa Pro — KES 5,000/yr Per Site | OzuPay';
-        $desc        = 'OzuPay M-Pesa Payments Pro — one licence, every Pro feature. KES 5,000 per site, per year. 30-day money-back guarantee.';
+        $title       = 'OzuPay M-Pesa Pro: KES 5,000/yr Per Site | OzuPay';
+        $desc        = 'OzuPay M-Pesa Payments Pro: one licence, every Pro feature. KES 5,000 per site, per year. 30-day money-back guarantee.';
         $plan_name   = 'OzuPay M-Pesa Payments Pro';
         $plan_price  = '5000';
         $plan_desc   = 'Every OzuPay Pro feature (STK Push, M-Pesa on Delivery, B2C refunds, analytics, webhooks, payment links, QR codes, POS REST API) for one WooCommerce site.';
@@ -576,7 +576,7 @@ add_action( 'wp_head', function () {
 }';
 
     } elseif ( is_page( 'blog' ) ) {
-        $title = 'Blog — M-Pesa & WooCommerce Guides | OzuPay';
+        $title = 'Blog: M-Pesa & WooCommerce Guides | OzuPay';
         $desc  = 'Guides, troubleshooting, and comparisons for M-Pesa payments on WooCommerce: setup, Daraja API, security, and cost.';
         $url   = esc_url( get_permalink() );
         $type  = 'website';
@@ -699,7 +699,7 @@ add_action( 'template_redirect', function () {
             'lastmod'    => $now,
             'image'      => [
                 'loc'     => get_stylesheet_directory_uri() . '/og-image.jpg',
-                'title'   => 'OzuPay — M-Pesa Payments for WooCommerce',
+                'title'   => 'OzuPay: M-Pesa Payments for WooCommerce',
                 'caption' => 'OzuPay integrates Safaricom Daraja 2.0 STK Push payments directly into WooCommerce checkout for Kenyan merchants.',
             ],
         ],
@@ -797,7 +797,7 @@ add_action( 'template_redirect', function () {
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, follow">
-<title>Your download is starting&hellip; &mdash; OzuPay</title>
+<title>Your download is starting&hellip; | OzuPay</title>
 <link rel="stylesheet" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/style.css' ); ?>">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
 <link rel="icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/favicon.png' ); ?>">
@@ -857,13 +857,13 @@ add_action( 'template_redirect', function () {
   </div>
 
   <div style="max-width:420px;margin:44px auto 0;background:var(--navy);border-radius:22px;padding:34px 30px;box-shadow:0 30px 60px -22px rgba(15,23,42,.5),0 0 50px -8px rgba(0,166,81,.18);">
-    <div class="ozp-mono" style="font-size:13px;font-weight:600;letter-spacing:.06em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">While that downloads&mdash;checkout Pro features</div>
+    <div class="ozp-mono" style="font-size:13px;font-weight:600;letter-spacing:.06em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">While that downloads, check out Pro features</div>
     <h2 style="margin:0 0 10px;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.02em;">Refunds, M-Pesa on Delivery, analytics &amp; more</h2>
-    <p style="margin:0 0 22px;font-size:14px;line-height:1.6;color:#E4DECF;">One licence, every Pro feature included &mdash; KES 5,000/yr per site.</p>
+    <p style="margin:0 0 22px;font-size:14px;line-height:1.6;color:#E4DECF;">One licence, every Pro feature included: KES 5,000/yr per site.</p>
     <ul style="list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:11px;text-align:left;">
-      <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>M-Pesa on Delivery &mdash; stop losing money on fake COD</li>
+      <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>M-Pesa on Delivery: stop losing money on fake COD</li>
       <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>B2C refunds straight from the order screen</li>
-      <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Paybill &amp; Till fallback &mdash; no missed sales</li>
+      <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Paybill &amp; Till fallback: no missed sales</li>
       <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Analytics dashboard &amp; live KPIs</li>
       <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Webhooks, QR codes &amp; payment links</li>
       <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>POS REST API for cashier apps</li>
@@ -1336,42 +1336,42 @@ add_action( 'wp_footer', function () {
     <!-- Hidden feature detail content -->
     <div id="fd-stk-push" data-title="STK Push" hidden>
         <p>When a customer selects OzuPay at checkout and places the order, the plugin sends an M-Pesa STK Push prompt directly to the phone number they entered. The customer opens their phone, enters their M-Pesa PIN, and the payment is confirmed instantly.</p>
-        <p>The order status updates automatically when the Daraja confirmation callback is received — no admin action or manual reconciliation required. If the customer dismisses the prompt or the request times out, the order is held as pending and the customer can retry.</p>
+        <p>The order status updates automatically when the Daraja confirmation callback is received: no admin action or manual reconciliation required. If the customer dismisses the prompt or the request times out, the order is held as pending and the customer can retry.</p>
         <p>Works with Safaricom Daraja 2.0. Compatible with both personal and business M-Pesa lines. Available in the free and Pro plans.</p>
     </div>
 
     <div id="fd-paybill-till" data-title="Paybill &amp; Till" hidden>
-        <p>The plugin supports both C2B payment methods: <strong>Paybill</strong> (Pay Bill — customer enters a business number and account number) and <strong>Buy Goods / Till</strong> (customer enters a till number). Configure which type you use in WooCommerce &rarr; Settings &rarr; Payments &rarr; OzuPay.</p>
+        <p>The plugin supports both C2B payment methods: <strong>Paybill</strong> (Pay Bill: customer enters a business number and account number) and <strong>Buy Goods / Till</strong> (customer enters a till number). Configure which type you use in WooCommerce &rarr; Settings &rarr; Payments &rarr; OzuPay.</p>
         <p>The plugin registers your shortcode with the Daraja C2B API and listens for confirmation callbacks. When a payment arrives, it matches the transaction to the correct WooCommerce order by amount and phone number, then updates the order status automatically.</p>
-        <p>Useful as a fallback when the customer cannot receive the STK Push prompt — for example on a second SIM or a feature phone. Available in the free and Pro plans.</p>
+        <p>Useful as a fallback when the customer cannot receive the STK Push prompt, for example on a second SIM or a feature phone. Available in the free and Pro plans.</p>
     </div>
 
     <div id="fd-callback-security" data-title="Callback IP Security" hidden>
         <p>Every payment notification received from Daraja is validated against Safaricom's published IP address whitelist before any order data is read or modified. Payloads arriving from unknown IPs are rejected outright and the attempt is written to the WordPress error log.</p>
-        <p>This prevents fraudulent callback injection — a common attack against M-Pesa integrations that skip IP validation. An attacker who knows your callback URL cannot trigger order status changes without passing the IP check.</p>
+        <p>This prevents fraudulent callback injection: a common attack against M-Pesa integrations that skip IP validation. An attacker who knows your callback URL cannot trigger order status changes without passing the IP check.</p>
         <p>The IP whitelist is maintained inside the plugin and updated with each release. No manual configuration is needed. Available in the free and Pro plans.</p>
     </div>
 
     <div id="fd-hpos" data-title="WooCommerce HPOS" hidden>
-        <p>OzuPay M-Pesa Payments Plugin is fully compatible with WooCommerce High-Performance Order Storage (HPOS) — the new dedicated orders table introduced in WooCommerce 7.1 and made the default in WooCommerce 8.2.</p>
+        <p>OzuPay M-Pesa Payments Plugin is fully compatible with WooCommerce High-Performance Order Storage (HPOS): the new dedicated orders table introduced in WooCommerce 7.1 and made the default in WooCommerce 8.2.</p>
         <p>All order queries use <code>wc_get_orders()</code>, never <code>get_posts()</code>. The plugin declares HPOS compatibility via the WooCommerce FeaturesUtil API, so you will not see the HPOS incompatibility warning in WooCommerce &rarr; Settings &rarr; Advanced &rarr; Features.</p>
         <p>Traditional post-based order storage (CPT mode) is also fully supported, so you can enable HPOS at your own pace. Available in the free and Pro plans.</p>
     </div>
 
     <div id="fd-sandbox" data-title="Sandbox &amp; Production Environments" hidden>
-        <p>Switch between the Daraja sandbox and live production environments using a single dropdown in WooCommerce &rarr; Settings &rarr; Payments &rarr; OzuPay &rarr; Environment. The switch takes effect immediately — no page reload required.</p>
-        <p>Sandbox mode uses your Daraja test credentials, but Safaricom's sandbox still sends a real STK Push to the phone number you test with — the amount can be deducted and is reversed automatically shortly after. Test the complete STK Push and C2B callback flow on a phone you control, confirm order statuses update correctly, and then flip the switch to go live.</p>
+        <p>Switch between the Daraja sandbox and live production environments using a single dropdown in WooCommerce &rarr; Settings &rarr; Payments &rarr; OzuPay &rarr; Environment. The switch takes effect immediately: no page reload required.</p>
+        <p>Sandbox mode uses your Daraja test credentials, but Safaricom's sandbox still sends a real STK Push to the phone number you test with: the amount can be deducted and is reversed automatically shortly after. Test the complete STK Push and C2B callback flow on a phone you control, confirm order statuses update correctly, and then flip the switch to go live.</p>
         <p>Separate credential fields are shown for sandbox and production so you never risk mixing test and live keys. Available in Pro only.</p>
     </div>
 
     <div id="fd-cod" data-title="M-Pesa on Delivery" hidden>
-        <p>For Cash on Delivery orders, OzuPay can collect a configurable deposit via STK Push at the time of checkout — for example 30% of the order total — so the customer commits before delivery.</p>
+        <p>For Cash on Delivery orders, OzuPay can collect a configurable deposit via STK Push at the time of checkout (for example 30% of the order total) so the customer commits before delivery.</p>
         <p>When the delivery is completed and the WooCommerce order is marked as delivered, the plugin automatically sends a second STK Push for the remaining balance. The customer receives an M-Pesa prompt on their phone for each payment step.</p>
         <p>The deposit percentage and balance collection trigger are configurable in Settings. All collected amounts are recorded in the order timeline. Available in Pro only.</p>
     </div>
 
     <div id="fd-b2c" data-title="B2C Refunds" hidden>
-        <p>Issue M-Pesa refunds directly from the WooCommerce order screen. Open the order, click Refund, enter the amount, and the plugin sends the money to the customer's M-Pesa number via the Daraja B2C API — no need to log into the Safaricom portal.</p>
+        <p>Issue M-Pesa refunds directly from the WooCommerce order screen. Open the order, click Refund, enter the amount, and the plugin sends the money to the customer's M-Pesa number via the Daraja B2C API: no need to log into the Safaricom portal.</p>
         <p>The refund amount, Daraja transaction ID, and timestamp are saved as an order note so you have a full audit trail alongside the original payment record.</p>
         <p>Requires a Daraja B2C shortcode with the correct product type (SalaryPayment or BusinessPayment) configured in Settings. Available in Pro only.</p>
     </div>
@@ -1384,40 +1384,40 @@ add_action( 'wp_footer', function () {
             <li>STK Push success and failure breakdown</li>
             <li>Full transaction log with search, date filter, status filter, and a direct link to each WooCommerce order</li>
         </ul>
-        <p>All data is read from the WooCommerce orders table — no separate analytics database or third-party service required. Available in Pro only.</p>
+        <p>All data is read from the WooCommerce orders table: no separate analytics database or third-party service required. Available in Pro only.</p>
     </div>
 
     <div id="fd-webhooks" data-title="Webhooks" hidden>
         <p>OzuPay extends the WooCommerce Webhooks system with custom M-Pesa event topics. Create webhook endpoints from <strong>OzuPay &rarr; Webhooks</strong> in the admin and choose from:</p>
         <ul>
-            <li><code>ozupay.payment.confirmed</code> — fires when an M-Pesa STK Push or C2B payment is confirmed</li>
-            <li><code>ozupay.cod_collected</code> — fires when a COD deposit or delivery balance is collected</li>
-            <li><code>ozupay.b2c_sent</code> — fires when a B2C refund is dispatched to the customer</li>
+            <li><code>ozupay.payment.confirmed</code>: fires when an M-Pesa STK Push or C2B payment is confirmed</li>
+            <li><code>ozupay.cod_collected</code>: fires when a COD deposit or delivery balance is collected</li>
+            <li><code>ozupay.b2c_sent</code>: fires when a B2C refund is dispatched to the customer</li>
         </ul>
         <p>Each webhook delivers a JSON payload containing order ID, amount, customer phone number, and M-Pesa transaction reference. Use them to sync payments with your accounting tool, ERP, or any system that accepts HTTP callbacks. Available in Pro only.</p>
     </div>
 
     <div id="fd-autoupdates" data-title="Auto-Updates" hidden>
-        <p>Licensed Pro sites receive plugin update notifications directly in the WordPress Dashboard &rarr; Updates screen, alongside your other plugins. Install new versions with a single click — no ZIP downloads, no FTP, no manual file replacement.</p>
-        <p>Your license key is verified against the OzuPay license server on each update check. Updates are delivered for the duration of your active license year. When your license expires, existing functionality continues to work — only the update feed is paused until you renew.</p>
+        <p>Licensed Pro sites receive plugin update notifications directly in the WordPress Dashboard &rarr; Updates screen, alongside your other plugins. Install new versions with a single click: no ZIP downloads, no FTP, no manual file replacement.</p>
+        <p>Your license key is verified against the OzuPay license server on each update check. Updates are delivered for the duration of your active license year. When your license expires, existing functionality continues to work: only the update feed is paused until you renew.</p>
     </div>
 
     <div id="fd-tx-fee" data-title="Transaction Fee Passthrough" hidden>
-        <p>When enabled, the plugin automatically adds the official Safaricom transaction fee to the WooCommerce order total at checkout — but only when the M-Pesa gateway is selected. The amount is looked up from the published Safaricom tariff based on the order total. No manual configuration is needed.</p>
-        <p><strong>Paybill merchants:</strong> Safaricom charges a fixed fee per transaction band — for example KES 5 on orders between KES 101 and KES 500, rising to a maximum of KES 108 on orders above KES 45,000. The plugin applies the correct amount automatically.</p>
-        <p><strong>Till (Buy Goods) merchants:</strong> Safaricom does not charge the customer on Till payments. The merchant pays 0.5% of the transaction amount capped at KES 200. Enabling this feature passes that merchant cost to the customer. Transactions of KES 500 and below are free — no fee is added.</p>
+        <p>When enabled, the plugin automatically adds the official Safaricom transaction fee to the WooCommerce order total at checkout, but only when the M-Pesa gateway is selected. The amount is looked up from the published Safaricom tariff based on the order total. No manual configuration is needed.</p>
+        <p><strong>Paybill merchants:</strong> Safaricom charges a fixed fee per transaction band: for example KES 5 on orders between KES 101 and KES 500, rising to a maximum of KES 108 on orders above KES 45,000. The plugin applies the correct amount automatically.</p>
+        <p><strong>Till (Buy Goods) merchants:</strong> Safaricom does not charge the customer on Till payments. The merchant pays 0.5% of the transaction amount capped at KES 200. Enabling this feature passes that merchant cost to the customer. Transactions of KES 500 and below are free: no fee is added.</p>
         <p>The fee appears as a named line item in the order totals table and is saved to the order record. Customers see it on the checkout page, order confirmation email, and order detail screen. Available in Pro only.</p>
     </div>
 
     <div id="fd-qr-code" data-title="M-Pesa QR Code" hidden>
         <p>Shows a scannable QR code automatically on the customer's payment-waiting page after checkout, as an alternative to STK Push. The plugin calls the Safaricom Daraja QR code endpoint and displays a scannable PNG image with the order amount and recipient shortcode pre-filled.</p>
-        <p>The customer opens the Safaricom My One App, taps <em>Lipa na M-Pesa</em>, selects <em>Scan QR Code</em>, and scans — they only need to enter their PIN and confirm. No account number, no amount to type.</p>
-        <p>The same QR code can also be generated, downloaded, and shared from the WooCommerce order edit screen — printed on an invoice, pasted into a WhatsApp message, or included in a quote PDF. Available in Pro only.</p>
+        <p>The customer opens the Safaricom My One App, taps <em>Lipa na M-Pesa</em>, selects <em>Scan QR Code</em>, and scans: they only need to enter their PIN and confirm. No account number, no amount to type.</p>
+        <p>The same QR code can also be generated, downloaded, and shared from the WooCommerce order edit screen: printed on an invoice, pasted into a WhatsApp message, or included in a quote PDF. Available in Pro only.</p>
     </div>
 
     <div id="fd-payment-links" data-title="Payment Links" hidden>
         <p>Adds a <strong>Generate Payment Link</strong> button to the WooCommerce order edit screen. Clicking it creates a unique, token-authenticated URL tied to that specific order.</p>
-        <p>The merchant copies the link and sends it to the customer via WhatsApp, SMS, or email. When the customer opens the link, they land directly on the M-Pesa checkout page for that order — no browsing, no searching, no re-entering details.</p>
+        <p>The merchant copies the link and sends it to the customer via WhatsApp, SMS, or email. When the customer opens the link, they land directly on the M-Pesa checkout page for that order: no browsing, no searching, no re-entering details.</p>
         <p>If the order has already been paid, the link redirects to the order confirmation page instead. A new link can be generated at any time from the order screen, which invalidates the previous one. Available in Pro only.</p>
     </div>
     <?php
@@ -2246,7 +2246,7 @@ add_filter( 'render_block_woocommerce/add-to-cart-form', function ( string $bloc
         'B2C refunds sent directly from the WooCommerce order screen',
         'Analytics dashboard with revenue charts and transaction log',
         'Automatic plugin updates via the license server',
-        '1-year license — number of sites set by your plan tier',
+        '1-year license: number of sites set by your plan tier',
     ];
     ob_start();
     echo $block_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -2688,19 +2688,19 @@ add_filter( 'the_content', function ( string $content ): string {
     }
 
     $faqs_getting_started = [
-        [ 'q' => 'How does the M-Pesa integration work?',    'a' => 'OzuPay connects your WooCommerce store directly to Safaricom\'s Daraja API. At checkout the customer receives an STK Push prompt on their phone and confirms with their M-Pesa PIN — the order is marked paid automatically when the Daraja callback arrives.' ],
+        [ 'q' => 'How does the M-Pesa integration work?',    'a' => 'OzuPay connects your WooCommerce store directly to Safaricom\'s Daraja API. At checkout the customer receives an STK Push prompt on their phone and confirms with their M-Pesa PIN. The order is marked paid automatically when the Daraja callback arrives.' ],
         [ 'q' => 'Do I need a Safaricom Daraja account?',    'a' => 'Yes. You\'ll need your own Daraja app credentials (Consumer Key, Consumer Secret and Passkey) plus a Paybill or Till number. OzuPay guides you through setup, and you can test against the Daraja sandbox before going live.' ],
-        [ 'q' => 'Is there a sandbox / test mode?',          'a' => 'Yes — the plugin ships with Daraja sandbox support. Switch between sandbox and production from the plugin settings. Note that Safaricom\'s sandbox still sends a real STK Push to the phone you test with, and the amount can be deducted before being reversed automatically a short time later — it is not a fully simulated flow, so use a test line you control.' ],
+        [ 'q' => 'Is there a sandbox / test mode?',          'a' => 'Yes: the plugin ships with Daraja sandbox support. Switch between sandbox and production from the plugin settings. Note that Safaricom\'s sandbox still sends a real STK Push to the phone you test with, and the amount can be deducted before being reversed automatically a short time later. It is not a fully simulated flow, so use a test line you control.' ],
     ];
 
     $faqs_payments = [
         [ 'q' => 'What payment methods does OzuPay support?', 'a' => 'OzuPay supports M-Pesa STK Push, C2B Paybill, and Buy Goods / Till. Pro also adds M-Pesa on Delivery (deposit at checkout, balance on delivery) and B2C refunds sent directly from the WooCommerce order screen.' ],
-        [ 'q' => 'What is M-Pesa on Delivery?',               'a' => 'M-Pesa on Delivery collects a configurable deposit via STK Push at checkout. The remaining balance is charged when the order is confirmed on delivery — no manual follow-up, no chasing the customer.' ],
-        [ 'q' => 'How are payments confirmed automatically?', 'a' => 'Safaricom sends a confirmation callback to your site after the customer completes the STK Push. OzuPay receives that callback and updates the WooCommerce order status — no admin action needed.' ],
+        [ 'q' => 'What is M-Pesa on Delivery?',               'a' => 'M-Pesa on Delivery collects a configurable deposit via STK Push at checkout. The remaining balance is charged when the order is confirmed on delivery: no manual follow-up, no chasing the customer.' ],
+        [ 'q' => 'How are payments confirmed automatically?', 'a' => 'Safaricom sends a confirmation callback to your site after the customer completes the STK Push. OzuPay receives that callback and updates the WooCommerce order status: no admin action needed.' ],
     ];
 
     $faqs_plans = [
-        [ 'q' => 'What is the difference between Free and Pro?', 'a' => 'Free covers STK Push, Paybill, and Till and is available on WordPress.org. Pro adds M-Pesa on Delivery, B2C refunds, analytics, webhooks, QR codes, payment links, and automatic plugin updates. All Pro features are included on every paid plan — plans differ only by the number of site licences.' ],
+        [ 'q' => 'What is the difference between Free and Pro?', 'a' => 'Free covers STK Push, Paybill, and Till and is available on WordPress.org. Pro adds M-Pesa on Delivery, B2C refunds, analytics, webhooks, QR codes, payment links, and automatic plugin updates. All Pro features are included on every paid plan: plans differ only by the number of site licences.' ],
         [ 'q' => 'Why is Pro billed annually?',                  'a' => 'Safaricom updates the Daraja API without notice. An active licence funds ongoing compatibility work and keeps updates flowing to your WordPress dashboard automatically. A lapsed licence won\'t break your store, but you stop receiving patches until you renew.' ],
         [ 'q' => 'Can I upgrade from Free to Pro?',              'a' => 'Yes. Install the Pro plugin, enter your licence key in the plugin settings, and Pro features are enabled immediately. All existing credentials and settings are retained automatically.' ],
     ];
@@ -2758,7 +2758,7 @@ add_filter( 'the_content', function ( string $content ): string {
                 <div class="ozp-ch-card">
                     <div class="ozp-ch-card-hd">
                         <h2>Send us a message</h2>
-                        <p>We respond to every message — usually within a few hours.</p>
+                        <p>We respond to every message, usually within a few hours.</p>
                     </div>
                     <form id="ozp-support-form" class="ozp-ch-card-body" novalidate>
                         <div class="ozp-ch-grid">
@@ -2827,7 +2827,7 @@ add_filter( 'the_content', function ( string $content ): string {
                 <div class="ozp-ch-card">
                     <div class="ozp-ch-card-hd">
                         <h2>Send us a message</h2>
-                        <p>Pre-sales questions, partnership enquiries, or anything else — we read every message.</p>
+                        <p>Pre-sales questions, partnership enquiries, or anything else: we read every message.</p>
                     </div>
                     <form id="ozp-contact-guest-form" class="ozp-ch-card-body" novalidate>
                         <div class="ozp-ch-grid">
@@ -2981,7 +2981,7 @@ add_filter( 'the_content', function ( string $content ): string {
                             Shape the product
                         </div>
                         <h2>Request a Feature</h2>
-                        <p>Have an idea? Tell us — the product team reviews every request.</p>
+                        <p>Have an idea? Tell us: the product team reviews every request.</p>
                     </div>
                     <form id="ozp-fr-form" class="ozp-ch-card-body" novalidate>
                         <div class="ozp-ch-field">
@@ -2995,7 +2995,7 @@ add_filter( 'the_content', function ( string $content ): string {
                                 rows="4" placeholder="What are you trying to accomplish, and what&#39;s getting in the way?" required></textarea>
                         </div>
                         <div class="ozp-ch-field">
-                            <label for="ozp-fr-email">Your email <small style="font-weight:400;color:#94a3b8;">(optional — so we can follow up)</small></label>
+                            <label for="ozp-fr-email">Your email <small style="font-weight:400;color:#94a3b8;">(optional, so we can follow up)</small></label>
                             <input type="email" id="ozp-fr-email" name="email" class="ozp-ch-input"
                                 placeholder="you@example.com">
                         </div>
@@ -3055,7 +3055,7 @@ add_filter( 'the_content', function ( string $content ): string {
 
                 <div class="ozp-ch-faq-cta">
                     <p>Still have a question?</p>
-                    <p>The team is happy to help — just send us a message.</p>
+                    <p>The team is happy to help: just send us a message.</p>
                     <button type="button" class="ozp-ch-cta-btn"
                         onclick="document.getElementById('ozp-tabBtn-support').click();window.scrollTo({top:0,behavior:'smooth'});">
                         Contact Support
@@ -3330,7 +3330,7 @@ function ozp_order_account_notice( WC_Order $order ): void {
     if ( $just_registered ) {
         $message = sprintf(
             /* translators: %s: customer's email address */
-            __( 'Your account details have been emailed to you at <strong>%s</strong> — check your spam or junk folder if you don\'t see it within a few minutes.', 'ozupay' ),
+            __( 'Your account details have been emailed to you at <strong>%s</strong>. Check your spam or junk folder if you don\'t see it within a few minutes.', 'ozupay' ),
             esc_html( $order->get_billing_email() )
         );
     } elseif ( $viewing_own_order ) {
@@ -3342,7 +3342,7 @@ function ozp_order_account_notice( WC_Order $order ): void {
     } else {
         $message = sprintf(
             /* translators: %s: My Account page URL */
-            __( 'You already have an account — <a href="%s">log in</a> to access your license and download.', 'ozupay' ),
+            __( 'You already have an account: <a href="%s">log in</a> to access your license and download.', 'ozupay' ),
             esc_url( wc_get_page_permalink( 'myaccount' ) )
         );
     }
