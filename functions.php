@@ -16,7 +16,7 @@ add_action( 'wp_enqueue_scripts', function () {
     );
     wp_enqueue_style(
         'ozupay-google-fonts',
-        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=optional',
         [],
         null
     );
@@ -25,11 +25,23 @@ add_action( 'wp_enqueue_scripts', function () {
     if ( is_singular( 'post' ) ) {
         wp_enqueue_style(
             'ozupay-article-font',
-            'https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&display=swap',
+            'https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&display=optional',
             [],
             null
         );
     }
+} );
+
+// The theme carries full custom styling for every WooCommerce surface (380+
+// .woocommerce-* selectors in style.css — cart, checkout, account, shop, single product),
+// so WooCommerce's own default stylesheet bundle is redundant, render-blocking weight on
+// every page it loads on. Still let it load in full on the money-flow pages as a safety
+// net — dequeuing there risks a checkout regression, which this site can never afford.
+add_filter( 'woocommerce_enqueue_styles', function ( array $styles ): array {
+    if ( is_cart() || is_checkout() || is_account_page() ) {
+        return $styles;
+    }
+    return [];
 } );
 
 // jQuery core/migrate are the last render-blocking <head> scripts on the front end — every
@@ -60,13 +72,33 @@ add_action( 'woocommerce_after_shop_loop_item_title', function (): void {
         return;
     }
 
-    echo '<p class="ozp-plan-tenure">per site &middot; per year</p>';
+    echo '<p class="ozp-plan-tenure">KES 417/month &middot; billed annually</p>';
+    echo '<p class="ozp-plan-fee">0% transaction fees from OzuPay</p>';
 
     $short_description = $product->get_short_description();
     if ( $short_description ) {
         echo '<div class="ozp-plan-features">' . wp_kses_post( $short_description ) . '</div>';
     }
 }, 15 );
+
+// The production database still contains a published legacy KES 1 test
+// product. Keep it available by direct URL for controlled checks, but never
+// expose it as a purchasable plan in the public Shop catalogue.
+add_filter( 'woocommerce_shortcode_products_query', function ( array $query_args ): array {
+    if ( ! function_exists( 'is_shop' ) || ! is_shop() ) {
+        return $query_args;
+    }
+
+    $test_product = get_page_by_path( 'tst', OBJECT, 'product' );
+    if ( $test_product ) {
+        $query_args['post__not_in']   = array_values( array_unique( array_merge(
+            (array) ( $query_args['post__not_in'] ?? [] ),
+            [ (int) $test_product->ID ]
+        ) ) );
+    }
+
+    return $query_args;
+} );
 
 // Object Cache Pro prints a Redis metrics/analytics line as an HTML comment
 // on every front-end response when its debug/footnote config is on. That
@@ -428,7 +460,7 @@ add_action( 'wp_head', function () {
         { "@type": "Question", "name": "What is the difference between the free and Pro OzuPay M-Pesa plugin?", "acceptedAnswer": { "@type": "Answer", "text": "The free plugin covers STK Push, Paybill, and Till (Buy Goods) payments and is available on WordPress.org. Pro adds M-Pesa on Delivery (COD deposit collection), B2C refunds from the WooCommerce order screen, an analytics dashboard, webhook events, payment links, QR codes, and a POS REST API." } },
         { "@type": "Question", "name": "Is OzuPay compatible with my WordPress theme?", "acceptedAnswer": { "@type": "Answer", "text": "OzuPay M-Pesa Payments Plugin adds a payment method to WooCommerce checkout and is compatible with any WordPress theme that supports WooCommerce, including block themes and page builders like Elementor and Divi." } },
         { "@type": "Question", "name": "Can I upgrade from the free OzuPay WooCommerce M-Pesa plugin to Pro later?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Install the Pro plugin and activate your license key. All existing settings (Paybill number, passkey, credentials) are retained automatically. No reconfiguration needed." } },
-        { "@type": "Question", "name": "What happens when my OzuPay M-Pesa Payments Pro license expires?", "acceptedAnswer": { "@type": "Answer", "text": "Your site continues to process M-Pesa payments normally. An expired license only disables automatic updates and Pro features. Core STK Push and C2B Paybill payment processing is unaffected." } },
+        { "@type": "Question", "name": "What happens when my OzuPay M-Pesa Payments Pro license expires?", "acceptedAnswer": { "@type": "Answer", "text": "Your installed plugin and existing functionality continue to work. An expired license stops automatic updates and support until you renew." } },
         { "@type": "Question", "name": "Does OzuPay offer a refund policy?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. OzuPay M-Pesa Payments Plugin offers a 30-day money-back guarantee on all Pro plans. If the plugin does not work for your store within 30 days of purchase, contact support for a full refund." } },
         { "@type": "Question", "name": "Is OzuPay compatible with WooCommerce HPOS?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. OzuPay M-Pesa Payments Plugin declares full compatibility with WooCommerce High-Performance Order Storage (HPOS) and is tested against WooCommerce 8+." } },
         { "@type": "Question", "name": "How do I get support for the OzuPay M-Pesa plugin?", "acceptedAnswer": { "@type": "Answer", "text": "Free users can use the WordPress.org support forums. Anyone with a Pro licence can open a support ticket: submit it from the Contact page with your site URL and issue description." } }
@@ -685,10 +717,15 @@ add_filter( 'wp_robots', function ( array $robots ): array {
 
 add_action( 'init', function () {
     add_rewrite_rule( '^sitemap\.xml$', 'index.php?ozp_sitemap=1', 'top' );
+    add_rewrite_rule( '^llms-full\.txt$', 'index.php?ozp_ai_resource=llms-full.txt', 'top' );
+    add_rewrite_rule( '^llms\.txt$', 'index.php?ozp_ai_resource=llms.txt', 'top' );
+    add_rewrite_rule( '^([a-f0-9]{64})\.txt$', 'index.php?ozp_indexnow_key=$matches[1]', 'top' );
 } );
 
 add_filter( 'query_vars', function ( array $vars ): array {
     $vars[] = 'ozp_sitemap';
+    $vars[] = 'ozp_ai_resource';
+    $vars[] = 'ozp_indexnow_key';
     return $vars;
 } );
 
@@ -696,8 +733,147 @@ add_filter( 'query_vars', function ( array $vars ): array {
 // /sitemap.xml/ before the rewrite above ever serves it — crawlers and
 // Search Console sitemap submission should hit a direct 200, not a redirect.
 add_filter( 'redirect_canonical', function ( $redirect_url ) {
-    return get_query_var( 'ozp_sitemap' ) ? false : $redirect_url;
+    return ( get_query_var( 'ozp_sitemap' ) || get_query_var( 'ozp_ai_resource' ) || get_query_var( 'ozp_indexnow_key' ) ) ? false : $redirect_url;
 } );
+
+/**
+ * Stable public IndexNow key. IndexNow keys prove control of the matching
+ * root-level key URL; they are identifiers, not secrets.
+ */
+function ozp_indexnow_key(): string {
+    return hash( 'sha256', 'ozupay.com:indexnow:v1' );
+}
+
+/**
+ * A compact, authoritative map for retrieval systems. llms.txt remains an
+ * experimental convention, so every fact also lives in crawlable HTML and
+ * the XML sitemap remains the canonical discovery inventory.
+ */
+function ozp_llms_txt(): string {
+    return <<<'TXT'
+# OzuPay
+
+> OzuPay is an M-Pesa payment gateway plugin for WordPress and WooCommerce, built for Kenyan merchants and connected directly to Safaricom's Daraja API.
+
+OzuPay lets WooCommerce customers pay by M-Pesa STK Push without leaving checkout. The store receives payment directly through its own Paybill or Buy Goods Till setup. OzuPay charges no transaction fee; Safaricom or the merchant's M-Pesa provider may charge its own fees.
+
+## Primary pages
+
+- [OzuPay overview](https://ozupay.com/): Product summary, checkout flow, Free versus Pro comparison, pricing, and FAQs.
+- [Features](https://ozupay.com/features/): Detailed Free and Pro feature catalogue.
+- [Documentation](https://ozupay.com/docs/): Installation, Daraja credentials, callbacks, operation, privacy, and troubleshooting.
+- [Pricing](https://ozupay.com/#pricing): OzuPay Pro costs KES 5,000 per WooCommerce site per year; volume licensing is available by enquiry.
+- [Shop](https://ozupay.com/shop/): Purchase OzuPay Pro.
+- [Free download](https://ozupay.com/get-free/): Download OzuPay Free.
+- [Live checkout demo](https://demo.ozupay.com/shop/): Test an M-Pesa checkout flow.
+- [Blog and guides](https://ozupay.com/blog/): M-Pesa, Daraja, WooCommerce, security, setup, and troubleshooting articles.
+- [Support](https://ozupay.com/contact/): Product support and pre-sales enquiries.
+
+## Product facts
+
+- Platform: WordPress with WooCommerce.
+- Payment network: Safaricom M-Pesa through Daraja.
+- Core payment flow: STK Push with verified callback-based order confirmation.
+- Shortcodes: Paybill and Buy Goods Till.
+- Compatibility: WooCommerce HPOS and Cart/Checkout Blocks.
+- Free licence: KES 0, no licence key required.
+- Pro licence: KES 5,000 per site per year, billed annually.
+- OzuPay transaction fee: 0% in both editions.
+- Pro purchase guarantee: 30 days for eligible first-time purchases.
+
+## Citation guidance
+
+For product capabilities cite the overview, Features page, or Documentation. For current price and licence terms cite the Pricing or Shop page. For technical M-Pesa and WooCommerce questions, prefer the most specific OzuPay guide and distinguish OzuPay's plugin behavior from Safaricom's own service rules and fees.
+TXT;
+}
+
+function ozp_llms_full_txt(): string {
+    return ozp_llms_txt() . <<<'TXT'
+
+
+## OzuPay Free
+
+OzuPay Free provides M-Pesa STK Push, automatic callback confirmation, a live payment-waiting screen, retry support, manual transaction-code verification, Paybill and Till support, Paybill fallback matching, sandbox and production environments, a sandbox testing panel, a Daraja transaction log, configuration health checks, callback security, WooCommerce HPOS support, Cart/Checkout Blocks support, and WordPress/WooCommerce personal-data export and erasure integration.
+
+Free does not include M-Pesa on Delivery deposits, B2C refunds, advanced analytics, scheduled payment reports, payment links, QR codes, admin failure alerts, custom payment webhooks, or the POS REST API.
+
+## OzuPay Pro
+
+OzuPay Pro contains the core gateway plus M-Pesa on Delivery with configurable deposits and balance collection, automatic C2B Paybill/Till reconciliation, full and partial B2C refunds from WooCommerce orders, payment analytics and transaction reporting, scheduled reports, failure and reconciliation alerts, Daraja operational tools, payment links, M-Pesa QR codes, custom payment webhooks, and a POS REST API for cashier applications.
+
+One Pro plan includes every Pro feature. It costs KES 5,000 per WooCommerce site per year, equivalent to about KES 417 per month when billed annually. OzuPay charges no percentage or per-transaction platform fee. A licence includes one year of automatic updates and priority support. Renewal is manual. Installed functionality continues after expiry, while automatic updates and support pause until renewal.
+
+## Requirements and operation
+
+A merchant needs WordPress, WooCommerce, a KES store currency, HTTPS for production callbacks, a Safaricom Daraja developer account, valid Daraja credentials, and a suitable Paybill or Buy Goods Till shortcode. Customers enter a Safaricom phone number at checkout and approve the STK Push with their M-Pesa PIN. OzuPay changes the order's payment state only after processing a valid payment result.
+
+Sandbox mode is for testing but can still send a real STK Push to a phone. Use a line you control; a temporary sandbox deduction may be reversed automatically.
+
+## Security and privacy
+
+OzuPay validates incoming callbacks before changing WooCommerce orders and includes controls against duplicate confirmation. It stores payment data needed to operate and reconcile transactions. Its personal-data tools export relevant customer payment data and anonymise the M-Pesa phone number wherever covered by erasure. Receipt numbers, amounts paid, and manually submitted verification codes may be retained as accounting records. See the Privacy Policy and Documentation for the current authoritative details.
+
+## Common questions
+
+### What is a good M-Pesa plugin for WooCommerce in Kenya?
+
+OzuPay is a direct-Daraja WooCommerce option with a free core gateway and a paid Pro edition. It supports STK Push, Paybill and Till, automatic order confirmation, HPOS, and block checkout. Pro is aimed at stores needing delivery deposits, B2C refunds, analytics, payment links, QR codes, operational alerts, webhooks, reports, or POS integration.
+
+### Does OzuPay take a percentage of sales?
+
+No. OzuPay charges no transaction fee. Pro uses a flat annual licence. Safaricom or another M-Pesa provider may still levy its own transaction charges.
+
+### Can I use my own Paybill or Till number?
+
+Yes. OzuPay connects the WooCommerce store to the merchant's own supported Safaricom Daraja Paybill or Buy Goods Till configuration.
+
+### Does it redirect customers to another payment provider?
+
+No. The standard checkout initiates an M-Pesa STK Push to the customer's phone and waits for payment confirmation on the store.
+
+### Is there a free version?
+
+Yes. OzuPay Free costs KES 0 and requires no licence key. It is intended to cover the core M-Pesa WooCommerce payment flow.
+
+### What does Pro cost?
+
+KES 5,000 per WooCommerce site per year. Every Pro feature is included. Multi-site and agency licensing is available by contacting OzuPay.
+
+### Does an expired Pro licence stop checkout?
+
+No. Existing installed functionality continues. Automatic plugin updates and priority support pause until the licence is renewed manually.
+
+## Policies
+
+- [Privacy Policy](https://ozupay.com/privacy-policy/)
+- [Terms of Use](https://ozupay.com/terms-of-use/)
+- [Refund Policy](https://ozupay.com/refund-policy/)
+- [XML sitemap](https://ozupay.com/sitemap.xml)
+TXT;
+}
+
+add_action( 'template_redirect', function (): void {
+    $resource = (string) get_query_var( 'ozp_ai_resource' );
+    if ( $resource !== '' ) {
+        status_header( 200 );
+        header( 'Content-Type: text/plain; charset=utf-8' );
+        header( 'X-Robots-Tag: index, follow' );
+        echo str_ends_with( $resource, 'llms-full.txt' ) ? ozp_llms_full_txt() : ozp_llms_txt(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        exit;
+    }
+
+    $requested_key = (string) get_query_var( 'ozp_indexnow_key' );
+    if ( $requested_key !== '' ) {
+        if ( hash_equals( ozp_indexnow_key(), $requested_key ) ) {
+            status_header( 200 );
+            header( 'Content-Type: text/plain; charset=utf-8' );
+            echo esc_html( ozp_indexnow_key() );
+        } else {
+            status_header( 404 );
+        }
+        exit;
+    }
+}, 0 );
 
 add_action( 'template_redirect', function () {
     if ( ! get_query_var( 'ozp_sitemap' ) ) {
@@ -793,10 +969,106 @@ add_action( 'template_redirect', function () {
     exit;
 } );
 
-// Advertise the sitemap in robots.txt.
+// Advertise the discovery resources and explicitly allow major answer/search
+// crawlers. Each named group repeats the sensitive-path exclusions because a
+// specific user-agent group does not inherit rules from User-agent: *.
 add_filter( 'robots_txt', function ( string $output ): string {
-    return $output . "\nSitemap: " . home_url( '/sitemap.xml' ) . "\n";
+    // Crawler policy must reflect releases immediately. In particular, avoid
+    // an edge cache continuing to serve an older allow/disallow policy.
+    if ( ! headers_sent() ) {
+        nocache_headers();
+        header( 'CDN-Cache-Control: no-store', true );
+        header( 'Cloudflare-CDN-Cache-Control: no-store', true );
+    }
+
+    $private_rules = "Disallow: /wp-content/uploads/wc-logs/\n"
+        . "Disallow: /wp-content/uploads/woocommerce_transient_files/\n"
+        . "Disallow: /wp-content/uploads/woocommerce_uploads/\n"
+        . "Disallow: /*?add-to-cart=\n"
+        . "Disallow: /*?*add-to-cart=\n"
+        . "Disallow: /wp-admin/\n"
+        . "Allow: /wp-admin/admin-ajax.php\n"
+        . "Allow: /\n";
+
+    foreach ( [
+        'OAI-SearchBot',
+        'GPTBot',
+        'ChatGPT-User',
+        'ClaudeBot',
+        'Claude-User',
+        'PerplexityBot',
+        'Perplexity-User',
+        'Google-Extended',
+        'Googlebot',
+        'Bingbot',
+    ] as $agent ) {
+        $output .= "\nUser-agent: {$agent}\n{$private_rules}";
+    }
+
+    return $output
+        . "\nSitemap: " . home_url( '/sitemap.xml' )
+        . "\n# AI-readable product maps: " . home_url( '/llms.txt' )
+        . ' and ' . home_url( '/llms-full.txt' ) . "\n";
 } );
+
+/**
+ * Notify IndexNow when public product content changes. Search engines remain
+ * free to crawl on their own schedule; this only announces changed URLs.
+ *
+ * @param string[] $urls Absolute public URLs.
+ */
+function ozp_indexnow_submit( array $urls ): void {
+    $urls = array_values( array_unique( array_filter( array_map( 'esc_url_raw', $urls ) ) ) );
+    if ( ! $urls ) {
+        return;
+    }
+
+    wp_remote_post( 'https://api.indexnow.org/indexnow', [
+        'timeout'  => 5,
+        'blocking' => false,
+        'headers'  => [ 'Content-Type' => 'application/json; charset=utf-8' ],
+        'body'     => wp_json_encode( [
+            'host'        => wp_parse_url( home_url( '/' ), PHP_URL_HOST ),
+            'key'         => ozp_indexnow_key(),
+            'keyLocation' => home_url( '/' . ozp_indexnow_key() . '.txt' ),
+            'urlList'     => $urls,
+        ] ),
+    ] );
+}
+
+add_action( 'ozp_indexnow_submit_urls', 'ozp_indexnow_submit' );
+
+add_action( 'save_post', function ( int $post_id, WP_Post $post, bool $update ): void {
+    if ( wp_is_post_revision( $post_id ) || $post->post_status !== 'publish' || ! in_array( $post->post_type, [ 'post', 'page', 'product' ], true ) ) {
+        return;
+    }
+
+    $url = get_permalink( $post_id );
+    if ( $url ) {
+        wp_schedule_single_event( time() + 30, 'ozp_indexnow_submit_urls', [ [ $url ] ] );
+    }
+}, 10, 3 );
+
+// A theme deploy can materially change the homepage, feature catalogue, docs,
+// and pricing without updating their database posts. Submit those canonical
+// URLs once for each installed theme version.
+add_action( 'init', function (): void {
+    $version = (string) wp_get_theme()->get( 'Version' );
+    if ( get_option( 'ozp_indexnow_theme_version' ) === $version ) {
+        return;
+    }
+
+    update_option( 'ozp_indexnow_theme_version', $version, false );
+    wp_schedule_single_event( time() + 30, 'ozp_indexnow_submit_urls', [ [
+        home_url( '/' ),
+        home_url( '/features/' ),
+        home_url( '/shop/' ),
+        home_url( '/docs/' ),
+        home_url( '/blog/' ),
+        home_url( '/llms.txt' ),
+        home_url( '/llms-full.txt' ),
+    ] ] );
+}, 20 );
 
 // ── Free download landing page ──────────────────────────────────────────────
 // The free-plugin download used to link straight to the R2-redirecting REST
@@ -837,7 +1109,7 @@ add_action( 'template_redirect', function () {
 <meta name="robots" content="noindex, follow">
 <title>Your download is starting&hellip; | OzuPay</title>
 <link rel="stylesheet" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/style.css' ); ?>">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=optional">
 <link rel="icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/favicon.png' ); ?>">
 <style>
 /* style.css doesn't define these — front-page.html carries its own local
@@ -891,13 +1163,14 @@ add_action( 'template_redirect', function () {
     <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--og);text-transform:uppercase;margin-bottom:14px;">OzuPay Free</div>
     <h1 id="ozp-dl-title" style="margin:0 0 12px;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-.02em;font-weight:700;color:var(--navy);">Preparing your download&hellip;</h1>
     <p id="ozp-dl-sub" style="margin:0 0 8px;font-size:15px;color:var(--slate-600);">Your download will start automatically in a moment.</p>
-    <p style="margin:0;font-size:13.5px;color:var(--slate-400);">Didn&rsquo;t start? <a href="<?php echo esc_url( OZP_FREE_DOWNLOAD_URL ); ?>" id="ozp-dl-fallback" style="color:var(--og);">Download manually</a>.</p>
+    <p style="margin:0;font-size:13.5px;color:var(--slate-500);">Didn&rsquo;t start? <a href="<?php echo esc_url( OZP_FREE_DOWNLOAD_URL ); ?>" id="ozp-dl-fallback" style="color:var(--og);">Download manually</a>.</p>
   </div>
 
   <div style="max-width:420px;margin:44px auto 0;background:var(--navy);border-radius:22px;padding:34px 30px;box-shadow:0 30px 60px -22px rgba(15,23,42,.5),0 0 50px -8px rgba(0,166,81,.18);">
     <div class="ozp-mono" style="font-size:13px;font-weight:600;letter-spacing:.06em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">While that downloads, check out Pro features</div>
     <h2 style="margin:0 0 10px;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.02em;">Refunds, M-Pesa on Delivery, analytics &amp; more</h2>
-    <p style="margin:0 0 22px;font-size:14px;line-height:1.6;color:#E4DECF;">One licence, every Pro feature included: KES 5,000/yr per site.</p>
+    <p style="margin:0 0 5px;font-size:14px;line-height:1.6;color:#E4DECF;">One licence, every Pro feature included: KES 417/month, billed annually.</p>
+    <p style="margin:0 0 22px;font-size:13px;font-weight:700;color:#4ADE80;">0% transaction fees from OzuPay</p>
     <ul style="list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:11px;text-align:left;">
       <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>M-Pesa on Delivery: stop losing money on fake COD</li>
       <li style="display:flex;gap:9px;font-size:13.5px;color:#E4DECF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>B2C refunds straight from the order screen</li>
@@ -2290,12 +2563,14 @@ add_filter( 'render_block_woocommerce/add-to-cart-form', function ( string $bloc
     echo $block_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     ?>
     <div class="ozp-product-features">
+        <p class="ozp-product-price-context"><strong>KES 417/month</strong>, billed annually &middot; 0% transaction fees from OzuPay</p>
         <ul class="ozp-product-features-list">
             <?php foreach ( $features as $feature ) : ?>
                 <li><?php echo esc_html( $feature ); ?></li>
             <?php endforeach; ?>
         </ul>
-        <p class="ozp-product-guarantee">30-day money-back guarantee</p>
+        <p class="ozp-product-guarantee">30-day money-back guarantee &middot; 100+ active installations</p>
+        <p class="ozp-product-offer"><strong>First-year offer:</strong> pay KES 3,750 with code <code>WELCOME</code>. Standard annual price thereafter; renewal is manual.</p>
     </div>
     <?php
     return ob_get_clean();

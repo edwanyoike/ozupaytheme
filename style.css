@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.53
+Version:     1.8.57
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -496,8 +496,8 @@ html.ozp-logged-in .ozp-account-dropdown.ozp-auth-only { display: none !importan
     -webkit-tap-highlight-color: transparent;
 }
 
-.ozp-btn-primary { background: var(--accent); color: #ffffff; border: 1.5px solid rgba(0,0,0,.18); }
-.ozp-btn-primary:hover { background: var(--accent-dark); color: #ffffff; }
+.ozp-btn-primary { background: var(--accent-dark); color: #ffffff; border: 1.5px solid rgba(0,0,0,.18); }
+.ozp-btn-primary:hover { background: var(--accent); color: #ffffff; }
 .ozp-btn-outline { background: transparent; color: var(--text); border: 1.5px solid #94A3B8; }
 .ozp-btn-outline:hover { background: var(--surface); border-color: var(--accent-dim); color: var(--text); }
 .ozp-btn-sm { height: 40px; padding: 0 16px; font-size: 14px; }
@@ -3421,6 +3421,29 @@ div.wc-block-add-to-cart-form.wc-block-add-to-cart-form--stepper form.cart div.w
     margin-top: 24px;
     border-top: 1px solid var(--border);
     padding-top: 20px;
+}
+
+.ozp-product-price-context {
+    margin: 0 0 16px;
+    color: #166534;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.ozp-product-offer {
+    margin: 12px 0 0;
+    color: #475569;
+    font-size: 12.5px;
+    line-height: 1.55;
+}
+
+.ozp-product-offer code {
+    color: #0f172a;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-weight: 700;
 }
 .ozp-product-features-list {
     list-style: none !important;
