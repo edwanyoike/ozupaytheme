@@ -3513,10 +3513,10 @@ add_filter( 'the_content', function ( string $content ): string {
     return ob_get_clean() . $content;
 } );
 
-// ── Copy-to-clipboard buttons next to all mailto links ───────────────────────
-// Scans the page for <a href="mailto:…"> elements and injects a small icon
-// button immediately after each one. Works on every page automatically:
-// contact, privacy policy, terms, refund policy, etc.
+// ── Copy-to-clipboard buttons next to all mailto/tel links ───────────────────
+// Scans the page for <a href="mailto:…"> and <a href="tel:…"> elements and
+// injects a small icon button immediately after each one. Works on every
+// page automatically: contact, footer, privacy policy, terms, etc.
 
 add_action( 'wp_footer', function (): void {
     ?>
@@ -3525,12 +3525,12 @@ add_action( 'wp_footer', function (): void {
     var copyIcon  = '<svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="4.5" y="4.5" width="8" height="8" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M3 9H2.2A1.2 1.2 0 011 7.8V2.2A1.2 1.2 0 012.2 1h5.6A1.2 1.2 0 019 2.2V3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
     var checkIcon = '<svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7L5.5 10L11.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-    document.querySelectorAll('a[href^="mailto:"]').forEach(function (link) {
-        var email = decodeURIComponent(link.getAttribute('href').replace(/^mailto:/, ''));
+    document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(function (link) {
+        var value = decodeURIComponent(link.getAttribute('href').replace(/^(mailto:|tel:)/, ''));
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'ozp-copy-email-btn';
-        btn.setAttribute('aria-label', 'Copy ' + email);
+        btn.className = 'ozp-copy-link-btn';
+        btn.setAttribute('aria-label', 'Copy ' + value);
         btn.setAttribute('title', 'Copy to clipboard');
         btn.innerHTML = copyIcon;
 
@@ -3544,14 +3544,14 @@ add_action( 'wp_footer', function (): void {
                 setTimeout(function () {
                     btn.innerHTML = copyIcon;
                     btn.classList.remove('copied');
-                    btn.setAttribute('aria-label', 'Copy ' + email);
+                    btn.setAttribute('aria-label', 'Copy ' + value);
                 }, 1800);
             };
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(email).then(finish).catch(finish);
+                navigator.clipboard.writeText(value).then(finish).catch(finish);
             } else {
                 var ta = document.createElement('textarea');
-                ta.value = email;
+                ta.value = value;
                 ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
                 document.body.appendChild(ta);
                 ta.select();

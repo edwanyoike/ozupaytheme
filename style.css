@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.59
+Version:     1.8.60
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -202,6 +202,46 @@ a.ozp-hero-price-btn.primary { color: #ffffff !important; }
 .ozp-footer-col ul li::marker { display: none !important; content: '' !important; }
 
 /* ── Header ─────────────────────────────────────────────────────────────────── */
+
+/* ── Top contact bar (call / WhatsApp) — scrolls away, header stays sticky ── */
+.ozp-topbar {
+    background: var(--accent);
+}
+
+.ozp-topbar-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 6px var(--px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 22px;
+}
+
+.ozp-topbar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #ffffff !important;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+.ozp-topbar-link:hover { color: rgba(255,255,255,.85) !important; }
+.ozp-topbar-link svg { flex-shrink: 0; }
+
+.ozp-topbar .ozp-copy-link-btn {
+    border-color: rgba(255,255,255,.4);
+    color: rgba(255,255,255,.85);
+}
+.ozp-topbar .ozp-copy-link-btn:hover,
+.ozp-topbar .ozp-copy-link-btn.copied {
+    background: rgba(255,255,255,.15);
+    color: #ffffff;
+    border-color: rgba(255,255,255,.65);
+}
 
 .ozp-header {
     background: #0F172A;
@@ -1223,6 +1263,21 @@ body { padding-bottom: 80px; }
 .ozp-footer-brand .ozp-logo { margin-bottom: 10px; }
 .ozp-footer-tagline { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
 .ozp-footer-installs { font-size: 12px; color: var(--text-subtle); }
+
+.ozp-footer-contact { display: flex; flex-direction: column; gap: 9px; margin-top: 16px; }
+.ozp-footer-contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+.ozp-footer-contact-link:hover { color: #E2E8F0 !important; }
+.ozp-footer-contact-link svg { flex-shrink: 0; color: var(--accent); }
+.ozp-footer-contact-whatsapp svg { color: #25D366; }
 
 .ozp-footer-col-title {
     font-size: 11px;
@@ -6280,8 +6335,8 @@ body.woocommerce-shop {
     }
 }
 
-/* ── Copy-to-clipboard email button ──────────────────────────────────────── */
-.ozp-copy-email-btn {
+/* ── Copy-to-clipboard button (mailto/tel links) ─────────────────────────── */
+.ozp-copy-link-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -6300,15 +6355,27 @@ body.woocommerce-shop {
     font-family: inherit;
     line-height: 1;
 }
-.ozp-copy-email-btn:hover {
+.ozp-copy-link-btn:hover {
     background: #f0fdf4;
     color: #16a34a;
     border-color: rgba(22,163,74,.45);
 }
-.ozp-copy-email-btn.copied {
+.ozp-copy-link-btn.copied {
     background: #f0fdf4;
     color: #16a34a;
     border-color: rgba(22,163,74,.45);
+}
+/* On the dark footer, the default light border/icon is invisible — match the
+   footer's own muted-white palette instead. */
+.ozp-footer .ozp-copy-link-btn {
+    border-color: rgba(255,255,255,.25);
+    color: rgba(255,255,255,.6);
+}
+.ozp-footer .ozp-copy-link-btn:hover,
+.ozp-footer .ozp-copy-link-btn.copied {
+    background: rgba(255,255,255,.08);
+    color: #ffffff;
+    border-color: rgba(255,255,255,.4);
 }
 
 /* ── Article: quick summary (collapsed by default) ───────────────────────── */
