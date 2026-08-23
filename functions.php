@@ -2571,6 +2571,24 @@ add_filter( 'render_block_woocommerce/product-image-gallery', function ( string 
     return ob_get_clean();
 } );
 
+// Prominent first-year coupon badge, shown right under the price so it's seen
+// before Add to Cart — the fine-print version further down (after the
+// add-to-cart-form block, added below) was easy to miss since it sat below
+// the button and the full feature list.
+add_filter( 'render_block_woocommerce/product-price', function ( string $block_content ): string {
+    if ( ! is_product() ) {
+        return $block_content;
+    }
+    ob_start();
+    echo $block_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    ?>
+    <div class="ozp-welcome-badge">
+        <strong>First-year offer:</strong> pay KES 3,750 with code <code>WELCOME</code> at checkout
+    </div>
+    <?php
+    return ob_get_clean();
+} );
+
 // Inject a "what's included" list after the add-to-cart block.
 add_filter( 'render_block_woocommerce/add-to-cart-form', function ( string $block_content ): string {
     if ( ! is_product() ) {

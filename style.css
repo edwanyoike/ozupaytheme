@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.61
+Version:     1.8.62
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -3471,6 +3471,42 @@ div.wc-block-add-to-cart-form.wc-block-add-to-cart-form--stepper form.cart div.w
 }
 .single-product .wc-block-components-quantity-selector input { background: transparent !important; color: var(--text) !important; }
 .single-product .wc-block-components-quantity-selector__button { color: var(--text) !important; }
+
+/* First-year coupon badge (injected via PHP right after the price block,
+   before Add to Cart) */
+.ozp-welcome-badge {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 16px;
+    padding: 9px 14px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #166534;
+    line-height: 1.5;
+}
+.ozp-welcome-badge strong { color: #14532d; }
+.ozp-welcome-badge code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #0d1526;
+    background: #fff;
+    border: 1px solid #a7f3d0;
+    border-radius: 5px;
+    padding: 2px 7px;
+}
+/* Standalone/centered placement (e.g. the shop archive page, where the badge
+   sits on its own line above the trust banners rather than inline after a
+   price block). */
+.ozp-welcome-badge--center {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto 18px;
+}
 
 /* What's included list (injected via PHP below the add-to-cart form) */
 .ozp-product-features {
