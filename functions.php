@@ -3160,6 +3160,15 @@ add_filter( 'the_content', function ( string $content ): string {
                             <p>Usually within a few hours</p>
                         </div>
                     </div>
+                    <div class="ozp-ch-info-card ozp-ch-info-card--wide">
+                        <div class="ozp-ch-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#22c55e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.33 14.1v2.5a1.67 1.67 0 01-1.82 1.67 16.49 16.49 0 01-7.19-2.56 16.25 16.25 0 01-5-5 16.49 16.49 0 01-2.56-7.23A1.67 1.67 0 013.42 1.67h2.5a1.67 1.67 0 011.67 1.43c.11.8.3 1.59.58 2.34a1.67 1.67 0 01-.38 1.76l-1.06 1.06a13.33 13.33 0 005 5l1.06-1.06a1.67 1.67 0 011.76-.38c.75.28 1.54.47 2.34.58a1.67 1.67 0 011.44 1.7z"/></svg>
+                        </div>
+                        <div>
+                            <p>Call or WhatsApp</p>
+                            <p><a href="tel:+254710925265">+254 710 925 265</a> &middot; <a href="https://wa.me/254710925265" target="_blank" rel="noopener">WhatsApp us</a></p>
+                        </div>
+                    </div>
                 </div>
                 <?php else : ?>
                 <div class="ozp-ch-card">
@@ -3226,6 +3235,15 @@ add_filter( 'the_content', function ( string $content ): string {
                         <div>
                             <p>Response time</p>
                             <p>Usually within a few hours</p>
+                        </div>
+                    </div>
+                    <div class="ozp-ch-info-card ozp-ch-info-card--wide">
+                        <div class="ozp-ch-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#22c55e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.33 14.1v2.5a1.67 1.67 0 01-1.82 1.67 16.49 16.49 0 01-7.19-2.56 16.25 16.25 0 01-5-5 16.49 16.49 0 01-2.56-7.23A1.67 1.67 0 013.42 1.67h2.5a1.67 1.67 0 011.67 1.43c.11.8.3 1.59.58 2.34a1.67 1.67 0 01-.38 1.76l-1.06 1.06a13.33 13.33 0 005 5l1.06-1.06a1.67 1.67 0 011.76-.38c.75.28 1.54.47 2.34.58a1.67 1.67 0 011.44 1.7z"/></svg>
+                        </div>
+                        <div>
+                            <p>Call or WhatsApp</p>
+                            <p><a href="tel:+254710925265">+254 710 925 265</a> &middot; <a href="https://wa.me/254710925265" target="_blank" rel="noopener">WhatsApp us</a></p>
                         </div>
                     </div>
                 </div>
