@@ -981,6 +981,19 @@ add_filter( 'robots_txt', function ( string $output ): string {
         header( 'Cloudflare-CDN-Cache-Control: no-store', true );
     }
 
+    // Content Signals (contentsignals.org): declare AI-usage preference for the
+    // sitewide group explicitly rather than leaving it implicit in the
+    // per-bot Allow/Disallow rules below. Placed directly under the first
+    // `User-agent: *` line, matching the convention Cloudflare's own managed
+    // robots.txt uses. search/ai-input=yes matches the explicit crawl
+    // allow-list below; ai-train=no opts out of training use specifically.
+    $output = preg_replace(
+        '/^(User-agent:\s*\*\s*\n)/mi',
+        '$1' . "Content-signal: search=yes, ai-input=yes, ai-train=no\n",
+        $output,
+        1
+    );
+
     $private_rules = "Disallow: /wp-content/uploads/wc-logs/\n"
         . "Disallow: /wp-content/uploads/woocommerce_transient_files/\n"
         . "Disallow: /wp-content/uploads/woocommerce_uploads/\n"
@@ -1010,6 +1023,124 @@ add_filter( 'robots_txt', function ( string $output ): string {
         . "\n# AI-readable product maps: " . home_url( '/llms.txt' )
         . ' and ' . home_url( '/llms-full.txt' ) . "\n";
 } );
+
+// ── Agent discovery: Link header ────────────────────────────────────────────
+
+// WordPress core already sends its own `Link: <.../wp-json/>; rel="https://api.w.org/"`
+// header via rest_output_link_header(). The `false` argument here is required —
+// a bare header() call would replace that header instead of adding a second one.
+add_action( 'send_headers', function (): void {
+    if ( is_admin() ) {
+        return;
+    }
+    header( 'Link: <' . home_url( '/docs/' ) . '>; rel="service-doc"', false );
+} );
+
+// ── Agent discovery: Markdown negotiation ───────────────────────────────────
+
+/**
+ * A condensed, hand-maintained markdown rendition of /docs/. The source
+ * template (templates/page-docs.html) is 1,200+ lines of full walkthrough
+ * detail; this summarizes each section and links back to the canonical HTML
+ * for anything past a section's key facts, rather than transliterating it.
+ */
+function ozp_docs_markdown(): string {
+    return <<<'MD'
+# OzuPay M-Pesa Payments: Setup & Usage Guide
+
+> Full guide with screenshots and step-by-step detail: https://ozupay.com/docs/
+
+## 1. Prerequisites
+WordPress with WooCommerce, a KES store currency, a Safaricom Daraja developer account with API
+credentials, and — for Pro features — an OzuPay license key.
+
+## 2. Installation
+Free: install from the WordPress.org plugin directory or upload the zip from
+https://ozupay.com/get-free/. Pro: upload the zip purchased from https://ozupay.com/shop/.
+
+## 3. License Activation (Pro)
+Activate the purchased license key under OzuPay → Settings. Licenses can be transferred between
+sites.
+
+## 4. Daraja Credentials Setup
+Enter the Consumer Key, Consumer Secret, and Paybill/Till details from the Daraja developer
+portal under OzuPay → Settings → Daraja.
+
+## 5. Gateway Configuration
+Configure the STK Push gateway, sandbox vs. production mode, and checkout display options.
+
+## 6. Registering C2B Callback URLs (Pro)
+Register the Paybill confirmation/validation URLs with Safaricom for automatic C2B
+reconciliation.
+
+## 7. Feature Configuration (Pro)
+M-Pesa on Delivery deposits, C2B Buy Goods fallback, manual verification fallback, B2C
+auto-refunds, the Analytics Dashboard, advanced admin tools, failure alerts, scheduled email
+reports, the POS REST API, and settings export/import.
+
+## 8. Going Live
+Switch from sandbox to production credentials and verify a real transaction before launch.
+
+## 9. Customer-Facing Payment Flow
+Standard STK Push: customer enters their phone number at checkout and approves the prompt on
+their device. M-Pesa on Delivery: a smaller deposit is collected at checkout, balance on
+delivery.
+
+## 10. Delivery Portal (Pro)
+Delivery agents get their own account to collect the remaining balance at the doorstep, including
+a per-order collection link.
+
+## 11. Transaction Log
+Every Daraja request/response and callback event is logged for troubleshooting.
+
+## 12. Analytics Dashboard (Pro)
+Revenue, transaction volume, and success-rate metrics for M-Pesa payments.
+
+## 13. POS REST API Reference (Pro)
+Authenticated REST endpoints for cashier/POS applications to initiate and check STK Push
+payments outside the WooCommerce checkout flow.
+
+## 14. Webhook Reference (Pro)
+Custom webhook topics (`ozupay.payment.*`, `ozupay.deposit.*`, `ozupay.balance.*`,
+`ozupay.manual.*`, `ozupay.c2b.*`, `ozupay.refund.*`, `ozupay.order.*`) with signature
+verification, plus Zapier and Make (Integromat) integration.
+
+## 15. Updates
+Pro receives automatic updates while the license is active; installed functionality keeps
+working after expiry, updates pause until renewal.
+
+## 16. Troubleshooting
+Common issues: STK Push not reaching the customer's phone, callbacks not being received, order
+status not updating after payment, and C2B payments not received — see the full guide for
+diagnostic steps for each.
+
+## Policies
+- [Privacy Policy](https://ozupay.com/privacy-policy/)
+- [Terms of Use](https://ozupay.com/terms-of-use/)
+- [Refund Policy](https://ozupay.com/refund-policy/)
+MD;
+}
+
+add_action( 'template_redirect', function (): void {
+    $accept = isset( $_SERVER['HTTP_ACCEPT'] ) ? (string) $_SERVER['HTTP_ACCEPT'] : '';
+    if ( ! str_contains( $accept, 'text/markdown' ) ) {
+        return;
+    }
+
+    if ( is_front_page() ) {
+        $markdown = ozp_llms_txt();
+    } elseif ( is_page( 'docs' ) ) {
+        $markdown = ozp_docs_markdown();
+    } else {
+        return;
+    }
+
+    status_header( 200 );
+    header( 'Content-Type: text/markdown; charset=utf-8' );
+    header( 'Vary: Accept', false );
+    echo $markdown; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    exit;
+}, 5 );
 
 /**
  * Notify IndexNow when public product content changes. Search engines remain
