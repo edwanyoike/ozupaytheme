@@ -2104,16 +2104,21 @@ add_action( 'wp_footer', function () {
         if (!widget) return;
         var submitBtn = form.querySelector('button[type="submit"], button[name="login"]');
         var executing = false;
+        // Once true, the next submit skips Turnstile entirely and goes straight to the server -
+        // set after a hung challenge times out, so a persistently broken Turnstile degrades to a
+        // clear server-side "Security check failed" instead of the button staying disabled again.
+        var bypassTurnstile = false;
 
         function waitForTurnstile(cb, triesLeft) {
             if (window.turnstile) return cb();
-            if (triesLeft <= 0) return; // Script never loaded; let the native submit fail server-side as before.
+            if (triesLeft <= 0) return; // Script never loaded; the submit-level timeout below recovers the button.
             setTimeout(function() { waitForTurnstile(cb, triesLeft - 1); }, 100);
         }
 
         form.addEventListener('submit', function(e) {
             var tokenInput = form.querySelector('[name="cf-turnstile-response"]');
             if (tokenInput && tokenInput.value) return; // token already ready, let it submit normally
+            if (bypassTurnstile) return; // Turnstile hung on a prior attempt; let the server reject cleanly instead of hanging again.
 
             // Always block the native submit while no token is ready yet - a repeat click
             // while the first execute() call is still pending must not fall through to a
@@ -2124,7 +2129,33 @@ add_action( 'wp_footer', function () {
             executing = true;
             if (submitBtn) submitBtn.disabled = true;
 
+            var settled = false;
+            function finish(shouldSubmit) {
+                if (settled) return;
+                settled = true;
+                executing = false;
+                // requestSubmit() (not submit()) - submit() does NOT include the
+                // clicked button's name/value in the POST, and WooCommerce's
+                // process_login() requires $_POST['login'] to be set or it silently
+                // no-ops (no wp_signon() call, no error, page just reloads as-is).
+                // Re-enable the button first: disabled submitters are not successful
+                // form controls, so leaving it disabled also drops name="login".
+                if (submitBtn) submitBtn.disabled = false;
+                if (shouldSubmit) form.requestSubmit(submitBtn);
+            }
+
+            // Belt-and-braces recovery: observed in production that turnstile.execute() can hang
+            // indefinitely - challenge sub-requests fire but neither callback nor error-callback
+            // ever runs (e.g. blocked/aborted challenge-platform requests) - not just the
+            // already-handled "script never loaded" case. Without an absolute timeout here the
+            // button stays disabled forever with no way for the visitor to retry.
+            var giveUpTimer = setTimeout(function() {
+                bypassTurnstile = true;
+                finish(true);
+            }, 15000);
+
             waitForTurnstile(function() {
+                if (typeof window.turnstile === 'undefined') return; // still not loaded; giveUpTimer above handles it
                 // Reset first: if the page has been sitting open a while before the user
                 // logs in, the widget's implicit render from page-load time may be stale.
                 // Resetting immediately before execute() guarantees a fresh challenge
@@ -2133,21 +2164,14 @@ add_action( 'wp_footer', function () {
                 turnstile.reset(widget);
                 turnstile.execute(widget, {
                     callback: function() {
-                        executing = false;
-                        // requestSubmit() (not submit()) - submit() does NOT include the
-                        // clicked button's name/value in the POST, and WooCommerce's
-                        // process_login() requires $_POST['login'] to be set or it silently
-                        // no-ops (no wp_signon() call, no error, page just reloads as-is).
-                        // Re-enable the button first: disabled submitters are not successful
-                        // form controls, so leaving it disabled also drops name="login".
+                        clearTimeout(giveUpTimer);
                         // This re-fires the 'submit' event, but tokenInput.value is already
-                        // set at this point so the listener below lets it through untouched.
-                        if (submitBtn) submitBtn.disabled = false;
-                        form.requestSubmit(submitBtn);
+                        // set at this point so the listener above lets it through untouched.
+                        finish(true);
                     },
                     'error-callback': function() {
-                        executing = false;
-                        if (submitBtn) submitBtn.disabled = false;
+                        clearTimeout(giveUpTimer);
+                        finish(false);
                     }
                 });
             }, 100); // up to ~10s for the async script to load
