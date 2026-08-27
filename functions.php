@@ -2108,6 +2108,9 @@ add_action( 'wp_footer', function () {
         // set after a hung challenge times out, so a persistently broken Turnstile degrades to a
         // clear server-side "Security check failed" instead of the button staying disabled again.
         var bypassTurnstile = false;
+        // Whether execute() has already run once for this widget instance - see the reset()
+        // call below for why this matters.
+        var hasExecuted = false;
 
         function waitForTurnstile(cb, triesLeft) {
             if (window.turnstile) return cb();
@@ -2156,12 +2159,18 @@ add_action( 'wp_footer', function () {
 
             waitForTurnstile(function() {
                 if (typeof window.turnstile === 'undefined') return; // still not loaded; giveUpTimer above handles it
-                // Reset first: if the page has been sitting open a while before the user
-                // logs in, the widget's implicit render from page-load time may be stale.
-                // Resetting immediately before execute() guarantees a fresh challenge
-                // regardless of how long the widget had been idle, rather than trusting an
-                // undocumented pre-execution validity window.
-                turnstile.reset(widget);
+                // Only reset on a retry (a second+ execute() for this widget instance) - resetting
+                // a widget that was only ever implicitly rendered at page load and has never
+                // actually run a challenge yet is an unusual call, and matched what production
+                // showed: Cloudflare's own Turnstile analytics recorded a 90% unsolved rate with
+                // 0% interactive solves for real (non-headless) visitors - i.e. execute() was
+                // hanging on essentially every first attempt, not just occasionally. A retry still
+                // needs the reset, since re-running execute() on an already-completed widget
+                // without resetting first reuses/ignores rather than issuing a fresh challenge.
+                if (hasExecuted) {
+                    turnstile.reset(widget);
+                }
+                hasExecuted = true;
                 turnstile.execute(widget, {
                     callback: function() {
                         clearTimeout(giveUpTimer);
