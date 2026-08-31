@@ -414,11 +414,46 @@ add_filter( 'document_title_parts', function ( array $parts ): array {
 // its canonical.
 remove_action( 'wp_head', 'rel_canonical' );
 
+/**
+ * BreadcrumbList JSON-LD from an ordered list of ['name' => ..., 'url' => ...],
+ * not including Home — Home is prepended automatically.
+ */
+function ozp_breadcrumb_ld( string $site_url, array $items ): string {
+    $list   = [ [ '@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => $site_url ] ];
+    $position = 2;
+    foreach ( $items as $item ) {
+        $list[] = [ '@type' => 'ListItem', 'position' => $position++, 'name' => $item['name'], 'item' => $item['url'] ];
+    }
+    return (string) wp_json_encode( [
+        '@context'        => 'https://schema.org',
+        '@type'           => 'BreadcrumbList',
+        'itemListElement' => $list,
+    ] );
+}
+
 // Meta description, canonical, Open Graph, Twitter Card, JSON-LD.
 add_action( 'wp_head', function () {
     $og_image = esc_url( get_stylesheet_directory_uri() . '/og-image.jpg' );
     $site_url = esc_url( home_url( '/' ) );
     $json_ld  = [];
+
+    // Sitewide — enables the sitelinks search box in search results. Emitted on every
+    // page (including the early-return branch below), not just where the rest of this
+    // callback recognizes the page type.
+    $json_ld[] = (string) wp_json_encode( [
+        '@context'        => 'https://schema.org',
+        '@type'           => 'WebSite',
+        'name'            => 'OzuPay',
+        'url'             => $site_url,
+        'potentialAction' => [
+            '@type'  => 'SearchAction',
+            'target' => [
+                '@type'       => 'EntryPoint',
+                'urlTemplate' => home_url( '/?s={search_term_string}' ),
+            ],
+            'query-input' => 'required name=search_term_string',
+        ],
+    ] );
 
     // ── Per-page SEO data ──────────────────────────────────────────────────
     if ( is_front_page() ) {
@@ -489,6 +524,7 @@ add_action( 'wp_head', function () {
         "seller": { "@type": "Organization", "name": "OzuPay", "url": "' . $site_url . '" }
     }
 }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Shop', 'url' => $url ] ] );
 
     } elseif ( is_page( 'features' ) ) {
         $title = 'OzuPay M-Pesa Plugin Features: Free vs Pro | OzuPay';
@@ -504,6 +540,7 @@ add_action( 'wp_head', function () {
     "url": "' . esc_url( get_permalink() ) . '",
     "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" }
 }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Features', 'url' => $url ] ] );
 
     } elseif ( is_page( [ 'docs', 'documentation' ] ) ) {
         $title = 'M-Pesa Payments Plugin Setup & Configuration Guide | OzuPay';
@@ -520,6 +557,7 @@ add_action( 'wp_head', function () {
     "about": { "@type": "SoftwareApplication", "name": "OzuPay M-Pesa Payments Plugin", "url": "' . $site_url . '" },
     "publisher": { "@type": "Organization", "name": "OzuPay", "url": "' . $site_url . '" }
 }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Docs', 'url' => $url ] ] );
 
     } elseif ( is_page( 'contact' ) ) {
         $title = 'Contact OzuPay: M-Pesa Plugin Support & Enquiries';
@@ -535,6 +573,7 @@ add_action( 'wp_head', function () {
     "url": "' . esc_url( get_permalink() ) . '",
     "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" }
 }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Contact', 'url' => $url ] ] );
 
     } elseif ( is_page( 'support' ) ) {
         $title = 'OzuPay Support: M-Pesa Plugin Help & Ticket';
@@ -542,17 +581,23 @@ add_action( 'wp_head', function () {
         $url   = esc_url( get_permalink() );
         $type  = 'website';
 
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Support', 'url' => $url ] ] );
+
     } elseif ( is_page( [ 'feature-request', 'feature-requests' ] ) ) {
         $title = 'Feature Requests | OzuPay';
         $desc  = 'Request a new feature for OzuPay M-Pesa WooCommerce plugin. Share your ideas to help shape the product roadmap.';
         $url   = esc_url( get_permalink() );
         $type  = 'website';
 
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Feature Requests', 'url' => $url ] ] );
+
     } elseif ( is_page( 'about' ) ) {
         $title = 'About OzuPay: M-Pesa Payments for WooCommerce';
         $desc  = 'OzuPay builds the M-Pesa Payments Plugin for WordPress and WooCommerce merchants in Kenya.';
         $url   = esc_url( get_permalink() );
         $type  = 'website';
+
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'About', 'url' => $url ] ] );
 
     } elseif ( is_page( [ 'privacy-policy', 'privacy' ] ) ) {
         $title = 'Privacy Policy | OzuPay';
@@ -561,6 +606,7 @@ add_action( 'wp_head', function () {
         $type  = 'website';
 
         $json_ld[] = '{ "@context": "https://schema.org", "@type": "WebPage", "name": "Privacy Policy", "url": "' . esc_url( get_permalink() ) . '", "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" } }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Privacy Policy', 'url' => $url ] ] );
 
     } elseif ( is_page( [ 'terms-of-use', 'terms' ] ) ) {
         $title = 'Terms of Use | OzuPay';
@@ -569,6 +615,7 @@ add_action( 'wp_head', function () {
         $type  = 'website';
 
         $json_ld[] = '{ "@context": "https://schema.org", "@type": "WebPage", "name": "Terms of Use", "url": "' . esc_url( get_permalink() ) . '", "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" } }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Terms of Use', 'url' => $url ] ] );
 
     } elseif ( is_page( [ 'refund-policy', 'refund' ] ) ) {
         $title = 'Refund Policy: 30-Day Money-Back Guarantee | OzuPay';
@@ -577,6 +624,7 @@ add_action( 'wp_head', function () {
         $type  = 'website';
 
         $json_ld[] = '{ "@context": "https://schema.org", "@type": "WebPage", "name": "Refund Policy", "url": "' . esc_url( get_permalink() ) . '", "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" } }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Refund Policy', 'url' => $url ] ] );
 
     } elseif ( function_exists( 'is_product' ) && is_product() ) {
         $product_obj = wc_get_product();
@@ -606,6 +654,10 @@ add_action( 'wp_head', function () {
         "seller": { "@type": "Organization", "name": "OzuPay", "url": "' . $site_url . '" }
     }
 }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [
+            [ 'name' => 'Shop', 'url' => esc_url( home_url( '/shop/' ) ) ],
+            [ 'name' => $plan_name, 'url' => $url ],
+        ] );
 
     } elseif ( is_page( 'blog' ) ) {
         $title = 'Blog: M-Pesa & WooCommerce Guides | OzuPay';
@@ -621,6 +673,7 @@ add_action( 'wp_head', function () {
     "url": "' . $url . '",
     "isPartOf": { "@type": "WebSite", "name": "OzuPay", "url": "' . $site_url . '" }
 }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [ [ 'name' => 'Blog', 'url' => $url ] ] );
 
     } elseif ( is_singular( 'post' ) ) {
         $queried_id  = get_queried_object_id();
@@ -661,11 +714,18 @@ add_action( 'wp_head', function () {
     "publisher": { "@type": "Organization", "name": "OzuPay", "url": "' . $site_url . '" },
     "mainEntityOfPage": { "@type": "WebPage", "@id": "' . $url . '" }
 }';
+        $json_ld[] = ozp_breadcrumb_ld( $site_url, [
+            [ 'name' => 'Blog', 'url' => esc_url( home_url( '/blog/' ) ) ],
+            [ 'name' => get_the_title( $queried_id ), 'url' => $url ],
+        ] );
 
     } else {
         $canonical = function_exists( 'wp_get_canonical_url' ) ? wp_get_canonical_url() : '';
         if ( $canonical ) {
             echo '<link rel="canonical" href="' . esc_url( $canonical ) . '">' . "\n";
+        }
+        foreach ( $json_ld as $block ) {
+            echo '<script type="application/ld+json">' . "\n" . $block . "\n" . '</script>' . "\n";
         }
         return;
     }
