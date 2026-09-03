@@ -1680,17 +1680,18 @@ add_action( 'login_enqueue_scripts', function (): void {
         accent-color:var(--og);
     }
     .login .button-primary{
-        background:linear-gradient(145deg,#00C45F,var(--og-dark));
-        border:1.5px solid rgba(0,0,0,.18);
-        border-radius:10px;
-        text-shadow:none;
-        box-shadow:0 8px 20px -8px rgba(0,166,81,.5);
+        background:linear-gradient(145deg,#00C45F,var(--og-dark)) !important;
+        border:1.5px solid rgba(0,0,0,.18) !important;
+        border-radius:10px !important;
+        text-shadow:none !important;
+        box-shadow:0 8px 20px -8px rgba(0,166,81,.5) !important;
         font-weight:700;
     }
     .login .button-primary:hover,
     .login .button-primary:focus{
-        background:linear-gradient(145deg,#00D46A,#00834A);
-        box-shadow:0 10px 24px -6px rgba(0,166,81,.6);
+        background:linear-gradient(145deg,#00D46A,#00834A) !important;
+        border-color:rgba(0,0,0,.18) !important;
+        box-shadow:0 10px 24px -6px rgba(0,166,81,.6) !important;
     }
     .login #nav a,
     .login #backtoblog a,
