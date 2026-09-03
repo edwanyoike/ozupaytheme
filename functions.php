@@ -1707,6 +1707,162 @@ add_action( 'woocommerce_before_checkout_billing_form', function (): void {
 // Disable WooCommerce product image zoom — image should not pan on cursor hover.
 add_filter( 'woocommerce_single_product_zoom_enabled', '__return_false' );
 
+// ── Setup Assistance cart/checkout add-on ───────────────────────────────────
+// A checkbox on the Cart and Checkout pages (both classic [woocommerce_cart]
+// / [woocommerce_checkout] shortcodes here, not Blocks) that adds/removes the
+// "OzuPay Setup Assistance" product as a normal cart line item via AJAX, so
+// its price rides the same cart total the STK Push amount is calculated
+// from — no separate payment path, no order-meta hack.
+
+define( 'OZP_SETUP_ASSIST_PRODUCT_ID', 1609 );
+
+/**
+ * The cart_item_key of the Setup Assistance line, or null if it isn't in the
+ * cart. Centralised so the render and AJAX handler always agree on state.
+ */
+function ozp_setup_assist_cart_item_key(): ?string {
+    if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+        return null;
+    }
+    foreach ( WC()->cart->get_cart() as $key => $item ) {
+        if ( (int) $item['product_id'] === OZP_SETUP_ASSIST_PRODUCT_ID ) {
+            return $key;
+        }
+    }
+    return null;
+}
+
+add_action( 'woocommerce_before_cart_totals', 'ozp_render_setup_assist_checkbox' );
+add_action( 'woocommerce_review_order_before_submit', 'ozp_render_setup_assist_checkbox' );
+
+function ozp_render_setup_assist_checkbox(): void {
+    if ( ! function_exists( 'WC' ) || ! WC()->cart || WC()->cart->is_empty() ) {
+        return;
+    }
+
+    // Nothing to upsell against if the service is the only thing in the cart.
+    $has_other_items = false;
+    foreach ( WC()->cart->get_cart() as $item ) {
+        if ( (int) $item['product_id'] !== OZP_SETUP_ASSIST_PRODUCT_ID ) {
+            $has_other_items = true;
+            break;
+        }
+    }
+    if ( ! $has_other_items ) {
+        return;
+    }
+
+    $checked = null !== ozp_setup_assist_cart_item_key();
+    ?>
+    <div class="ozp-setup-assist" style="margin:0 0 20px;padding:16px 18px;background:var(--slate-50,#F7F5EF);border:1px solid var(--slate-200,#E4DECF);border-radius:12px;">
+        <label style="display:flex;gap:12px;align-items:flex-start;cursor:pointer;margin:0;">
+            <input type="checkbox" id="ozp-setup-assist-cb" <?php checked( $checked ); ?> style="margin-top:3px;width:16px;height:16px;flex:none;">
+            <span style="font-size:13.5px;line-height:1.5;">
+                <strong style="color:var(--navy,#0F172A);">Add Setup Assistance &mdash; KES 3,500</strong><br>
+                <span style="color:var(--slate-500,#64748B);">We&rsquo;ll configure your Daraja API credentials, Paybill/Till and callback URLs for you.</span>
+            </span>
+        </label>
+        <p class="ozp-setup-assist-msg" style="display:none;margin:8px 0 0 28px;font-size:12px;color:#B91C1C;"></p>
+    </div>
+    <?php
+}
+
+// The event handler lives in wp_footer, not inside the checkbox markup above —
+// on the Checkout page, woocommerce_review_order_before_submit sits inside
+// the #order_review fragment that WooCommerce's own update_checkout AJAX
+// re-fetches and swaps via .html() on every toggle. A <script> printed there
+// would re-execute (and re-bind) on every refresh; wp_footer prints once per
+// real page load and is untouched by that fragment swap.
+add_action( 'wp_footer', function (): void {
+    if ( ! function_exists( 'is_cart' ) || ! function_exists( 'is_checkout' ) ) {
+        return;
+    }
+    if ( ! is_cart() && ! is_checkout() ) {
+        return;
+    }
+    ?>
+    <script>
+    (function () {
+        var nonce = <?php echo wp_json_encode( wp_create_nonce( 'ozp_setup_assist' ) ); ?>;
+        var ajaxUrl = <?php echo wp_json_encode( admin_url( 'admin-ajax.php' ) ); ?>;
+        var isCheckout = document.body.classList.contains( 'woocommerce-checkout' );
+
+        document.addEventListener( 'change', function ( e ) {
+            if ( e.target.id !== 'ozp-setup-assist-cb' ) {
+                return;
+            }
+            var cb  = e.target;
+            var msg = cb.closest( '.ozp-setup-assist' ).querySelector( '.ozp-setup-assist-msg' );
+            var wantChecked = cb.checked;
+            cb.disabled = true;
+            msg.style.display = 'none';
+
+            var body = new URLSearchParams();
+            body.set( 'action', 'ozp_toggle_setup_assistance' );
+            body.set( 'nonce', nonce );
+            body.set( 'checked', wantChecked ? '1' : '0' );
+
+            fetch( ajaxUrl, { method: 'POST', credentials: 'same-origin', body: body } )
+                .then( function ( r ) { return r.json(); } )
+                .then( function ( res ) {
+                    if ( ! res || ! res.success ) {
+                        throw new Error();
+                    }
+                    if ( isCheckout && typeof jQuery !== 'undefined' ) {
+                        jQuery( document.body ).trigger( 'update_checkout' );
+                        cb.disabled = false;
+                    } else {
+                        window.location.reload();
+                    }
+                } )
+                .catch( function () {
+                    cb.checked = ! wantChecked;
+                    cb.disabled = false;
+                    msg.textContent = 'Could not update your cart. Please try again.';
+                    msg.style.display = 'block';
+                } );
+        } );
+    })();
+    </script>
+    <?php
+}, 40 );
+
+add_action( 'wp_ajax_ozp_toggle_setup_assistance', 'ozp_toggle_setup_assistance_ajax' );
+add_action( 'wp_ajax_nopriv_ozp_toggle_setup_assistance', 'ozp_toggle_setup_assistance_ajax' );
+
+function ozp_toggle_setup_assistance_ajax(): void {
+    check_ajax_referer( 'ozp_setup_assist', 'nonce' );
+
+    if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+        wp_send_json_error( [ 'message' => 'Cart unavailable.' ], 400 );
+    }
+
+    $want = isset( $_POST['checked'] ) && '1' === $_POST['checked'];
+    $key  = ozp_setup_assist_cart_item_key();
+
+    if ( $want ) {
+        // Force quantity to exactly 1 regardless of whether this is a fresh
+        // add or a re-toggle that raced with another request for the same
+        // session — keeps the outcome idempotent either way.
+        if ( $key ) {
+            WC()->cart->set_quantity( $key, 1 );
+        } else {
+            $key = WC()->cart->add_to_cart( OZP_SETUP_ASSIST_PRODUCT_ID, 1 );
+            if ( $key ) {
+                WC()->cart->set_quantity( $key, 1 );
+            }
+        }
+    } elseif ( $key ) {
+        WC()->cart->remove_cart_item( $key );
+    }
+
+    WC()->cart->calculate_totals();
+
+    wp_send_json_success( [
+        'in_cart' => null !== ozp_setup_assist_cart_item_key(),
+    ] );
+}
+
 // Blocks checkout: register phone as required and relabel it.
 // WC Blocks keys address fields without the "billing_" prefix, so the hook is
 // woocommerce_get_registered_address_field_phone, not billing_phone.
