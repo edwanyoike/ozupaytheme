@@ -1252,7 +1252,13 @@ add_action( 'template_redirect', function () {
     <p style="margin:0;font-size:13px;color:var(--slate-500);">Prefer automatic updates from wp-admin? <a href="https://wordpress.org/plugins/ozupay-payment-gateway/" style="color:var(--og);" target="_blank" rel="noopener">Install from WordPress.org instead</a>.</p>
   </div>
 
-  <div style="max-width:420px;margin:44px auto 0;background:var(--navy);border-radius:22px;padding:34px 30px;box-shadow:0 30px 60px -22px rgba(15,23,42,.5),0 0 50px -8px rgba(0,166,81,.18);">
+  <div style="max-width:420px;margin:32px auto 0;background:var(--slate-50);border:1px solid var(--slate-200);border-radius:16px;padding:20px 24px;text-align:center;">
+    <p style="margin:0 0 4px;font-size:14px;font-weight:600;color:var(--navy);">Not confident setting up Daraja yourself?</p>
+    <p style="margin:0 0 12px;font-size:13px;line-height:1.55;color:var(--slate-600);">We&rsquo;ll configure your Daraja API credentials, Paybill/Till and callback URLs for you.</p>
+    <a href="https://ozupay.com/product/ozupay-setup-assistance/" style="font-size:13px;font-weight:700;color:var(--og);">Get setup assistance &mdash; KES 3,500 &rarr;</a>
+  </div>
+
+  <div style="max-width:420px;margin:24px auto 0;background:var(--navy);border-radius:22px;padding:34px 30px;box-shadow:0 30px 60px -22px rgba(15,23,42,.5),0 0 50px -8px rgba(0,166,81,.18);">
     <div class="ozp-mono" style="font-size:13px;font-weight:600;letter-spacing:.06em;color:#4ADE80;text-transform:uppercase;margin-bottom:16px;">While that downloads, check out Pro features</div>
     <h2 style="margin:0 0 10px;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.02em;">Refunds, M-Pesa on Delivery, analytics &amp; more</h2>
     <p style="margin:0 0 5px;font-size:14px;line-height:1.6;color:#E4DECF;">One licence, every Pro feature included: KES 417/month, billed annually.</p>
@@ -3281,6 +3287,15 @@ add_filter( 'the_content', function ( string $content ): string {
                             <p><a href="tel:+254710925265">+254 710 925 265</a> &middot; <a href="https://wa.me/254710925265" target="_blank" rel="noopener">WhatsApp us</a></p>
                         </div>
                     </div>
+                    <div class="ozp-ch-info-card ozp-ch-info-card--wide">
+                        <div class="ozp-ch-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                        </div>
+                        <div>
+                            <p>Setup assistance</p>
+                            <p>Prefer done-for-you setup? <a href="https://ozupay.com/product/ozupay-setup-assistance/">Get help for KES 3,500</a></p>
+                        </div>
+                    </div>
                 </div>
                 <?php else : ?>
                 <div class="ozp-ch-card">
@@ -3356,6 +3371,15 @@ add_filter( 'the_content', function ( string $content ): string {
                         <div>
                             <p>Call or WhatsApp</p>
                             <p><a href="tel:+254710925265">+254 710 925 265</a> &middot; <a href="https://wa.me/254710925265" target="_blank" rel="noopener">WhatsApp us</a></p>
+                        </div>
+                    </div>
+                    <div class="ozp-ch-info-card ozp-ch-info-card--wide">
+                        <div class="ozp-ch-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                        </div>
+                        <div>
+                            <p>Setup assistance</p>
+                            <p>Prefer done-for-you setup? <a href="https://ozupay.com/product/ozupay-setup-assistance/">Get help for KES 3,500</a></p>
                         </div>
                     </div>
                 </div>
