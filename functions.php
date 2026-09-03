@@ -1595,6 +1595,119 @@ add_action( 'woocommerce_before_customer_login_form', function () {
     <?php
 } );
 
+// ── Branded wp-login.php ─────────────────────────────────────────────────
+// WordPress's own login screen (wp-admin sign-in, password reset) ships with
+// the default WordPress logo and blue theme. Point the header logo link at
+// ozupay.com and re-skin it to match the site's navy/green palette instead
+// of maintaining a full custom login page — everything here is CSS-only, no
+// markup changes, so core updates can't break it.
+
+add_filter( 'login_headerurl', function (): string {
+    return home_url( '/' );
+} );
+
+add_filter( 'login_h1_title', function (): string {
+    return __( 'OzuPay', 'ozupay-theme' );
+} );
+
+add_action( 'login_enqueue_scripts', function (): void {
+    $icon_url = get_stylesheet_directory_uri() . '/favicon.png';
+    ?>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap">
+    <style>
+    :root{
+        --og:#00A651; --og-dark:#00924A;
+        --navy:#0F172A;
+        --slate-600:#475569; --slate-500:#64748B; --slate-200:#E4DECF; --slate-50:#F7F5EF;
+    }
+    body.login{
+        background:var(--slate-50);
+        font-family:'Inter',system-ui,sans-serif;
+    }
+    .login h1 a{
+        background-image:url(<?php echo esc_url( $icon_url ); ?>);
+        background-size:44px 44px;
+        background-position:center top;
+        height:44px;
+        width:44px;
+        margin:0 auto 6px;
+    }
+    .login h1 a::after{
+        content:'OzuPay';
+        display:block;
+        text-indent:0;
+        font-family:'Space Grotesk',sans-serif;
+        font-weight:700;
+        font-size:22px;
+        letter-spacing:-.02em;
+        color:var(--navy);
+        margin-top:10px;
+    }
+    .login form{
+        background:#fff;
+        border:1px solid var(--slate-200);
+        border-radius:16px;
+        box-shadow:0 20px 40px -20px rgba(15,23,42,.15);
+        padding:26px 24px;
+    }
+    .login label{
+        color:var(--navy);
+        font-weight:600;
+        font-size:13.5px;
+    }
+    .login input[type=text],
+    .login input[type=password],
+    .login input[type=email]{
+        border:1px solid var(--slate-200);
+        border-radius:9px;
+        padding:9px 11px;
+        font-size:14px;
+        box-shadow:none;
+    }
+    .login input[type=text]:focus,
+    .login input[type=password]:focus,
+    .login input[type=email]:focus{
+        border-color:var(--og);
+        box-shadow:0 0 0 3px rgba(0,166,81,.15);
+    }
+    .login input[type=checkbox]{
+        accent-color:var(--og);
+    }
+    .login .button-primary{
+        background:linear-gradient(145deg,#00C45F,var(--og-dark));
+        border:1.5px solid rgba(0,0,0,.18);
+        border-radius:10px;
+        text-shadow:none;
+        box-shadow:0 8px 20px -8px rgba(0,166,81,.5);
+        font-weight:700;
+    }
+    .login .button-primary:hover,
+    .login .button-primary:focus{
+        background:linear-gradient(145deg,#00D46A,#00834A);
+        box-shadow:0 10px 24px -6px rgba(0,166,81,.6);
+    }
+    .login #nav a,
+    .login #backtoblog a,
+    .login .privacy-policy-page-link a{
+        color:var(--slate-600);
+    }
+    .login #nav a:hover,
+    .login #backtoblog a:hover,
+    .login .privacy-policy-page-link a:hover{
+        color:var(--og);
+    }
+    .login .message{
+        border-left-color:var(--og);
+        border-radius:8px;
+    }
+    .login #login_error{
+        border-left-color:#DC2626;
+        border-radius:8px;
+    }
+    </style>
+    <?php
+} );
+
 // Inject logout URL + logged-in state so the static header can wire up logout links.
 // Also inject WooCommerce cart count so the cart badge updates server-side on each request.
 add_action( 'wp_head', function () {
