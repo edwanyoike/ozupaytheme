@@ -1624,13 +1624,19 @@ add_action( 'login_enqueue_scripts', function (): void {
         background:var(--slate-50);
         font-family:'Inter',system-ui,sans-serif;
     }
+    /* WordPress's own login.min.css is enqueued via wp_enqueue_style(), which
+       prints its <link> after this inline block regardless of hook priority
+       (wp_print_styles() runs as a separate later step) — !important is the
+       only reliable way to win a same-specificity, same-selector tie against
+       core's .login h1 a rule here. */
     .login h1 a{
-        background-image:url(<?php echo esc_url( $icon_url ); ?>);
-        background-size:44px 44px;
-        background-position:center top;
-        height:44px;
-        width:44px;
-        margin:0 auto 6px;
+        background-image:url(<?php echo esc_url( $icon_url ); ?>) !important;
+        background-size:44px 44px !important;
+        background-position:center top !important;
+        height:44px !important;
+        width:44px !important;
+        margin:0 auto 6px !important;
+        overflow:visible !important;
     }
     .login h1 a::after{
         content:'OzuPay';
