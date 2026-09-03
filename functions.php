@@ -1603,7 +1603,7 @@ add_action( 'woocommerce_before_customer_login_form', function () {
 // markup changes, so core updates can't break it.
 
 add_filter( 'login_headerurl', function (): string {
-    return home_url( '/' );
+    return home_url( '/my-account/' );
 } );
 
 add_filter( 'login_h1_title', function (): string {
