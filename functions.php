@@ -278,7 +278,7 @@ add_action( 'wp_head', function (): void {
     if ( function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
         return;
     }
-    echo '<style>.woocommerce-checkout .ozp-header{display:none!important}</style>' . "\n";
+    echo '<style>.woocommerce-checkout .ozp-header,.woocommerce-checkout .ozp-topbar{display:none!important}</style>' . "\n";
 }, 1 );
 
 // The header is a portable static template part, so give visitors a reliable
