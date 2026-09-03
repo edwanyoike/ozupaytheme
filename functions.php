@@ -1595,10 +1595,31 @@ add_action( 'woocommerce_before_customer_login_form', function () {
     <?php
 } );
 
-// ── Branded wp-login.php ─────────────────────────────────────────────────
+// ── wp-login.php redirects to My Account; the rest stays styled ────────────
+// The plain login-form view of wp-login.php now sends visitors to the
+// WooCommerce My Account page instead (which has its own login form). Every
+// other wp-login.php action — logout, lost password, reset password,
+// register, and the wp-admin "session expired" interim-login modal — still
+// needs to go through core unmodified, so only the bare login view redirects;
+// those other views keep using the branded CSS below as a fallback.
+add_action( 'login_init', function (): void {
+    if ( 'GET' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) {
+        return;
+    }
+    if ( isset( $_GET['interim-login'] ) ) {
+        return;
+    }
+    $action = isset( $_GET['action'] ) ? sanitize_key( wp_unslash( $_GET['action'] ) ) : 'login';
+    if ( 'login' !== $action ) {
+        return;
+    }
+    wp_safe_redirect( home_url( '/my-account/' ) );
+    exit;
+} );
+
 // WordPress's own login screen (wp-admin sign-in, password reset) ships with
 // the default WordPress logo and blue theme. Point the header logo link at
-// ozupay.com and re-skin it to match the site's navy/green palette instead
+// My Account and re-skin it to match the site's navy/green palette instead
 // of maintaining a full custom login page — everything here is CSS-only, no
 // markup changes, so core updates can't break it.
 
