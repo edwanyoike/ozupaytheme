@@ -470,10 +470,10 @@ add_action( 'wp_head', function () {
     "operatingSystem": "WordPress",
     "description": "OzuPay M-Pesa Payments Plugin is the complete M-Pesa payment plugin for WooCommerce. Accept STK Push, C2B Paybill, M-Pesa on Delivery and send B2C refunds from your WooCommerce store.",
     "url": "' . $site_url . '",
-    "downloadUrl": "' . esc_url( home_url( '/get-free' ) ) . '",
+    "downloadUrl": "https://wordpress.org/plugins/ozupay-payment-gateway/",
     "keywords": "mpesa, woocommerce, wordpress plugin, stk push, daraja, c2b paybill, kenya, m-pesa payment gateway",
     "offers": [
-        { "@type": "Offer", "name": "OzuPay Free", "price": "0",    "priceCurrency": "KES", "availability": "https://schema.org/InStock", "url": "' . esc_url( home_url( '/get-free' ) ) . '" },
+        { "@type": "Offer", "name": "OzuPay Free", "price": "0",    "priceCurrency": "KES", "availability": "https://schema.org/InStock", "url": "https://wordpress.org/plugins/ozupay-payment-gateway/" },
         { "@type": "Offer", "name": "OzuPay Pro",  "price": "5000", "priceCurrency": "KES", "availability": "https://schema.org/InStock", "url": "' . esc_url( home_url( '/shop/' ) ) . '" }
     ],
     "publisher": { "@type": "Organization", "name": "OzuPay", "url": "' . $site_url . '" }
@@ -824,7 +824,7 @@ OzuPay lets WooCommerce customers pay by M-Pesa STK Push without leaving checkou
 - [Documentation](https://ozupay.com/docs/): Installation, Daraja credentials, callbacks, operation, privacy, and troubleshooting.
 - [Pricing](https://ozupay.com/#pricing): OzuPay Pro costs KES 5,000 per WooCommerce site per year; volume licensing is available by enquiry.
 - [Shop](https://ozupay.com/shop/): Purchase OzuPay Pro.
-- [Free download](https://ozupay.com/get-free/): Download OzuPay Free.
+- [Free download](https://wordpress.org/plugins/ozupay-payment-gateway/): Install OzuPay Free from the WordPress.org Plugin Directory. A manual ZIP download is also available at https://ozupay.com/get-free/.
 - [Live checkout demo](https://demo.ozupay.com/shop/): Test an M-Pesa checkout flow.
 - [Blog and guides](https://ozupay.com/blog/): M-Pesa, Daraja, WooCommerce, security, setup, and troubleshooting articles.
 - [Support](https://ozupay.com/contact/): Product support and pre-sales enquiries.
@@ -1248,7 +1248,8 @@ add_action( 'template_redirect', function () {
     <div class="ozp-mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--og);text-transform:uppercase;margin-bottom:14px;">OzuPay Free</div>
     <h1 id="ozp-dl-title" style="margin:0 0 12px;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-.02em;font-weight:700;color:var(--navy);">Preparing your download&hellip;</h1>
     <p id="ozp-dl-sub" style="margin:0 0 8px;font-size:15px;color:var(--slate-600);">Your download will start automatically in a moment.</p>
-    <p style="margin:0;font-size:13.5px;color:var(--slate-500);">Didn&rsquo;t start? <a href="<?php echo esc_url( OZP_FREE_DOWNLOAD_URL ); ?>" id="ozp-dl-fallback" style="color:var(--og);">Download manually</a>.</p>
+    <p style="margin:0 0 8px;font-size:13.5px;color:var(--slate-500);">Didn&rsquo;t start? <a href="<?php echo esc_url( OZP_FREE_DOWNLOAD_URL ); ?>" id="ozp-dl-fallback" style="color:var(--og);">Download manually</a>.</p>
+    <p style="margin:0;font-size:13px;color:var(--slate-500);">Prefer automatic updates from wp-admin? <a href="https://wordpress.org/plugins/ozupay-payment-gateway/" style="color:var(--og);" target="_blank" rel="noopener">Install from WordPress.org instead</a>.</p>
   </div>
 
   <div style="max-width:420px;margin:44px auto 0;background:var(--navy);border-radius:22px;padding:34px 30px;box-shadow:0 30px 60px -22px rgba(15,23,42,.5),0 0 50px -8px rgba(0,166,81,.18);">
