@@ -1254,7 +1254,7 @@ add_action( 'template_redirect', function () {
 
   <div style="max-width:420px;margin:32px auto 0;background:var(--slate-50);border:1px solid var(--slate-200);border-radius:16px;padding:20px 24px;text-align:center;">
     <p style="margin:0 0 4px;font-size:14px;font-weight:600;color:var(--navy);">Not confident setting up Daraja yourself?</p>
-    <p style="margin:0 0 12px;font-size:13px;line-height:1.55;color:var(--slate-600);">We&rsquo;ll configure your Daraja API credentials, Paybill/Till and callback URLs for you.</p>
+    <p style="margin:0 0 12px;font-size:13px;line-height:1.55;color:var(--slate-600);">We&rsquo;ll guide you through getting Daraja API credentials from Safaricom, then set up your Paybill/Till and callback URLs in OzuPay for you.</p>
     <a href="https://ozupay.com/product/ozupay-setup-assistance/" style="font-size:13px;font-weight:700;color:var(--og);">Get setup assistance &mdash; KES 3,500 &rarr;</a>
   </div>
 
@@ -1759,7 +1759,7 @@ function ozp_render_setup_assist_checkbox(): void {
             <input type="checkbox" id="ozp-setup-assist-cb" <?php checked( $checked ); ?> style="margin-top:3px;width:16px;height:16px;flex:none;">
             <span style="font-size:13.5px;line-height:1.5;">
                 <strong style="color:var(--navy,#0F172A);">Add Setup Assistance &mdash; KES 3,500</strong><br>
-                <span style="color:var(--slate-500,#64748B);">We&rsquo;ll configure your Daraja API credentials, Paybill/Till and callback URLs for you.</span>
+                <span style="color:var(--slate-500,#64748B);">We&rsquo;ll guide you through getting Daraja API credentials from Safaricom, then set up your Paybill/Till and callback URLs in OzuPay for you.</span>
             </span>
         </label>
         <p class="ozp-setup-assist-msg" style="display:none;margin:8px 0 0 28px;font-size:12px;color:#B91C1C;"></p>
