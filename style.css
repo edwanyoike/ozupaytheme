@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.68
+Version:     1.8.69
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -27,6 +27,42 @@ Version:     1.8.68
     /* Mobile-first base tokens — overridden at min-width breakpoints below. */
     --px:     12px;
     --header-h: 56px;
+}
+
+/* Site-wide UI audit: reduce mobile clutter and repair shared component states. */
+html { scroll-padding-top: calc(var(--header-h) + 16px); }
+body { padding-bottom: 0 !important; }
+.ozp-mobile-cta { display: none !important; }
+.ozp-topbar .ozp-copy-link-btn { display: none !important; }
+
+/* Pricing metadata applies only to the annual Pro licence, not services. */
+.ozp-shop-catalog li.product:not(.product_cat-payments) .ozp-plan-tenure,
+.ozp-shop-catalog li.product:not(.product_cat-payments) .ozp-plan-fee { display: none !important; }
+
+/* WooCommerce writes opacity:0 inline until its gallery script initialises.
+   Keep the product image visible even if that enhancement is delayed. */
+.single-product .woocommerce-product-gallery { opacity: 1 !important; }
+
+/* Keep login forms readable instead of stretching across the full page. */
+body.woocommerce-account:not(.logged-in) main .woocommerce {
+    width: min(100%, 760px);
+    margin-inline: auto;
+}
+
+@media (max-width: 480px) {
+    .ozp-ch-tabbar-inner {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        overflow: visible !important;
+        padding: 0 !important;
+    }
+    .ozp-ch-tabbar .ozp-tab {
+        justify-content: center;
+        min-width: 0;
+        padding: 12px 8px !important;
+        white-space: normal !important;
+        text-align: center;
+    }
 }
 
 /* ── Skip link (accessibility) ──────────────────────────────────────────────── */
