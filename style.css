@@ -2,7 +2,7 @@
 Theme Name:  OzuPay
 Template:    twentytwentyfive
 Description: OzuPay child theme — mobile-first, conversion-focused design for ozupay.com
-Version:     1.8.62
+Version:     1.8.63
 */
 
 /* ── Design tokens ──────────────────────────────────────────────────────────── */
@@ -27,6 +27,39 @@ Version:     1.8.62
     /* Mobile-first base tokens — overridden at min-width breakpoints below. */
     --px:     12px;
     --header-h: 56px;
+}
+
+/* Limited-time Pro campaign shown above the primary navigation. */
+.ozp-promo-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: #FDE047;
+    color: #0F172A;
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.4;
+    text-align: center;
+}
+.ozp-promo-bar strong { font-weight: 850; }
+.ozp-promo-bar code {
+    padding: 2px 7px;
+    border: 1px solid rgba(15, 23, 42, .22);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, .55);
+    color: inherit;
+    font: 700 12px/1.4 'JetBrains Mono', monospace;
+}
+.ozp-promo-bar a {
+    color: inherit;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+@media (max-width: 600px) {
+    .ozp-promo-bar { flex-wrap: wrap; gap: 4px 8px; padding: 9px 14px; font-size: 12px; }
 }
 
 /* ── Skip link (accessibility) ──────────────────────────────────────────────── */
@@ -3474,6 +3507,8 @@ div.wc-block-add-to-cart-form.wc-block-add-to-cart-form--stepper form.cart div.w
 
 /* First-year coupon badge (injected via PHP right after the price block,
    before Add to Cart) */
+.single-product .ozp-welcome-badge:not(.ozp-campaign-badge),
+.single-product .ozp-product-offer { display: none; }
 .ozp-welcome-badge {
     display: inline-flex;
     align-items: center;
@@ -3487,6 +3522,12 @@ div.wc-block-add-to-cart-form.wc-block-add-to-cart-form--stepper form.cart div.w
     font-size: 13px;
     color: #166534;
     line-height: 1.5;
+}
+.ozp-campaign-fine-print {
+    margin: 14px 0 0;
+    color: var(--text-subtle);
+    font-size: 12px;
+    line-height: 1.55;
 }
 .ozp-welcome-badge strong { color: #14532d; }
 .ozp-welcome-badge code {
